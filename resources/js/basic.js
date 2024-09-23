@@ -76,5 +76,13 @@ require('./bootstrap');
       $('.collapse').collapse('hide');
   });
 
+  $('.offcanvas').on('show.bs.offcanvas', function () {
+      $('body').addClass('modal-open');
+  });
+
+$('.offcanvas').on('hide.bs.offcanvas', function () {
+    $('body').removeClass('modal-open');
+});
+
 
 })(jQuery);

@@ -428,16 +428,16 @@
         },
         {
             "name": "delgont/core",
-            "version": "v1.5.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delgont/core.git",
-                "reference": "2436f1eed070e5168a0d226229508277e844feb2"
+                "reference": "79f4715a176be65b3207f770de5eac825cec81c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delgont/core/zipball/2436f1eed070e5168a0d226229508277e844feb2",
-                "reference": "2436f1eed070e5168a0d226229508277e844feb2",
+                "url": "https://api.github.com/repos/delgont/core/zipball/79f4715a176be65b3207f770de5eac825cec81c1",
+                "reference": "79f4715a176be65b3207f770de5eac825cec81c1",
                 "shasum": ""
             },
             "require": {
@@ -453,6 +453,9 @@
                 }
             },
             "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
                 "psr-4": {
                     "Delgont\\Core\\": "src/"
                 }
@@ -480,9 +483,9 @@
             ],
             "support": {
                 "issues": "https://github.com/delgont/core/issues",
-                "source": "https://github.com/delgont/core/tree/v1.5.0"
+                "source": "https://github.com/delgont/core/tree/v1.7.0"
             },
-            "time": "2024-08-18T06:23:13+00:00"
+            "time": "2024-09-21T14:30:37+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

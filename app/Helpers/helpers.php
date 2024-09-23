@@ -1,13 +1,10 @@
 <?php
-use App\Option;
-
-use App\Repositories\OptionRepository;
 
 use App\Repository\SettingRepository;
 use App\Repository\HostelRepository;
 use App\Repositories\TermRepository;
 
-use App\Models\Accounts\AccountingPeriod;
+use App\Models\Accounts\AccountingPeriod; 
 
 use App\Repository\AccountingPeriodRepository;
 
@@ -61,11 +58,7 @@ if(!function_exists('settings')){
 
 
 //returns a option value
-if(!function_exists('option')){
-    function option($option_key, $group, $default = null){
-        return app(OptionRepository::class)->fromCache()->findOption($option_key, $group)->value ??  $default;
-    }
-}
+
 
 if(!function_exists('clazzs_or_courses')){
     function clazzs_or_courses(){

@@ -230,12 +230,12 @@
                  <div class="col-md-9" style="padding-top: 30px;">
                    <div class="row p-0">
                      <div class="col-lg-6">
-                        <h2 class="text-capitalize p-0" style="font-weight: 500;">@yield('module-page-heading')</h2>
+                        <h2 class="text-capitalize p-0 m-0" style="font-weight: 500;">@yield('module-page-heading')</h2>
                      </div>
                      <div class="col-lg-6 text-lg-end module-links module-quick-links">
                        @yield('module-links')
                      </div>
-                     <div class="col-lg-12">
+                     <div class="col-lg-12 mb-lg-3">
                         <small>@yield('module-page-description')</small>
                      </div>
                    </div>

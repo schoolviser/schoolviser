@@ -14,7 +14,7 @@ use Delgont\Core\Entities\Any;
 use App\Repository\TermRepository;
 
 use Modules\Student\Repositories\TermlyRegistrationRepository;
-use App\Repository\ClazzRepository;
+use App\Repositories\ClazzRepository;
 
 
 use Modules\Student\Repositories\SemesterRegistrationRepository;
@@ -46,11 +46,11 @@ class DashboardController extends Controller
         //Get total students of the current term
         $registrations = (config('schoolviser.type') == 'secondary' || config('schoolviser.type') == 'primary') ? app(TermlyRegistrationRepository::class)->fromCache()->current()->getRegistrations() : app(SemesterRegistrationRepository::class)->fromCache()->current()->getRegistrations() ;
 
-        $studentsPerCourse = (config('schoolviser.type') == 'secondary' || config('schoolviser.type') == 'primary') ? app(ClazzRepository::class)->fromCache()->current()->getTotalRegistrationsPerClazz() :  Course::withCount(['students' => function($studentQuery){
-            $studentQuery->whereHas('currentSemesterRegistration');
-        }])->get()->mapWithKeys(function($item){
-            return [($item['abbr']) ? $item['abbr'] : $item['name'] => $item['students_count']];
-        })->toArray();;
+        //$studentsPerCourse = (config('schoolviser.type') == 'secondary' || config('schoolviser.type') == 'primary') ? app(ClazzRepository::class)->fromCache()->current()->getTotalRegistrationsPerClazz() :  Course::withCount(['students' => function($studentQuery){
+            //$studentQuery->whereHas('currentSemesterRegistration');
+       // }])->get()->mapWithKeys(function($item){
+           // return [($item['abbr']) ? $item['abbr'] : $item['name'] => $item['students_count']];
+       // })->toArray();;
 
 
         $registrations = new Any([
@@ -69,6 +69,8 @@ class DashboardController extends Controller
         //$totalUsers = 30;
 
         //$expenses = ExpenseTransaction::current('term')->get()->sum('amount');
+
+        $studentsPerCourse = [];
 
 
         return view('admin.index', compact('registrations', 'studentsPerCourse'));

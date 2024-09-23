@@ -193,6 +193,10 @@ html #mode .dark {
 }
 
 // Offcanvas
+
+body.modal-open {
+    overflow: hidden;
+}
 .offcanvas-backdrop.show, .modal-backdrop.show {
     opacity: 1;
     background-color: rgba(15,23,50,.5);
@@ -602,7 +606,6 @@ html.dark .card{
 }
 
 
-/* Rows */
-.row.row-1{
-    margin-top: 15px;
+.module-links a{
+    padding: 4px;
 }

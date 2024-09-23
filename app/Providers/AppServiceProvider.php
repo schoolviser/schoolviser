@@ -10,6 +10,8 @@ use App\Concerns\BootObservers;
 use Illuminate\Support\Facades\View;
 use App\Http\View\Composers\AdminPermissionComposer;
 
+use Illuminate\Pagination\Paginator;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Paginator::useBootstrap();
 
         $this->BootObservers();
 
