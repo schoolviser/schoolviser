@@ -19,6 +19,7 @@ Route::group(['middleware' => ['auth','term']], function(){
  Route::get('/', 'DashboardController')->name('home');
 
  Route::get('/settings', 'Setting\SettingController')->middleware(['usertype:master|employee'])->name('settings');
+ 
  Route::get('/site-settings/terms', 'TermController@index')->middleware(['usertype:master'])->name('settings.terms');
  Route::post('/site-settings/terms/store', 'TermController@store')->middleware(['usertype:master'])->name('settings.terms.store');
  Route::get('/site-settings/terms/{id}', 'TermController@show')->middleware(['usertype:master'])->name('settings.terms.show');
@@ -40,7 +41,7 @@ Route::group(['middleware' => ['auth','term']], function(){
 
 Route::group(['middleware' => ['auth','usertype:master']], function(){
  Route::get('/init', 'Init\InitController')->name('init');
- Route::get('/init/set/periods', 'Init\SetTermController@index')->name('init.set.term');
+ Route::get('/set-up/set-periods', 'Init\SetTermController@index')->name('init.set.term');
  Route::post('/init/set/term', 'Init\SetTermController@store')->name('init.set.term.store');
  Route::post('/init/set/period', 'Init\SetTermController@storePeriod')->name('init.set.period.store');
 });

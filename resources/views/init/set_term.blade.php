@@ -1,3 +1,7 @@
+@php
+    $intakes = config('schoolviser.intakes');
+@endphp
+
 @extends('admin.layouts.auth')
 
 @section('content')
@@ -48,7 +52,7 @@
           </form>
            @endif
        @else
-       <h3 class="text-capitalize fw-bold">Set the current term</h3>
+       <h5 class="text-capitalize fw-bold">Set the current {{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Term' : 'Intake'}}</h5>
        <p>You can not use schoolviser without setting the current session</p>
        <form class="row" action="{{ route('init.set.term.store') }}" method="POST">
         @csrf
@@ -61,11 +65,11 @@
           </select>
         </div>
         <div class="col-lg-6">
-          <label for="" class="font-10 text-muted">Term</label>
+          <label for="" class="font-10 text-muted">{{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Term' : 'Intake'}}</label>
           <select name="term" id="" class="form-control text-danger rounded-0">
-            <option value="1" {{ (old('term') == 1) ? 'selected' : '' }}>Term One</option>
-            <option value="2" {{ (old('term') == 2) ? 'selected' : '' }}>Term Two</option>
-            <option value="3" {{ (old('term') == 3) ? 'selected' : '' }}>Term Three</option>
+            <option value="1" {{ (old('term') == 1) ? 'selected' : '' }}>{{$intakes[1]}}</option>
+            <option value="2" {{ (old('term') == 2) ? 'selected' : '' }}>{{$intakes[2]}}</option>
+            <option value="3" {{ (old('term') == 3) ? 'selected' : '' }}>{{$intakes[3]}}</option>
           </select>
         </div>
         <div class="col-lg-6">

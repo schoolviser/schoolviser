@@ -4,7 +4,7 @@ namespace App\Console\Commands\Demo;
 
 use Illuminate\Console\Command;
 // Models
-use Delgont\Auth\Models\Role;
+use Delgont\Armor\Models\Role;
 use App\Models\Any;
 use App\Models\Employee\Employee;
 
@@ -21,7 +21,7 @@ class InstallDemoCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'demo:install';
+    protected $signature = 'schoolviser:install';
 
     /**
      * The console command description.

@@ -29,7 +29,7 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <img src="{{ asset($schoolinfo->school_logo) }}" alt="School Logo" class="img-fluid" />
+                    <img src="{{ asset($schoolinfo->school_logo ?? 'images/logo-white.svg')  }}" alt="School Logo" class="img-fluid" />
                 </div>
 
                 <div class="col-lg-12"><hr></div>
@@ -38,7 +38,7 @@
                     <p class="m-lg-0">School Name</p>
                 </div>
                 <div class="col-lg-9 mt-lg-3">
-                    <input type="text" name="school_name" value="{{ old('school_name') ?? $schoolinfo->school_name }}" class="form-control" />
+                    <input type="text" name="school_name" value="{{ old('school_name') ?? $schoolinfo->school_name }}" class="form-control" placeholder="Enter school name" />
                 </div>
 
                 <div class="col-lg-12">
@@ -70,8 +70,10 @@
             <div class="card-body">
                 <h4 class="mb-0 p-0">General</h4>
                 <div class="list-unstyled">
-                    <li><a href="{{route('settings.terms')}}" class="link rounded-1">Terms | Semesters</a></li>
+                    <li><a href="{{route('settings.terms')}}" class="link rounded-1">Terms ~ Intakes</a></li>
+                    @if (!(config('schoolviser.type') == 'tertiary'))
                     <li><a href="{{route('settings.clazzs')}}" class="link rounded-1">Classes</a></li>
+                    @endif
                     <li><a href="{{route('settings.year.groups')}}" class="link rounded-1">Year Groups</a></li>
                 </div>
             </div>

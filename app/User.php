@@ -8,9 +8,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
-use Delgont\Auth\Concerns\HasUserTypes;
-use Delgont\Auth\Concerns\ModelHasPermissions;
-use Delgont\Auth\Concerns\ModelHasSingleRole;
+use Delgont\Armor\Concerns\HasUserTypes;
+use Delgont\Armor\Concerns\ModelHasPermissions;
+use Delgont\Armor\Concerns\ModelHasSingleRole;
 
 use App\Models\Concerns\ModelHasSettings;
 

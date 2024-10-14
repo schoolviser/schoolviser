@@ -26,11 +26,7 @@
           <h4 class="mb-0 p-0">General</h4>
           <div class="list-unstyled">
             <li><a href="{{route('site.settings.school.info')}}" class=" link rounded-1">School Info</a></li>
-            @if (config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary')
-            <li><a href="{{route('settings.terms')}}" class="link rounded-1">Terms</a></li>
-            @else
-            @endif
-            <li><a href="{{route('settings.clazzs')}}" class="link rounded-1">Classes</a></li>
+            <li><a href="{{route('settings.terms')}}" class="link rounded-1">{{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Terms' : 'Intakes'}}</a></li>
             <li><a href="{{route('settings.year.groups')}}" class="link rounded-1">Year Groups</a></li>
             @if (count($modules = config('schoolviser.modules', [])) > 0)
               @foreach ($modules as $module)

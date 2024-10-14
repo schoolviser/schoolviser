@@ -16,70 +16,56 @@
 
 @section('requiredJs')
 <script src="{{ asset('chart.js/Chart.min.js') }}" defer></script>
-<script>
-  var studentsPerCourseChartLabels = @json(array_keys($studentsPerCourse));
-  var studentsPerCourseChartData = @json(array_values($studentsPerCourse));
-</script>
+
 <script src="{{ asset('js/dashboard.js') }}" defer></script>
 @endsection
 
-
 @section('content')
+    <div class="row row-1">
 
-<div class="row mb-5">
+      <!-- Students Module -->
+      <div class="col-lg-6">
+        
+        <div class="row">
 
- <div class="col-lg-6">
+          <div class="col-lg-12">
+            <div class="card mb-3" style="border-color: rgb(136,211,202);">
+              <div class="card-body row m-0 py-2 pl-1 text-uppercase" style="font: 20px;">
+                <div class="col-lg-5"><small class="mb-0 p-0" data-bs-target="#FeeParticularsTable" data-bs-toggle="collapse" style="cursor: pointer;">{{ 'Totoal Students' }}</small></div>
+                <div class="col-lg-5 text-end p-0" style="font-weight: 800;">0</div>
+                <div class="col-lg-2"></div>
+              </div>
+            </div>
+          </div>
 
-  <div class="row">
-    <div class="col-lg-4 p-0">
-      <div class="bg-light rounded-2 px-2 mx-1">
-       <small class="text-muted">Total</small>
-       <h2 class="">{{ $registrations->total }}</h2>
+          <div class="col-lg-6">
+            <div class="card mb-3" style="border-color: rgb(136,211,202);">
+              <div class="card-body row m-0 py-2 pl-1 text-uppercase" style="font: 20px;">
+                <div class="col-lg-6"><small class="mb-0 p-0" data-bs-target="#FeeParticularsTable" data-bs-toggle="collapse" style="cursor: pointer;">{{ 'Female' }}</small></div>
+                <div class="col-lg-6 text-end p-0" style="font-weight: 800;">0</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card mb-3" style="border-color: rgb(136,211,202);">
+              <div class="card-body row m-0 py-2 pl-1 text-uppercase" style="font: 20px;">
+                <div class="col-lg-6"><small class="mb-0 p-0" data-bs-target="#FeeParticularsTable" data-bs-toggle="collapse" style="cursor: pointer;">{{ 'Male' }}</small></div>
+                <div class="col-lg-6 text-end p-0" style="font-weight: 800;">4000000</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
-     </div>
-    
-     <div class="col-lg-4 px-1">
-      <div class="bg-light rounded-2 px-2">
-       <small class="text-muted">Female</small>
-      <h2>{{ $registrations->female }}</h2>
+      <!-- //Students Module -->
+
+      <div class="col-lg-6">
+        
+
       </div>
-     </div>
-    
-     <div class="col-lg-4 p-0">
-      <div class="bg-light rounded-2 px-2 mx-1">
-       <small class="text-muted">Male</small>
-       <h2>{{ $registrations->male }}</h2>
-      </div>
-     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-12 rounded-2 py-4"><canvas id="studentsPerCourseChart" height="200px"></canvas></div>
-  </div>
-
- </div>
 
 
- <!-- Col 2 -->
- <div class="col-lg-6">
-
-  <div class="row">
-  </div>
-
- </div>
-
-</div>
-
-
-<div class="row mb-5">
- <div class="col-lg-6 rounded-2 py-4 d-none"><canvas id="studentsPerYearGroupChart" height="200px"></canvas></div>
-</div>
-
-<div class="row mb-5">
- <div class="col-lg-6 rounded-2 py-4"><canvas id="studentsPerSemesterChart" height="200px"></canvas></div>
- <div class="col-lg-6 rounded-2 py-4"><canvas id="studentsPerAcademicYearChart" height="200px"></canvas></div>
-</div>
-
-
-
+    </div>
 @endsection

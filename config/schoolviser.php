@@ -16,29 +16,26 @@ return [
   * School type -> primary, secondary, tertiary
   */
 
-  'type' => 'secondary',
+  'type' => 'tertiary',
+
+  'intakes' => [
+    '1' => 'Jan Intake',
+    '2' => 'July Intake',
+    '3' => 'Configure Intage Name'
+  ],
 
   'public_storage' => 'public/storage',
 
-  /**
-   * Accounting Configuration Settings
-   */
-
-   //if false the expenses for the entire accounting period will be show
-   'termly_expenses' => true, 
-   'associate_expense_with_cheque' => false,
-   //Require cheque number when capturing expenses 
-   'require_cheque_number' => false,
 
    'modules' => [
     //'student',
     //'fee',
-    'accounting',
+    //'accounting',
     //'requisition',
     //'admission',
-    //'course',
+    'course',
     //'applicant',
-    //'user'
+    'user'
    ],
 
 

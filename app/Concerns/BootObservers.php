@@ -22,7 +22,7 @@ use App\Models\Fee\Fee;
 
 use App\Models\Fee\FeeDiscount;
 use App\Models\Fee\FeePayment;
-use Delgont\Auth\Models\Permission;
+use Delgont\Armor\Models\Permission;
 use App\Models\Requirement\Requirement;
 
 use App\Entities\Term;

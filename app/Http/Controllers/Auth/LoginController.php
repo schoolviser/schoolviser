@@ -7,7 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 
-use Delgont\Auth\Concerns\MultiAuthCredentials;
+use Delgont\Armor\Concerns\MultiAuthCredentials;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 

@@ -26,6 +26,4 @@ class SchoolInfo extends Model
         });
     }
 
-
-
 }

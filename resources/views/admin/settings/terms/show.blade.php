@@ -1,11 +1,15 @@
+@php
+    $intakes = config('schoolviser.intakes');
+@endphp
+
 @extends(config('schoolviser.admin_layout'))
 
-@section('module-page-heading', 'Update Term Details')
+@section('module-page-heading', (config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Update Term' : 'Update Intake')
 
 @section('pageheaderDescription', 'Configure your terms')
 
 @section('module-links')
-<a href="{{ route('settings.terms') }}">View Terms</a>
+<a href="{{ route('settings.terms') }}">View {{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Terms' : 'Intakes'}}</a>
 @endsection
 
 @section('content')
@@ -31,11 +35,11 @@
        </div>
      
       <div class="col-lg-4 mb-3">
-        <label for="" class="">Term</label>
+        <label for="" class="">{{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Term' : 'Intake'}}</label>
         <select name="term" id="" class="form-control text-danger rounded-0">
-          <option value="1" {{ ($term->term == 1) ? 'selected' : '' }}>Term One</option>
-          <option value="2" {{ ($term->term == 2) ? 'selected' : '' }}>Term Two</option>
-          <option value="3" {{ ($term->term == 3) ? 'selected' : '' }}>Term Three</option>
+          <option value="1" {{ ($term->term == 1) ? 'selected' : '' }}>{{$intakes[1]}}</option>
+          <option value="2" {{ ($term->term == 2) ? 'selected' : '' }}>{{$intakes[2]}}</option>
+          <option value="3" {{ ($term->term == 3) ? 'selected' : '' }}>{{$intakes[3]}}</option>
         </select>
       </div>
      

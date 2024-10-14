@@ -16,7 +16,7 @@ class CreateTermsTable extends Migration
         Schema::create('terms', function (Blueprint $table) {
             $table->id();
             $table->year('year');
-            $table->enum('term', ['1','2','3'])->default('1');
+            $table->enum('term', ['1','2','3','4'])->default('1');
             $table->date('start_date');
             $table->date('end_date');
             $table->longText('meta')->nullable();

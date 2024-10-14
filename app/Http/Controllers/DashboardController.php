@@ -13,11 +13,11 @@ use Delgont\Core\Entities\Any;
  */
 use App\Repository\TermRepository;
 
-use Modules\Student\Repositories\TermlyRegistrationRepository;
+//use Modules\Student\Repositories\TermlyRegistrationRepository;
 use App\Repositories\ClazzRepository;
 
 
-use Modules\Student\Repositories\SemesterRegistrationRepository;
+//use Modules\Student\Repositories\SemesterRegistrationRepository;
 use Modules\Course\Entities\Course;
 
 
@@ -42,9 +42,8 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-
         //Get total students of the current term
-        $registrations = (config('schoolviser.type') == 'secondary' || config('schoolviser.type') == 'primary') ? app(TermlyRegistrationRepository::class)->fromCache()->current()->getRegistrations() : app(SemesterRegistrationRepository::class)->fromCache()->current()->getRegistrations() ;
+       // $registrations = (config('schoolviser.type') == 'secondary' || config('schoolviser.type') == 'primary') ? app(TermlyRegistrationRepository::class)->fromCache()->current()->getRegistrations() : app(SemesterRegistrationRepository::class)->fromCache()->current()->getRegistrations() ;
 
         //$studentsPerCourse = (config('schoolviser.type') == 'secondary' || config('schoolviser.type') == 'primary') ? app(ClazzRepository::class)->fromCache()->current()->getTotalRegistrationsPerClazz() :  Course::withCount(['students' => function($studentQuery){
             //$studentQuery->whereHas('currentSemesterRegistration');
@@ -53,15 +52,15 @@ class DashboardController extends Controller
        // })->toArray();;
 
 
-        $registrations = new Any([
-            'total' => ($registrations) ? count($registrations) : 0,
-            'female' => ($registrations) ? $registrations->filter(function($registration){
-                return $registration->student->gender == 'female';
-            })->count() : 0,
-            'male' => ($registrations) ? $registrations->filter(function($registration){
-                return $registration->student->gender == 'male';
-            })->count() : 0
-        ]);
+        //$registrations = new Any([
+          //  'total' => 0,
+          //  'female' => ($registrations) ? $registrations->filter(function($registration){
+          //      return $registration->student->gender == 'female';
+          //  })->count() : 0,
+          //  'male' => ($registrations) ? $registrations->filter(function($registration){
+          //      return $registration->student->gender == 'male';
+          //  })->count() : 0
+      //  ]);
 
 
         //$totalTeachers = app(TeacherRepository::class)->fromCache()->count();
@@ -73,6 +72,6 @@ class DashboardController extends Controller
         $studentsPerCourse = [];
 
 
-        return view('admin.index', compact('registrations', 'studentsPerCourse'));
+        return view('admin.index');
     }
 }

@@ -1,3 +1,7 @@
+@php
+    $modules = config('schoolviser.modules', []);
+    $modulesCount = count($modules); // Get the number of modules
+@endphp
 <!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
@@ -130,9 +134,9 @@
         <section id="topBar" class="topbar-section bg-primary">
            <div class="container">
             <div class="row py-2">
-                <div class="col-lg-3">
+                <a class="col-lg-3" href="{{ route('home') }}">
                   <img src="{{ asset(option('school_logo', 'schoolviser_school_info', 'images/logo.svg')) }}" style="max-height: 40px;" alt="logo" class="img-fluid" />
-                </div>
+                </a>
                 <div class="col-lg-7">
                     <nav class="nav justify-content-end">
                         <a class="nav-link my-0 py-0"  href="{{route('site.settings')}}">
@@ -258,7 +262,7 @@
     @if ($use_custom_footer)
         @yield('footer')
     @else
-    <footer class="py-5 mt-3 ">
+    <footer class="py-5 mt-3 bg-primary">
 
         <section class="top-section bg-primary text-white">
             <div class="container">
@@ -275,7 +279,7 @@
         <section class="bottom-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 text-capitalize text-white">
                         {{ option('school_name', 'schoolviser_school_info') }}
                     </div>
                     <div class="col-lg-4"></div>
@@ -291,7 +295,6 @@
     @endif
 
 @include('admin.includes.offcanvas.user')
-
 
 </body>
 
