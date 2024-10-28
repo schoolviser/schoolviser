@@ -7,24 +7,21 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 use App\Jobs\ProcessRevenue;
 
-
 /**
  * Module Schedule Commands
  */
-use Modules\Accounting\Concerns\AccountingScheduledCommands;
-
 
 class Kernel extends ConsoleKernel
 {
-    use AccountingScheduledCommands;
     /**
      * The Artisan commands provided by your application.
      *
      * @var array
      */
     protected $commands = [
-        //
+        Commands\SyncSubjects::class,
     ];
+    
 
     /**
      * Define the application's command schedule.
@@ -46,9 +43,11 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping(15*60);
 
-        $schedule->command('update:monthly-expense-summary')->weekly();
 
-        $this->runAccountingScheduledCommands($schedule);
+         // Conditionally run accounting scheduled commands
+         if ($this->isAccountingModuleEnabled()) {
+            $this->runAccountingScheduledCommands($schedule);
+        }
 
     }
 
@@ -62,5 +61,31 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+    }
+
+
+    /**
+     * Check if the accounting module is enabled.
+     *
+     * @return bool
+     */
+    protected function isAccountingModuleEnabled()
+    {
+        // Check if the accounting service provider exists in the configuration
+        return in_array('Modules\\Accounting\\AccountingServiceProvider', config('app.providers', []));
+    }
+
+    /**
+     * Define accounting scheduled commands.
+     *
+     * @param Schedule $schedule
+     * @return void
+     */
+    protected function runAccountingScheduledCommands(Schedule $schedule)
+    {
+        // Schedule accounting commands here
+        $schedule->command('update:expense-summary')->everyFiveMinutes()->withoutOverlapping();
+        $schedule->command('update:department-expense-summary')->everyFiveMinutes()->withoutOverlapping();
+        $schedule->command('update:monthly-expense-summary')->everyFiveMinutes()->withoutOverlapping();
     }
 }

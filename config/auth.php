@@ -2,6 +2,7 @@
 
 return [
 
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -17,6 +18,8 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -49,9 +52,9 @@ return [
         ],
 
         'applicant' => [
-        'driver' => 'session',
-        'provider' => 'applicants',
-    ],
+            'driver' => 'session',
+            'provider' => 'applicants',
+        ],
     ],
 
     /*

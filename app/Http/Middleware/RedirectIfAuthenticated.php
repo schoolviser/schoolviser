@@ -21,7 +21,7 @@ class RedirectIfAuthenticated
     {
         if (Auth::guard($guard)->check()) {
             $userType = Auth::guard()->user()->user_type;
-            if ($userType) {
+            if ($userType == 'Modules\User\Entities\Master') {
                 //redirect basing on the usertype
                 return redirect(RouteServiceProvider::HOME);
             }

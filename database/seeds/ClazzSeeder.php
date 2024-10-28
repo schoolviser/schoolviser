@@ -2,8 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Clazz;
-use App\Course;
+use App\Entities\Clazz;
 
 class ClazzSeeder extends Seeder
 {

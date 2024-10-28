@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Term;
+use App\Entities\Term;
 
 class TermSeeder extends Seeder
 {

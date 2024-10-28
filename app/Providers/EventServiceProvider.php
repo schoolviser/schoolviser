@@ -8,8 +8,6 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Events\Login;
 
-use App\Events\AssetCheckedOut;
-use App\Events\AssetCheckIn;
 
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 
@@ -34,12 +32,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         Login::class => [
             LoginListener::class
-        ],
-        AssetCheckedOut::class => [
-            MarkAssetAsCheckedOut::class
-        ],
-        AssetCheckIn::class => [
-            AssetCheckedIn::class
         ]
     ];
 

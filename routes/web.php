@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth','term']], function(){
+Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
 
  Route::get('/', 'DashboardController')->name('home');
 
@@ -35,6 +35,13 @@ Route::group(['middleware' => ['auth','term']], function(){
  Route::get('/site-settings', 'SiteSettingsController@index')->middleware(['usertype:master'])->name('site.settings');
  Route::get('/site-settings/school-info', 'SchoolInfoController@index')->middleware(['usertype:master'])->name('site.settings.school.info');
  Route::post('/site-settings/school-info/update', 'SchoolInfoController@update')->middleware(['usertype:master'])->name('site.settings.school.info.update');
+
+ Route::get('/site-settings/subjects', 'SubjectController@index')->middleware(['usertype:master'])->name('site.settings.subjects');
+ Route::get('/site-settings/subjects/show/{id}', 'SubjectController@show')->middleware(['usertype:master'])->name('site.settings.subjects.show');
+ Route::get('/site-settings/subjects/edit/{id}', 'SubjectController@edit')->middleware(['usertype:master'])->name('site.settings.subjects.edit');
+ Route::post('/site-settings/subjects/update/{id}', 'SubjectController@update')->middleware(['usertype:master'])->name('site.settings.subjects.update');
+ Route::post('/site-settings/subjects/store', 'SubjectController@store')->middleware(['usertype:master'])->name('site.settings.subjects.store');
+
 
 });
 

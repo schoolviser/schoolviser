@@ -32,12 +32,18 @@ class LoginListener
      */
     public function handle(Login $event)
     {
-        return;
+        //return;
 
         if ($event->user) {
             $user = $event->user;
             $ip = $this->request->ip();
             $userAgent = $this->request->userAgent();
+
+             // Update the user's last_ip column with the current IP address
+             $user->update([
+                'last_ip' => $ip,
+            ]);
+            
             $known = $user->authentications()->whereIpAddress($ip)->whereUserAgent($userAgent)->whereLoginSuccessful(true)->first();
             $newUser = Carbon::parse($user->{$user->getCreatedAtColumn()})->diffInMinutes(Carbon::now()) < 1;
 

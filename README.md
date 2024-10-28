@@ -25,13 +25,20 @@
 
   ```php
      'modules' => [
-    //'student',
+    'student',
     //'fee',
-    //'accounting',
+    'accounting',
     //'requisition',
-    //'admission',
+    'admission',
     //'course',
     //'applicant',
     'user'
    ],
    ```
+
+
+### Console Commands
+
+```php
+php artisan subjects:sync --O
+```

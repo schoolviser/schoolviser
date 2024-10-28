@@ -20,20 +20,35 @@
 
   <div class="col-lg-12">
     <div class="card">
-      <div class="card-body row">
+      <div class="card-body">
 
-        <div class="col-lg-4">
-          <h4 class="mb-0 p-0">General</h4>
-          <div class="list-unstyled">
-            <li><a href="{{route('site.settings.school.info')}}" class=" link rounded-1">School Info</a></li>
-            <li><a href="{{route('settings.terms')}}" class="link rounded-1">{{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Terms' : 'Intakes'}}</a></li>
-            <li><a href="{{route('settings.year.groups')}}" class="link rounded-1">Year Groups</a></li>
-            @if (count($modules = config('schoolviser.modules', [])) > 0)
-              @foreach ($modules as $module)
-                  @includeIf($module.'::includes.settings.general', ['some' => 'data'])
-              @endforeach
-            @endif
+        <!-- General Settings -->
+        <div class="row">
+          <div class="col-lg-3 col-sm-12 col-md-3"><h4>General</h4></div>
+          <div class="col-md-9 col-lg-9">
+            <ul class="list-unstyled">
+              <li><a href="{{route('site.settings.school.info')}}" class=" link rounded-1">School Info</a></li>
+              <li><a href="{{route('settings.terms')}}" class="link rounded-1">{{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Terms' : 'Intakes'}}</a></li>
+              <li><a href="{{route('settings.year.groups')}}" class="link rounded-1">Year Groups</a></li>
+              @if (count($modules = config('schoolviser.modules', [])) > 0)
+                @foreach ($modules as $module)
+                    @includeIf($module.'::includes.settings.general', ['some' => 'data'])
+                @endforeach
+              @endif
+            </ul>
           </div>
+          <div class="col-lg-12"><hr /></div>
+        </div>
+
+        <!-- Subjects -->
+        <div class="row">
+          <div class="col-lg-3 col-sm-12 col-md-3"><h4><a href="{{route('site.settings.subjects')}}" class=" link rounded-1">Manage Subjects</a></h4></div>
+          <div class=" col-md-9 col-lg-9">
+            <ul class="list-unstyled">
+              <li><a href="{{route('site.settings.subjects')}}" class=" link rounded-1">Manage Subjects</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-12"><hr /></div>
         </div>
 
         @if (count($modules = config('schoolviser.modules', [])) > 0)
@@ -43,10 +58,15 @@
         @else
           hello
         @endif
-
+  
       </div>
     </div>
   </div>
+
+
+
+
+
 
 
 </div>

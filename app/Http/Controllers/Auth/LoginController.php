@@ -11,6 +11,8 @@ use Delgont\Armor\Concerns\MultiAuthCredentials;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+
 
 class LoginController extends Controller
 {
@@ -27,11 +29,11 @@ class LoginController extends Controller
     use AuthenticatesUsers, MultiAuthCredentials, ThrottlesLogins;
 
     /**
-     * Where to redirect users after login.
+     * Where to redirect users after login - You can redirect to users default home page
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo;
 
     /**
      * Create a new controller instance. 
@@ -56,4 +58,6 @@ class LoginController extends Controller
     {
         return 'username_email';
     }
+
+    
 }

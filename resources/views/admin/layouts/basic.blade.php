@@ -181,11 +181,31 @@
                         $modulesCount = count($modules); // Get the number of modules
                     @endphp
 
+                    <div class="above-sidebar">
+                        @yield('above-sidebar')
+                    </div>
+
                     @switch(true)
                         @case($modulesCount > 1)
-                            <nav class="docs-sidebar mb-5" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
+                            <nav class="sidebar mb-5 " data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
                                 <ul class="nav">
                                     <li><a href="{{ route('home') }}">Dashboard</a></li>
+
+                                    <!-- Student Module Links -->
+                                    @if (in_array(Modules\Student\Providers\StudentServiceProvider::class, config('app.providers', [])))
+                                        @includeIf('student::includes.navitems.main')
+                                    @endif
+
+                                    <!-- Accounting Module Links -->
+                                    @if (in_array(Modules\Accounting\Providers\AccountingServiceProvider::class, config('app.providers', [])))
+                                        @includeIf('accounting::includes.navitems.main')
+                                    @endif
+
+                                     <!-- Admission Module Links -->
+                                     @if (in_array(Modules\Admission\Providers\AdmissionServiceProvider::class, config('app.providers', [])))
+                                        @includeIf('admission::includes.navitems.main')
+                                    @endif
+
                                     
                                     @foreach ($modules as $module)
                                         @includeIf($module.'::includes.navitems.main', ['some' => 'data'])

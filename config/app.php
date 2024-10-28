@@ -193,7 +193,7 @@ return [
         //Modules\Fee\Providers\FeeServiceProvider::class, // Depends On Student, Course, User, Accounting
         
         //Modules\Admission\Providers\AdmissionServiceProvider::class, // Depends On Course
-        //Modules\Applicant\Providers\ApplicantServiceProvider::class, //--
+        //Modules\Applicant\Providers\ApplicantServiceProvider::class, // Depends On Admission, Course
 
         //Modules\Vendor\Providers\VendorServiceProvider::class,
         //Modules\Requisition\Providers\RequisitionServiceProvider::class,
