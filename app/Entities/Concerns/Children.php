@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Concerns;
+namespace App\Entities\Concerns;
 
 trait Children {
 

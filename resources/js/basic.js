@@ -3,20 +3,6 @@ require('./bootstrap');
 (function($) {
   "use strict";
 
-  $('body').scrollspy({
-      target: '.docs-sidebar'
-  });
-
-  $('[data-spy="scroll"]').each(function () {
-    var $spy = $(this).scrollspy('refresh')
-  })
-
-
-  $('.docs-sidebar>nav>li>a').click(function() {
-      $('.docs-sidebar>nav>li').removeClass('active');
-      $(this).parent().addClass('active');
-  });
-
   $('.dev').click(function(e) {
     e.preventDefault();
     alert('The functionality you are trying to access is still under development ....!')
@@ -70,19 +56,58 @@ require('./bootstrap');
     $(target).collapse('show');
   });
 
-  // When a single parent without children is clicked, collapse other parents
-  $('a:not([data-bs-toggle="collapse"])').on('click', function () {
-      // Collapse all parent items with children
-      $('.collapse').collapse('hide');
+    // When a single parent without children is clicked, collapse other parents
+    $('a:not([data-bs-toggle="collapse"])').on('click', function () {
+        // Collapse all parent items with children
+        $('.collapse').collapse('hide');
+    });
+
+    $('.offcanvas').on('show.bs.offcanvas', function () {
+        $('body').addClass('modal-open');
+    });
+
+  $('.offcanvas').on('hide.bs.offcanvas', function () {
+      $('body').removeClass('modal-open');
   });
 
-  $('.offcanvas').on('show.bs.offcanvas', function () {
-      $('body').addClass('modal-open');
-  });
 
-$('.offcanvas').on('hide.bs.offcanvas', function () {
-    $('body').removeClass('modal-open');
-});
+  //Notifications
+  const baseUrl = $('meta[name="base-url"]').attr('content');
+
+  if($('#notificationsCounterHolder').length){
+
+    // Function to fetch unread notifications count
+    function fetchNotificationsCount() {
+        $.ajax({
+            url: `${baseUrl}/account/notifications/unread`, // Use the correct endpoint
+            method: 'GET',
+            success: function(response) {
+                // Count unread notifications
+                const unreadCount = response.length;
+                
+                // Update the counter if there are unread notifications
+                if (unreadCount > 0) {
+                    $('#notificationsCounterHolder').text(unreadCount);
+                } else {
+                    $('#notificationsCounterHolder').text('');
+                }
+            },
+            error: function(xhr) {
+                console.log("Failed to fetch notifications:", xhr);
+            }
+        });
+    }
+
+    // Fetch notifications count on page load
+    //fetchNotificationsCount();
+
+    // Optional: Refresh notifications count every minute
+    //setInterval(fetchNotificationsCount, 60000); // 60000ms = 1 minute
+  }
+    
+  
+
+
 
 
 })(jQuery);

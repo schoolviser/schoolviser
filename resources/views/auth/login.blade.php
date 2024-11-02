@@ -4,14 +4,18 @@
     
 @section('content')
 <div class="authentication-inner row">
+
+  <div class="col-lg-12 text-center p-3">
+    <a href="https://schoolviser.com" class="app-brand-link gap-2">
+      <img src="{{ asset(option('school_logo','schoolviser_school_info', 'images/logo-white.svg')) }}" class="img-fluid" alt="">
+    </a>
+  </div>
   <div class="col-lg-4 offset-lg-4 py-1">
-    <div class="card shadow-md">
+    <div class="card shadow-md rounded-3">
       <div class="card-body">
         <!-- Logo -->
-        <div class="text-start pb-4">
-          <a href="https://schoolviser.com" class="app-brand-link gap-2">
-            <img src="{{ asset(option('school_logo','schoolviser_school_info', 'images/logo-white.svg')) }}" class="img-fluid" alt="">
-          </a>
+        <div class="pb-4">
+          
         </div>
        
         <form id="formAuthentication" class="mb-3" method="POST" action="{{ route('login') }}">
@@ -34,7 +38,9 @@
             </div>
             <div class="input-group input-group-merge">
               <input type="password" name="password" id="password"  placeholder="Password" ="{{ old('password') }}" class="form-control @error('password') is-invalid @enderror"/>
-              <span class="input-group-text cursor-pointer" id="togglePassword"><i class="fa fa-eye"></i></span>
+              <span class="input-group-text cursor-pointer" id="togglePassword">
+                <img src="{{asset('images/visibility_24dp_666666_FILL0_wght400_GRAD0_opsz24.svg')}}" alt="">
+              </span>
               @error('password')
                   <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>

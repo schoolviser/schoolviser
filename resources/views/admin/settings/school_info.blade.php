@@ -74,7 +74,6 @@
                     @if (!(config('schoolviser.type') == 'tertiary'))
                     <li><a href="{{route('settings.clazzs')}}" class="link rounded-1">Classes</a></li>
                     @endif
-                    <li><a href="{{route('settings.year.groups')}}" class="link rounded-1">Year Groups</a></li>
                 </div>
             </div>
         </div>

@@ -54,6 +54,9 @@ class LoginController extends Controller
         return $this->multiAuthCredentials($request);
     }
 
+
+   
+
     public function username()
     {
         return 'username_email';

@@ -26,6 +26,9 @@ use App\Entities\Term;
 
 use App\Jobs\PopulateStudentSemesterTotal;
 
+use Illuminate\Support\Facades\Cache;
+
+
 
 class DashboardController extends Controller
 {
@@ -70,6 +73,8 @@ class DashboardController extends Controller
         //$expenses = ExpenseTransaction::current('term')->get()->sum('amount');
 
         $studentsPerCourse = [];
+
+      
 
 
         return view('admin.index');

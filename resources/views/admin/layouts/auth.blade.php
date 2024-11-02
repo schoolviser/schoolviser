@@ -9,10 +9,8 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
 
-    <link rel="stylesheet" type="text/css" href="{{ asset('fonts/font-awesome-4.3.0/css/font-awesome.min.css') }}">
-    
     <!-- Layout styles -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/auth.css') }}" />
 
     <!-- Page Level Css -->
     @yield('requiredCss')
@@ -20,28 +18,30 @@
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
 
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/auth.js') }}" defer></script>
     
     <!-- Page Level Js -->
     @yield('requiredJs')
     
   </head>
   <body>
-    <div class="container-scroller">
-     
-      <div class="container page-body-wrapper ">
-        
-        <div class="main-panel ">
-          <div class="content-wrapper border border-light">
-            @yield('content')
-          </div>
-          
-        </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
 
-    </div>
+    <section>
+      @yield('content')
+    </section>
+
+    <footer class="fixed-bottom py-3" style="border-top: 1px solid">
+      <div class="caontainer">
+        <div class="row">
+          <div class="col-lg-6 text-lg-end">
+            <p>© {{ now()->year }} <a href="https://stephenokello.com">Schoolviser</a> All Rights Reserved. {{config('schoolviser.version')}}</p>
+          </div>
+          <div class="col-lg-6">
+            <p>Developed and maintained by <a href="https://stephenokello.com">Stephen Okello</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
    
   </body>
 </html>

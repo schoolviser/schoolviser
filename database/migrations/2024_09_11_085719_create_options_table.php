@@ -20,6 +20,15 @@ return new class extends Migration
                 $table->timestamps();
                 $table->unique(['key','group'], 'unique_settings');
             });
+        }else{
+            // Check if the column does not exist, then add it
+            if (!Schema::hasColumn('options', 'group')) {
+                Schema::table('options', function (Blueprint $table) {
+                    $table->string('group')->nullable(); // Change as needed
+                    $table->unique(['key','group'], 'unique_group_option');
+
+                });
+            }
         }
        
     }

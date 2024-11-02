@@ -47,10 +47,10 @@ Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
 
 
 Route::group(['middleware' => ['auth','usertype:master']], function(){
- Route::get('/init', 'Init\InitController')->name('init');
- Route::get('/set-up/set-periods', 'Init\SetTermController@index')->name('init.set.term');
- Route::post('/init/set/term', 'Init\SetTermController@store')->name('init.set.term.store');
- Route::post('/init/set/period', 'Init\SetTermController@storePeriod')->name('init.set.period.store');
+ Route::get('/init', 'Init\InitController')->name('init')->middleware('usertype:master');
+ Route::get('/set-up/set-periods', 'Init\SetTermController@index')->name('init.set.term')->middleware('usertype:master');
+ Route::post('/init/set/term', 'Init\SetTermController@store')->name('init.set.term.store')->middleware('usertype:master');
+ Route::post('/init/set/period', 'Init\SetTermController@storePeriod')->name('init.set.period.store')->middleware('usertype:master');
 });
 
 

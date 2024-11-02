@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Concerns;
+namespace App\Entities\Concerns;
 
 use App\Scopes\DisposableScope;
 use \Carbon\Carbon;

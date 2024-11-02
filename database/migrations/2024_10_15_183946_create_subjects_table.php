@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('meta')->nullable();
 
             $table->unique(['name', 'level'], 'unique_subject_level');
-            $table->unique(['short_code', 'level'], 'unique_subject_level');
+            $table->unique(['short_code', 'level'], 'unique_subject_level_code');
 
             $table->timestamps();
         });

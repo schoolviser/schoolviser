@@ -9,7 +9,9 @@ return [
     */
 
     'roles' => [
-        'admin', 'teacher', 'accountant', 'warden'
+        'admin' => 'Manages the overall system configuration, user management, and access levels.',
+        'Headd Teacher' => 'Oversees the school’s operations, academic programs, and student discipline.',
+        'Academic Registrar' => 'Manages academic-related activities, including curriculum and scheduling.'
     ],
 
 
@@ -132,6 +134,7 @@ return [
             'Government Grants',
             'Other Revenue'
         ],
+
         'expenses' => [
             'Academic Costs>:UCE,UACE||ICT Practical Exams',
             'Public Relation>Radio Announcements|Office Airtime|Scholarships|Advertisements|',
@@ -150,6 +153,5 @@ return [
             'Light, Power & Heating',
             'Students Entertainment>Dstv|Music, Dance & Drama|Sports|Other Costs In Relation to entertainment'
         ]
-
     
 ];

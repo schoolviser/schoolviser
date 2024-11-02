@@ -30,48 +30,50 @@
 <div class="col-lg-12">
   <div class="row">
     <div class="col-12">
-      <div class="table">
-        <table class="table table-hover table-bordered table-striped" id="studentsTables">
-          <thead class="">
-            <th class="">SN</th>
-              <th>Year</th>
-              <th>{{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Terms' : 'Intakes'}}</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Next {{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Term' : 'Intake'}}</th>
-              <th class="text-center">Actions</th>
-          </thead>
-          <tbody>
-              @foreach ($terms as $term)
-                @if (term()->term == $term->term && term()->year == $term->year)
-                <tr class="bg-primary">
-                  <td>{{ $loop->index + 1 }}</td>
-                  <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $term->year }}</small></td>
-                  <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $intakes[$term->term] }}</small></td>
-                  <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $term->start_date }}</small></td>
-                  <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $term->end_date }}</small></td>
-                  <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $term->next_term_start_date }}</small></td>
-                  <td>
-                    <a href="{{route('settings.terms.show', ['id' => $term->id])}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
-                    <a href="{{route('settings.terms.show', ['id' => $term->id])}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
-                  </td>
-    
-                </tr>
-                @else
-                <tr class="">
-                  <td>{{ $loop->index + 1 }}</td>
-                  <td><small class="text-capitalize">{{ $term->year }}</small></td>
-                  <td><small class="text-capitalize ">{{ $intakes[$term->term] }}</small></td>
-                  <td><small class="text-capitalize">{{ $term->start_date }}</small></td>
-                  <td><small class="text-capitalize">{{ $term->end_date }}</small></td>
-                  <td><small class="text-capitalize">{{ $term->next_term_start_date }}</small></td>
-                  <td></td>
-                </tr>
-                @endif
-               
-              @endforeach
-          </tbody>
-        </table>
+      <div class="card">
+        <div class="table-responsive card-body">
+          <table class="table table-hover table-striped">
+            <thead class="">
+              <th class="">SN</th>
+                <th>Year</th>
+                <th>{{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Terms' : 'Intakes'}}</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Next {{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Term' : 'Intake'}}</th>
+                <th class="text-center">Actions</th>
+            </thead>
+            <tbody>
+                @foreach ($terms as $term)
+                  @if (term()->term == $term->term && term()->year == $term->year)
+                  <tr class="bg-primary">
+                    <td>{{ $loop->index + 1 }}</td>
+                    <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $term->year }}</small></td>
+                    <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $intakes[$term->term] }}</small></td>
+                    <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $term->start_date }}</small></td>
+                    <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $term->end_date }}</small></td>
+                    <td><small class="text-capitalize bg-warning px-2 py-1 rounded-5 font-12 fst-italic fw-bold">{{ $term->next_term_start_date }}</small></td>
+                    <td>
+                      <a href="{{route('settings.terms.show', ['id' => $term->id])}}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
+                      <a href="{{route('settings.terms.show', ['id' => $term->id])}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                    </td>
+      
+                  </tr>
+                  @else
+                  <tr class="">
+                    <td>{{ $loop->index + 1 }}</td>
+                    <td><small class="text-capitalize">{{ $term->year }}</small></td>
+                    <td><small class="text-capitalize ">{{ $intakes[$term->term] }}</small></td>
+                    <td><small class="text-capitalize">{{ $term->start_date }}</small></td>
+                    <td><small class="text-capitalize">{{ $term->end_date }}</small></td>
+                    <td><small class="text-capitalize">{{ $term->next_term_start_date }}</small></td>
+                    <td></td>
+                  </tr>
+                  @endif
+                 
+                @endforeach
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="col-lg-12 my-2">

@@ -25,8 +25,11 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
 
+    <!-- Fonts -->
+    @if (false)
+    <link href="https://fonts.cdnfonts.com/css/open-dyslexic" rel="stylesheet">
+    @endif                                
     <!-- Base URL -->
     <meta name="base-url" content="{{ url('/') }}" />
 
@@ -134,19 +137,27 @@
         <section id="topBar" class="topbar-section bg-primary">
            <div class="container">
             <div class="row py-2">
-                <a class="col-lg-3" href="{{ route('home') }}">
-                  <img src="{{ asset(option('school_logo', 'schoolviser_school_info', 'images/logo.svg')) }}" style="max-height: 40px;" alt="logo" class="img-fluid" />
+                <a class="col-lg-3 d-flex align-items-center" href="{{ route('home') }}">
+                  <img src="{{ asset('images/logo.svg') }}" style="max-height: 40px; margin-right: 2px" alt="logo" class="img-fluid" />
+                  <span class="text-small">{{config('schoolviser.version')}}</span>
                 </a>
                 <div class="col-lg-7">
                     <nav class="nav justify-content-end">
-                        <a class="nav-link my-0 py-0"  href="{{route('site.settings')}}">
-                            <i class="fa fa-cog"></i> Site Settings
-                        </a>
 
-                        @if (in_array('accounting', config('schoolviser.modules')))
+
+                        <!-- Site Settings -->
+                        <a class="nav-link my-0 py-0 d-flex align-items-center" href="{{ route('site.settings') }}">
+                            <img src="{{ asset('images/settings_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px; margin-right: 2px;">
+                            Site Settings
+                        </a>
+                        
+                        <!-- Accounting Create New Links --> 
+                        @if (in_array(Modules\Accounting\Providers\AccountingServiceProvider::class, config('app.providers')))
                         <div class="dropdown ml-5">
-                            <a class="nav-link my-0 py-0" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="fa fa-plus"></i> New
+                           
+                            <a class="nav-link my-0 py-0 d-flex align-items-center" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="{{ asset('images/add_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px; margin-right: 2px;">
+                                New
                             </a>
                             <div class="dropdown-menu" aria-labelledby="messageDropdown">
                                 <a href="{{route('accounting.expenses.record.payment')}}" class="text-muted font-14 dropdown-item">Expense Payment</a>
@@ -175,7 +186,7 @@
         <section>
             <div class="container-xl container-lg">
                 <div class="row">
-                 <div class="col-md-3" style="padding-top: 25px;">
+                 <div class="col-md-3 col-lg-3" style="padding-top: 25px;">
                     @php
                         $modules = config('schoolviser.modules', []);
                         $modulesCount = count($modules); // Get the number of modules
@@ -185,76 +196,45 @@
                         @yield('above-sidebar')
                     </div>
 
-                    @switch(true)
-                        @case($modulesCount > 1)
-                            <nav class="sidebar mb-5 " data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
-                                <ul class="nav">
-                                    <li><a href="{{ route('home') }}">Dashboard</a></li>
+                    <nav class="sidebar mb-5 mt-lg-5" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
+                        <ul class="nav">
+                            <li>
+                                <a href="{{ route('home') }}">
+                                    Dashboard
+                                </a>
+                            </li>
 
-                                    <!-- Student Module Links -->
-                                    @if (in_array(Modules\Student\Providers\StudentServiceProvider::class, config('app.providers', [])))
-                                        @includeIf('student::includes.navitems.main')
-                                    @endif
+                            <!-- Student Module Links -->
+                            @if (in_array(Modules\Student\Providers\StudentServiceProvider::class, config('app.providers', [])))
+                                @includeIf('student::includes.navitems.main')
+                            @endif
 
-                                    <!-- Accounting Module Links -->
-                                    @if (in_array(Modules\Accounting\Providers\AccountingServiceProvider::class, config('app.providers', [])))
-                                        @includeIf('accounting::includes.navitems.main')
-                                    @endif
+                            <!-- Accounting Module Links -->
+                            @if (in_array(Modules\Accounting\Providers\AccountingServiceProvider::class, config('app.providers', [])))
+                                @includeIf('accounting::includes.navitems.main')
+                            @endif
 
-                                     <!-- Admission Module Links -->
-                                     @if (in_array(Modules\Admission\Providers\AdmissionServiceProvider::class, config('app.providers', [])))
-                                        @includeIf('admission::includes.navitems.main')
-                                    @endif
+                             <!-- Admission Module Links -->
+                             @if (in_array(Modules\Admission\Providers\AdmissionServiceProvider::class, config('app.providers', [])))
+                                @includeIf('admission::includes.navitems.main')
+                            @endif
 
-                                    
-                                    @foreach ($modules as $module)
-                                        @includeIf($module.'::includes.navitems.main', ['some' => 'data'])
-                                    @endforeach
-                                    
-                                    <li class="">
-                                    <a href="#contentId" data-bs-toggle="collapse" aria-expanded="false" aria-controls="contentId">Reports and Analyticals</a>
-                                        <ul class="nav collapse" id="contentId">
-                                            <li><a href="#line7_1">General Options</a></li>
-                                            <li><a href="#line7_2">Style Options</a></li>
-                                            <li><a href="#line7_3">Header Options</a></li>
-                                            <li><a href="#line7_4">Font Options</a></li>
-                                            <li><a href="#line7_5">Slider Options</a></li>
-                                            <li><a href="#line7_6">Page Options</a></li>
-                                            <li><a href="#line7_7">Import & Export</a></li>
-                                        </ul>
-                                    </li>
-                                
-                                    <li class="w-100">
-                                        <a class="" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            <span class="">{{ __('Logout') }}</span>
-                                        </a>
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
-                                    </li>
-                                </ul>
-                            </nav >
-                            @break
-
-                        @case($modulesCount === 1)
-                            @includeIf($modules['0'].'::includes.sidebar', ['some' => 'data'])
-                            @break
-
-                        @case($modulesCount === 0)
-                            {{-- Handle the case where the modules array is empty --}}
-                            @break
-
-                        @default
-                            {{-- Handle any other case --}}
-                    @endswitch
+                            
+                            <!-- Other Modules -->
+                            @foreach ($modules as $module)
+                                @includeIf($module.'::includes.navitems.main', ['some' => 'data'])
+                            @endforeach
+                            
+                        </ul>
+                    </nav >
                     <div class="below-sidebar">
                         @yield('below-sidebar')
                     </div>
                  </div>
-                 <div class="col-md-9" style="padding-top: 30px;">
+                 <div class="col-md-9 col-lg-9" style="padding-top: 30px;">
                    <div class="row p-0">
                      <div class="col-lg-6">
-                        <h2 class="text-capitalize p-0 m-0" style="font-weight: 500;">@yield('module-page-heading')</h2>
+                        <h2 class="text-capitalize p-0 m-0" style="font-weight: 700;">@yield('module-page-heading')</h2>
                      </div>
                      <div class="col-lg-6 text-lg-end module-links module-quick-links">
                        @yield('module-links')
@@ -282,13 +262,12 @@
     @if ($use_custom_footer)
         @yield('footer')
     @else
-    <footer class="py-5 mt-3 bg-primary">
+    <footer class="py-5 mt-3">
 
-        <section class="top-section bg-primary text-white">
+        <section class="top-section text-white">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        
                     </div>
                     <div class="col-lg-3"></div>
                     <div class="col-lg-8"></div>
@@ -304,7 +283,6 @@
                     </div>
                     <div class="col-lg-4"></div>
                     <div class="col-lg-4 text-lg-end">
-                        Set School Social Links
                     </div>
                 </div>
             </div>

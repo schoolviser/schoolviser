@@ -4,10 +4,12 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use App\Master;
 
-use Delgont\Auth\Models\Role;
-use App\User;
+use Delgont\Armor\Models\Role;
+use Delgont\Armor\Models\Permission;
+
+use Modules\User\Entities\User;
+use Modules\User\Entities\Master;
 
 class MasterInitCommand extends Command
 {
@@ -42,7 +44,7 @@ class MasterInitCommand extends Command
      */
     public function handle()
     {
-        $master_role = Role::updateOrCreate(['name' => 'master'], ['name' => 'master']);
+        $master_role = Role::firstOrCreate(['name' => 'master'], ['name' => 'master']);
 
         $master = Master::create([
             'first_name' => 'Justine',
@@ -62,6 +64,16 @@ class MasterInitCommand extends Command
             'password' => bcrypt('secrete'),
             'role_id' => $master_role->id
         ]);
+
+        $permissions = Permission::all();
+
+        $user = User::whereName('stephen')->first();
+
+        if($user){
+            $user->givePermissionTo($permissions);
+            $master_role->givePermissionTo($permissions);
+        }
+
 
 
         $this->info('Master account has been created successfully......');

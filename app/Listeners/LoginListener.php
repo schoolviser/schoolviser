@@ -10,6 +10,12 @@ use Illuminate\Support\Carbon;
 
 use Illuminate\Auth\Events\Login;
 
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+
+//Notifications
+use Modules\User\Notifications\AccountAccessedFromDifferentIP;
+
 class LoginListener
 {
     /**
@@ -39,13 +45,21 @@ class LoginListener
             $ip = $this->request->ip();
             $userAgent = $this->request->userAgent();
 
-             // Update the user's last_ip column with the current IP address
-             $user->update([
-                'last_ip' => $ip,
-            ]);
+            
             
             $known = $user->authentications()->whereIpAddress($ip)->whereUserAgent($userAgent)->whereLoginSuccessful(true)->first();
+
+            //Notify the User for unknow IP
+            if($ip !== $user->last_ip){
+                $user->notify(new AccountAccessedFromDifferentIP($ip));
+            }
+            
             $newUser = Carbon::parse($user->{$user->getCreatedAtColumn()})->diffInMinutes(Carbon::now()) < 1;
+
+            // Update the user's last_ip column with the current IP address
+            $user->update([
+                'last_ip' => $ip,
+            ]);
 
             $log = $user->authentications()->create([
                 'ip_address' => $ip,
@@ -54,6 +68,9 @@ class LoginListener
                 'login_successful' => true,
                 'location' => null,
             ]);
+            
+
+
         }
     }
 }

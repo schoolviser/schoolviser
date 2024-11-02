@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Repositories\SchoolInfoRepository;
 
-use App\Entities\Option;
+use Delgont\Core\Entities\Option;
 
 class SchoolInfoController extends Controller
 {

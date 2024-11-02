@@ -30,11 +30,6 @@ return [
 
 
    'modules' => [
-    //'fee',
-    //'requisition',
-    'course',
-    'applicant',
-    'user'
    ],
 
    /**
@@ -135,6 +130,8 @@ return [
    ],
 
 
-   'package' => 'premium'
+   'package' => 'premium',
+
+   'version' => 'v0.7.0'
 
 ];

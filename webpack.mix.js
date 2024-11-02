@@ -21,5 +21,7 @@ const mix = require('laravel-mix');
     //.copy('node_modules/jquery-ui/dist/jquery-ui.min.js', 'public/js');
 
 mix.js('resources/js/basic.js', 'public/js')
-   .sass('resources/sass/basic.scss', 'public/css');
+   .js('resources/js/auth.js', 'public/js')
+   .sass('resources/sass/basic.scss', 'public/css')
+   .sass('resources/sass/auth.scss', 'public/css');
   

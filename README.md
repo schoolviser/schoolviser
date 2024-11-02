@@ -1,7 +1,14 @@
 <p align="left"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/schoolviser/art/main/site/logo.svg" width="400"></a></p>
 
 
-### Configuration Guide
+
+<ul>
+  <li><a href="#config">Confi</a></li>
+  <li><a href="#artisan-commands">Artisan Commands</a></li>
+
+</ul>
+
+<h2 id="config">Configuration</h2>
 
 ```php
 'school_name' => 'Delgont Primary School',
@@ -37,7 +44,8 @@
    ```
 
 
-### Console Commands
+<h2 id="artisan-commands">Artisan Commands</h2>
+
 
 ```php
 php artisan subjects:sync --O

@@ -51,7 +51,7 @@ if(!function_exists('setting')){
 
 //returns options of same group
 if(!function_exists('settings')){
-    function settins($group, $object, $default = null){
+    function settings($group, $object, $default = null){
         return app(SettingRepository::class)->fromCache()->ofGroup($group, $object, $default);
     }
 }
