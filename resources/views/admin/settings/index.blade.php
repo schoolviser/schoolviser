@@ -50,27 +50,13 @@
           <div class="col-lg-12"><hr /></div>
         </div>
 
-        <!-- Admissions Module Settings -->
-        @if (in_array(Modules\Admission\Providers\AdmissionServiceProvider::class, config('app.providers')))
-        <div class="row">
-          <div class="col-lg-3 col-sm-12 col-md-3"><h4 class="fw-bold"><a href="" class=" link rounded-1">Admissions</a></h4></div>
-          <div class=" col-md-9 col-lg-9">
-            <ul class="list-unstyled">
-              <li><a href="" class=" link rounded-1">Admissions</a></li>
-              <li><a href="" class=" link rounded-1">Notifications</a></li>
-              <li><a href="{{route('admissions.settings.application.portal')}}" class=" link rounded-1">Application Portal</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-12"><hr /></div>
-        </div>
-        @endif
 
         @if (count($modules = config('schoolviser.modules', [])) > 0)
           @foreach ($modules as $module)
               @includeIf($module.'::includes.settings.main', ['some' => 'data'])
           @endforeach
         @else
-          hello
+          <p>Module Settings</p>
         @endif
   
       </div>

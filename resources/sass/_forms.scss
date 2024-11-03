@@ -1,12 +1,17 @@
 .form-control {
- border: 1px solid #e4e9f0;
- font-family: "Open Sans", sans-serif;
- font-weight: 400;
- font-size: 0.8125rem;
- &:focus {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  border: 1px solid #007bff;
+  box-shadow: none;
+  transition: border-color 0.3s ease-in-out;
+  &:focus {
    background-color: #ffffff;
    color: #000;
-   outline: none; }
+   outline: none; 
+   border-color: #0056b3;
+   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
 }
 
 select.form-control {

@@ -26,17 +26,17 @@
   </head>
   <body>
 
-    <section>
+    <section class="container">
       @yield('content')
     </section>
 
     <footer class="fixed-bottom py-3" style="border-top: 1px solid">
       <div class="caontainer">
         <div class="row">
-          <div class="col-lg-6 text-lg-end">
+          <div class="col-lg-6 text-lg-end text-center">
             <p>© {{ now()->year }} <a href="https://stephenokello.com">Schoolviser</a> All Rights Reserved. {{config('schoolviser.version')}}</p>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-6 text-lg-start text-center">
             <p>Developed and maintained by <a href="https://stephenokello.com">Stephen Okello</a></p>
           </div>
         </div>

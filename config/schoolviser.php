@@ -29,7 +29,9 @@ return [
   'public_storage' => 'public/storage',
 
 
+  //Module Settings
    'modules' => [
+    'user'
    ],
 
    /**
@@ -132,6 +134,6 @@ return [
 
    'package' => 'premium',
 
-   'version' => 'v0.7.0'
+   'version' => 'v0.7.1'
 
 ];

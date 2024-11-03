@@ -22,35 +22,7 @@
        
 
        @if (term())
-           @if (period())
-           <a href="{{ route('home') }}">Visit Home</a>
-           @else
-           <h3 class="text-capitalize fw-bold">Set the current Accounting Period</h3>
-            <p>You can not use schoolviser without setting the current accounting period</p>
-           <form class="row" action="{{ route('init.set.period.store') }}" method="POST">
-            @csrf
-            <div class="col-lg-12">
-              <label for="" class="font-10 text-muted">Period Name</label>
-              <input type="text" name="name" class="form-control" placeholder="Period Name -> eg 2023/2024 " />
-              <small class="text-danger">{{ $errors->first('name') }}</small>
-            </div>
-           
-            <div class="col-lg-6">
-              <label for="" class="font-10 text-muted">Start Date</label>
-              <input type="date" class="form-control" name="start_date" value="{{old('start_date')}}" />
-              <small class="text-danger">{{ $errors->first('start_date') }}</small>
-            </div>
-            <div class="col-lg-6">
-              <label for="" class="font-10 text-muted">Start Date</label>
-              <input type="date" class="form-control" name="end_date" value="{{old('end_date')}}" />
-              <small class="text-danger">{{ $errors->first('end_date') }}</small>
-            </div>
-      
-            <div class="col-lg-12 my-2">
-              <button type="submit" class="btn btn-primary btn-md rounded-5 w-100">Save</button>
-            </div>
-          </form>
-           @endif
+       <a href="{{ route('home') }}">Visit Home</a>
        @else
        <h5 class="text-capitalize fw-bold">Set the current {{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Term' : 'Intake'}}</h5>
        <p>You can not use schoolviser without setting the current session</p>

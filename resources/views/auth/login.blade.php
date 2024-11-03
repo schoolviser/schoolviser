@@ -10,15 +10,11 @@
       <img src="{{ asset(option('school_logo','schoolviser_school_info', 'images/logo-white.svg')) }}" class="img-fluid" alt="">
     </a>
   </div>
-  <div class="col-lg-4 offset-lg-4 py-1">
+  <div class="col-lg-4 offset-lg-4 p-5 form-holder">
     <div class="card shadow-md rounded-3">
       <div class="card-body">
-        <!-- Logo -->
-        <div class="pb-4">
-          
-        </div>
-       
-        <form id="formAuthentication" class="mb-3" method="POST" action="{{ route('login') }}">
+        
+        <form id="formAuthentication" class="mb-3 py-2" method="POST" action="{{ route('login') }}">
           @csrf
           <div class="mb-3">
             <label for="email" class="form-label text-muted font-10 text-uppercase">Email or Username</label>
@@ -39,7 +35,8 @@
             <div class="input-group input-group-merge">
               <input type="password" name="password" id="password"  placeholder="Password" ="{{ old('password') }}" class="form-control @error('password') is-invalid @enderror"/>
               <span class="input-group-text cursor-pointer" id="togglePassword">
-                <img src="{{asset('images/visibility_24dp_666666_FILL0_wght400_GRAD0_opsz24.svg')}}" alt="">
+                <img src="{{ asset('images/visibility_24dp_666666_FILL0_wght400_GRAD0_opsz24.svg') }}" id="passwordIconOn" alt="Show Password">
+                <img src="{{ asset('images/visibility_off_24dp_666666_FILL0_wght400_GRAD0_opsz24.svg') }}" id="passwordIconOff" alt="Hide Password" style="display: none;">
               </span>
               @error('password')
                   <span class="invalid-feedback" role="alert">
@@ -55,7 +52,7 @@
             </div>
           </div>
           <div class="mb-3">
-            <button class="btn btn-primary rounded-5 w-100" type="submit">Sign in</button>
+            <button class="btn btn-primary rounded-3 w-100" type="submit">Sign in</button>
           </div>
         </form>
         
