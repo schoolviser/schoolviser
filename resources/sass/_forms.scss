@@ -15,88 +15,21 @@
 }
 
 select.form-control {
- padding: .4375rem .75rem;
- border: 0;
- outline: 1px solid #e4e9f0;
- color: #c9c8c8;
- &:focus {
-  outline: 1px solid #e4e9f0; 
+  padding: .4375rem .75rem;
+  border: 0;
+  outline: 1px solid #e4e9f0;
+  color: #c9c8c8;
+  &:focus {
+   outline: 1px solid #e4e9f0; 
+  }
  }
-}
 
-.form-group label {
- font-size: 0.875rem;
- line-height: 1;
- vertical-align: top;
- margin-bottom: .5rem; 
-
-}
-
-form {
-  color:  rgba(255, 255, 255, 0.6);
-  font-size: 12px;
-  .form-group {
-    padding-bottom: 8px;
-    input, textarea {
-      border-radius: 4px;
-      box-shadow: none;
-      font-size: 13px;
-      background-color: var(--color-secondary);
-      border: 1px solid #2e3133;
-      color: #fff;
-      &::placeholder {
-        color: #fafafa;
-      }
-     }
-     .input-group-text {
-      background-color: var(--color-secondary) !important;
-      color: #fff;
-      border: 1px solid #2e3133;
-
-    }
-     input[type="text"].highlight, input[type="email"].highlight {
-      background-color: var(--color-secondary);
-    }
-    
-   }
-   .error-message {
-    display: none;
-    color: #fff;
-    background: #df1529;
-    text-align: left;
-    padding: 15px;
-    font-weight: 600;
-   }
-   .error-message br+br {
-    margin-top: 25px;
-   }
-   .sent-message {
-    display: none;
-    color: #fff;
-    background: var(--color-primary);
-    text-align: center;
-    padding: 15px;
-    font-weight: 600;
-   }
-   .loading {
-    display: none;
-    background: var(--color-secondary);
-    text-align: center;
-    padding: 15px;
-    color: rgba(255, 255, 255, 0.6);
-    &:before {
-      content: "";
-      display: inline-block;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      margin: 0 10px -6px 0;
-      border: 3px solid var(--color-primary);
-      border-top-color: var(--color-secondary);
-      animation: animate-loading 1s linear infinite;
-     }
-   }
-
-   
-   
-}
+ .form-group label {
+  font-size: 0.875rem;
+  line-height: 1;
+  vertical-align: top;
+  margin-bottom: .5rem; 
+ 
+ }
+ 
+ 

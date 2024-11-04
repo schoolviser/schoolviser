@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Auth::routes();
 
 Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
@@ -52,6 +53,15 @@ Route::group(['middleware' => ['auth','usertype:master']], function(){
  Route::post('/init/set/term', 'Init\SetTermController@store')->name('init.set.term.store');
  Route::post('/init/set/period', 'Init\SetTermController@storePeriod')->name('init.set.period.store');
 });
+
+
+Route::domain(env('APPLICATION_DOMAIN'))->group(function () {
+ Route::get('/', function () {
+  return "Coming Soon - Under development";
+ });
+
+});
+
 
 
 

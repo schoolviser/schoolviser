@@ -5,7 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-use App\Jobs\ProcessRevenue;
+//use App\Jobs\ProcessRevenue;
 
 /**
  * Module Schedule Commands
@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\SyncSubjects::class,
+        Commands\TestMail::class,
     ];
     
 
@@ -32,16 +33,16 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         /**Sync Bank Deposits FeePayments Withdrawals & Expenses */
-        $schedule->command('bank:sync')->everyFiveMinutes()->withoutOverlapping();
-        $schedule->command('receivable:sync')->everyFiveMinutes()->withoutOverlapping();
-        $schedule->command('revenue:sync')->everyFiveMinutes()->withoutOverlapping();
+        //$schedule->command('bank:sync')->everyFiveMinutes()->withoutOverlapping();
+        //$schedule->command('receivable:sync')->everyFiveMinutes()->withoutOverlapping();
+        //$schedule->command('revenue:sync')->everyFiveMinutes()->withoutOverlapping();
 
         /**
          * Vendor Scheduled Commands and JObs
          */
-        $schedule->command('vendor:cache')->dailyAt('12:00')->withoutOverlapping()->name('cache-vendor-data')->onOneServer();
+        //$schedule->command('vendor:cache')->dailyAt('12:00')->withoutOverlapping()->name('cache-vendor-data')->onOneServer();
 
-        $schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping(15*60);
+        //$schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping(15*60);
 
 
          // Conditionally run accounting scheduled commands

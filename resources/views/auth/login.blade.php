@@ -5,12 +5,12 @@
 @section('content')
 <div class="authentication-inner row">
 
-  <div class="col-lg-12 text-center p-3">
-    <a href="https://schoolviser.com" class="app-brand-link gap-2">
-      <img src="{{ asset(option('school_logo','schoolviser_school_info', 'images/logo-white.svg')) }}" class="img-fluid" alt="">
+  <div class="col-lg-12 text-center py-3 mt-lg-5">
+    <a href="https://schoolviser.com" class="app-brand-link">
+      <img src="{{ asset(option('school_logo','schoolviser_school_info', 'images/logo-white.svg')) }}" class="img-flud" style="" alt="">
     </a>
   </div>
-  <div class="col-lg-4 offset-lg-4 p-5 form-holder">
+  <div class="col-lg-4 offset-lg-4 px-5 py-3 form-holder">
     <div class="card shadow-md rounded-3">
       <div class="card-body">
         

@@ -1,29 +1,30 @@
-@extends('dashboard.layouts.auth')
+@extends('admin.layouts.auth')
+
 
 
 @section('content')
 <div class="authentication-inner row">
-    <div class="col-lg-12 text-center py-2">
-        <h6>Reset Password</h6>
-    </div>
-    <div class="col-lg-4 offset-lg-4 py-3">
+  <div class="col-lg-12 text-center py-3 mt-lg-5">
+    <a href="https://schoolviser.com" class="app-brand-link">
+      <img src="{{ asset(option('school_logo','schoolviser_school_info', 'images/logo-white.svg')) }}" class="img-flud" style="" alt="">
+    </a>
+  </div>
+   
+    <div class="col-lg-4 offset-lg-4 py-3 px-5">
       <div class="card shadow-md">
         <div class="card-body">
           <!-- Logo -->
-          <div class="text-start pb-4">
-            <a href="index.html" class="app-brand-link gap-2">
-              <img src="{{ asset('images/logo.svg') }}" alt="">
-                <span>👋</span>
-            </a>
+          <div class="text-start fw-bold">
+            <h5>Request For Password Reset</h5>
           </div>
 
           <form method="POST" action="{{ route('password.email') }}" class="py-3">
             @csrf
 
-            <div class="form-group row">
+            <div class="form-group">
                 <label for="email" class="form-label text-muted font-10 text-uppercase">{{ __('E-Mail Address') }}</label>
 
-                <input id="email" type="email" class="form-control my-2 @error('email') is-invalid @enderror" placeholder="Enter Your Email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <input id="email" type="email" class="form-control my-2 @error('email') is-invalid @enderror" placeholder="Enter Your Email" name="email" value="{{ old('email') }}" required autocomplete="email" />
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -31,7 +32,7 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 rounded-4 my-4">
+            <button type="submit" class="btn btn-primary w-100 rounded-3 my-4">
                 {{ __('Send Password Reset Link') }}
             </button>
 

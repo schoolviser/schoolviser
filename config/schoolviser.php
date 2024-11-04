@@ -134,6 +134,6 @@ return [
 
    'package' => 'premium',
 
-   'version' => 'v0.7.1'
+   'version' => 'v0.7.2'
 
 ];

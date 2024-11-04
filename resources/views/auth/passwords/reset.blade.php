@@ -1,18 +1,17 @@
-@extends('dashboard.layouts.auth')
-
+@extends('admin.layouts.auth')
 
 @section('content')
 <div class="authentication-inner row">
-    <div class="col-lg-4 offset-lg-4 py-3">
+
+  <div class="col-lg-12 text-center py-3 mt-lg-5">
+    <a href="https://schoolviser.com" class="app-brand-link">
+      <img src="{{ asset(option('school_logo','schoolviser_school_info', 'images/logo-white.svg')) }}" class="img-flud" style="" alt="">
+    </a>
+  </div>
+
+    <div class="col-lg-4 offset-lg-4 py-2 px-5">
       <div class="card shadow-md">
         <div class="card-body">
-          <!-- Logo -->
-          <div class="text-start pb-4">
-            <a href="index.html" class="app-brand-link gap-2">
-              <img src="{{ asset('images/logo.svg') }}" alt="">
-                <span>👋</span>
-            </a>
-          </div>
          
           <form method="POST" action="{{ route('password.update') }}">
             @csrf
