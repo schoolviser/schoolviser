@@ -1,0 +1,18 @@
+{
+    "Requisition": true,
+    "Test": true,
+    "Vendor": true,
+    "User": true,
+    "Accounting": true,
+    "Course": true,
+    "Admission": true,
+    "Applicant": true,
+    "Student": true,
+    "Inventory": true,
+    "BackUp": true,
+    "Hr": true,
+    "Fee": true,
+    "PayRoll": true,
+    "FixedAsset": true,
+    "Premium": true
+}

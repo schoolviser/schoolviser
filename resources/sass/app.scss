@@ -1,0 +1,106 @@
+// Configuration
+
+@import '~bootstrap/scss/functions';
+
+
+
+@import '~bootstrap/scss/variables';
+
+// Template custom variables
+@import 'variables';
+
+@import '~bootstrap/scss/variables-dark';
+
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/utilities';
+
+
+// Layout & components
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/button-group";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+//@import "~bootstrap/scss/card";
+//@import "~bootstrap/scss/accordion";
+@import "~bootstrap/scss/breadcrumb";
+@import "~bootstrap/scss/pagination";
+@import "~bootstrap/scss/badge";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/progress";
+@import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/close";
+@import "~bootstrap/scss/toasts";
+@import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/tooltip";
+@import "~bootstrap/scss/popover";
+@import "~bootstrap/scss/spinners";
+@import "~bootstrap/scss/offcanvas";
+
+// Helpers
+@import "~bootstrap/scss/helpers";
+
+// Utilities
+@import "~bootstrap/scss/utilities/api";
+
+
+
+
+
+@import "core";
+@import "layouts";
+@import "cards";
+@import "tables";
+@import "forms";
+
+
+label.custom-file-upload {
+ border-radius: 0.3rem;
+ cursor: pointer;
+}
+
+.breadcrumb {
+ text-align: right !important;
+ text-decoration: none !important;
+ a{
+  text-decoration: none;
+  font-style: none;
+ }
+}
+
+
+/**forms **/
+.form-control {
+ border: 2px solid #007bff !important; /* Bootstrap primary color */
+ border-radius: 4px;
+ padding: 10px;
+ background-color: #fff;
+ color: #000;
+}
+
+.form-control:focus {
+ border-color: #0056b3; /* Darker shade for focus */
+ box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+ outline: none;
+}
+
+.form-control::placeholder {
+ color: #6c757d; /* Bootstrap secondary color for placeholder */
+}
+
+
+
+
+
+
+

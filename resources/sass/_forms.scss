@@ -1,0 +1,35 @@
+.form-control {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  font-size: 0.8125rem;
+  border: 1px solid #007bff;
+  box-shadow: none;
+  transition: border-color 0.3s ease-in-out;
+  &:focus {
+   background-color: #ffffff;
+   color: #000;
+   outline: none; 
+   border-color: #0056b3;
+   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}
+
+select.form-control {
+  padding: .4375rem .75rem;
+  border: 0;
+  outline: 1px solid #e4e9f0;
+  color: #c9c8c8;
+  &:focus {
+   outline: 1px solid #e4e9f0; 
+  }
+ }
+
+ .form-group label {
+  font-size: 0.875rem;
+  line-height: 1;
+  vertical-align: top;
+  margin-bottom: .5rem; 
+ 
+ }
+ 
+ 

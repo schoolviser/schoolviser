@@ -1,0 +1,25 @@
+/* Footer */
+
+.footer {
+  background: #f8f9fb;
+  padding: 5px 25px 12px 37px;
+  transition: all 0.25s ease;
+  -moz-transition: all 0.25s ease;
+  -webkit-transition: all 0.25s ease;
+  -ms-transition: all 0.25s ease;
+  font-size: calc(0.875rem - 0.05rem);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400; 
+}
+
+.footer a {
+  color: #00d284;
+  font-size: inherit; 
+}
+
+@media (max-width: 991px) {
+  .footer {
+    margin-left: 0;
+    width: 100%; 
+  } 
+}

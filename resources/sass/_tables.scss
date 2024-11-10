@@ -1,0 +1,33 @@
+
+.table {
+  margin: 0 !important;
+  thead {
+    th {
+      font-size: 14px;
+      background: #f8f9fb;
+    }
+  }
+
+  th, td {
+    font-size: 0.875rem;
+    position: relative !important;
+    &:first-child {
+      padding-left: 20px;
+    }
+    i {
+      font-size: 14px;
+    }
+  }
+
+  th img, td img {
+    width: 36px;
+    height: 36px;
+  }
+
+  th .img-rounded, td .img-rounded {
+    border-radius: 100%;
+  }
+  input {
+    background-color: inherit;
+  }
+}
