@@ -7,7 +7,7 @@
 @import '~bootstrap/scss/variables';
 
 // Template custom variables
-@import 'variables';
+@import 'basic/variables';
 
 @import '~bootstrap/scss/variables-dark';
 
@@ -54,143 +54,12 @@
 @import "~bootstrap/scss/utilities/api";
 
 
-
-
-body {
-    background: #fff;
-    color: #777777;
-    font-size: 14px;
-    line-height: 31px;
-    letter-spacing: 0;
-    font-weight: 400;
-    padding: 0;
-    font-family: 'Open-Dyslexic', sans-serif;
-                                                
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    letter-spacing: 0px;
-    font-weight: normal;
-    position: relative;
-    padding: 0 0 10px 0;
-    font-weight: normal;
-    line-height: 1.8;
-    color: #242424;
-}
-
-h1 {
-    font-size: 22px;
-}
-
-h2 {
-    font-size: 20px;
-}
-
-h3 {
-    font-size: 18px;
-}
-
-h4 {
-    font-size: 21px;
-}
-
-h5 {
-    font-size: 14px;
-}
-
-h6 {
-    font-size: 14px;
-}
-
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
-    text-decoration: none !important;
-}
-
-p {
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 26px;
-    letter-spacing: 0;
-    margin-top: 15px;
-}
-
-
-.text-small {
-    font-size: 12px; 
-  }
-  
-.font-10 {
-font-size: 10px; }
-
-.font-12 {
-font-size: 12px; }
-
-.font-13 {
-font-size: 13px; }
-
-.font-20 {
-font-size: 20px; 
-}
-
-.font-14 {
-font-size: 14px; }
-
-.font-16 {
-font-size: 16px; 
-}
-
-ul {
-    padding: 0;
-    list-style: none;
-}
-
-ol li ul li {
-    padding-left: 20px;
-}
+@import "basic/main";
+@import "basic/sidebar";
+@import "basic/module-links";
 
 
 
-// Mode
-#mode {
-    cursor: pointer;
-    position: fixed;
-    right: 16px;
-    top: 16px;
-    z-index: 1;
-    border-radius: 16px;
-    line-height: 0;
-    svg {
-        width: 20px;
-        padding: 12px;
-        box-sizing: content-box;
-    }
-}
-
-html.dark #mode .light {
-    display: none;
-}
-    
-html #mode .light {
-    display: block;
-}
-
-html.dark #mode .dark {
-    display: block;
-}
-    
-html #mode .dark {
-    display: none;
-}
 
 // Offcanvas
 
@@ -213,112 +82,7 @@ body.modal-open {
 }
 
 
-#goToTopBtn{
-    display: none;
-    position: fixed;
-    z-index: 1;
-    height:40px;
-    width:40px;
-    bottom: 55px;
-    right: 20px;
-    font-size: 18px;
-    border: none;
-    outline: none;
-    background-color: grey;
-    color:#ffff;
-    cursor: pointer;
-    padding: 0px;
-    border-radius: 50%;
-    &:hover{
-        background-color: #404040;
-    }
-}
 
-//Sidebar 
-@media (min-width: 768px) {
-    .sidebar {
-        padding-left: 20px
-    }
-}
-
-.sidebar {
-    position: relative;
-    padding-left: 20px; /* Space to prevent overlap with circles */
-    border-left: 1px solid rgb(67, 61, 242);
-    background-color: transparent; /* No background color */
-    margin-top: 10px; /* Optional for spacing */
-}
-
-.sidebar::before,
-.sidebar::after {
-    content: "";
-    position: absolute;
-    left: -10px; /* Position to center circle over border */
-    width: 16px; /* Circle diameter */
-    height: 16px;
-    border: 1px solid rgb(67, 61, 242);
-    border-radius: 50%; /* Make it circular */
-    background-color: rgb(241,250,248); /* filled circle */
-}
-
-.sidebar::before {
-    top: -8px; /* Position above the sidebar */
-}
-
-.sidebar::after {
-    bottom: -8px; /* Position below the sidebar */
-}
-
-
-.sidebar .nav>li>a {
-    color: #111;
-    border-left: 2px solid transparent;
-    padding: 0 20px;
-    font-size: 15px;
-    font-weight: 600;
-    width: 100% !important;
-}
-/* hover links */ 
-.sidebar .nav>li:not(.active)>a:hover {
-    color: #0E97EE;
-    text-decoration: none;
-    background-color: transparent;
-    border-left-width: 1px;
-    border-left-color: #0E97EE;
-}
- /* focus links */
- .sidebar .nav>li>a:focus {
-    text-decoration: none;
-    background-color: transparent;
-   }
-/* active links */
-.sidebar .nav>.active>a {
-    color: #0E97EE;
-    text-decoration: none;
-    background-color: transparent;
-    border-left-color: #0E97EE;
-}
- .sidebar .nav>.active>a, 
- .sidebar .nav>.active:hover>a,
- .sidebar .nav>.active:focus>a {
- font-weight: 700;
- }
- /* nested active links */
- .sidebar .nav .nav>.active>a, 
- .sidebar .nav .nav>.active:hover>a,
- .sidebar .nav .nav>.active:focus>a {
- font-weight: 500;
- }
-  /* nested links */
-.sidebar .nav .nav{
-    li{
-        width: 100% !important;
-        a{
-            padding-left: 40px;
-            font-size: 14px;
-        }
-    }
-}
 
 // =-- Start Here
 img.alignleft {
@@ -482,84 +246,6 @@ img.alignleft {
    }
    
    
-   html.dark body {
-   background: #222;
-   color: #888888;
-   }
-   
-   html.dark h1,
-   html.dark h2,
-   html.dark h3,
-   html.dark h4,
-   html.dark h5,
-   html.dark h6 {
-   color: #dbdbdb;
-   }
-   
-   html.dark hr {
-   border-color: #111;
-   }
-   
-   html.dark .sidebar .nav>li>a {
-   color: #eee;
-   }
-   
-   html.dark .dark-text hr {
-   border-color: #fcfcfc;
-   }
-   
-   html.dark strong {
-   color: #fcfcfc;
-   }
-   
-   html.dark .intro1 {
-   background-color: #0c0c0c;
-   }
-   
-   html.dark .intro1 a {
-   color: #F16811 !important;
-   }
-   
-   html.dark a {
-   color: #CC8548;
-   }
-   
-   html.dark a:hover {
-   color: #F16811;
-   }
-   
-   html.dark .intro2 {
-   background-color: #F16811;
-   border-color: #DE7844;
-   }
-   
-   html.dark .btn-primary {
-    background-color: #F16811;
-    border-color: #DE7844;
-    color: #000;
-   }
-   
-   html.dark .btn-primary:hover {
-   background-color: #DE7844;
-   border-color: #F16811;
-   }
-   
-   html.dark .btn-info {
-   background-color: #ABABAB;
-   border-color: #9A9A9A;
-   color: #000;
-   }
-   
-   html.dark .btn-info:hover {
-   background-color: #9A9A9A;
-   border-color: #ABABAB;
-   }
-   
-html.dark .card{
-    background: #222;
-    color: #888888;
-    border-color: #888888;
-}
    
    /*Docs*/
    
@@ -633,11 +319,6 @@ html.dark .card{
     a{
         color: #fff;
     }
-}
-
-
-.module-links a{
-    padding: 4px;
 }
 
 

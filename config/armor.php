@@ -15,6 +15,7 @@ return [
       * your permission registrars - have permission constants
       */
       App\DashboardPermissionRegistrar::class,
+      App\SystemConfigurationPermissionRegistrar::class,
       Modules\User\UserPermissionRegistrar::class
 
     ],

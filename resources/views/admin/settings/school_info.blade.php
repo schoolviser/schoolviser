@@ -20,6 +20,13 @@
 
     <div class="col-lg-8">
         <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-lg-12 text-uppercase">
+                        <small class="mb-0 p-0 fw-bold">{{ 'School Info Settings' }}</small>
+                    </div>
+                </div>
+            </div>
             <form class="card-body row py-5" action="{{route('site.settings.school.info.update')}}" method="POST" enctype="multipart/form-data">
                 @csrf
         
@@ -38,7 +45,7 @@
                     <p class="m-lg-0">School Name</p>
                 </div>
                 <div class="col-lg-9 mt-lg-3">
-                    <input type="text" name="school_name" value="{{ old('school_name') ?? $schoolinfo->school_name }}" class="form-control" placeholder="Enter school name" />
+                    <input type="text" name="school_name" value="{{ old('school_name') ?? $schoolinfo->school_name ?? config('schoolviser.school_name','Config or Enter school name') }}" class="form-control" placeholder="Enter school name" />
                 </div>
 
                 <div class="col-lg-12">
@@ -66,17 +73,7 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="mb-0 p-0">General</h4>
-                <div class="list-unstyled">
-                    <li><a href="{{route('settings.terms')}}" class="link rounded-1">Terms ~ Intakes</a></li>
-                    @if (!(config('schoolviser.type') == 'tertiary'))
-                    <li><a href="{{route('settings.clazzs')}}" class="link rounded-1">Classes</a></li>
-                    @endif
-                </div>
-            </div>
-        </div>
+        @include('admin.includes.settings.general')
     </div>
 
 </div>

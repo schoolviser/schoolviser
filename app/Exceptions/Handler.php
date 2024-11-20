@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
+
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -51,5 +53,19 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         return parent::render($request, $exception);
+    }
+
+    public function unauthenticated($request, AuthenticationException $exception)
+    {
+        // Check if it's an API request
+        if ($request->is('api/*')) {
+            return response()->json([
+                'error' => 'Unauthenticated',
+                'message' => 'Please provide a valid API token.'
+            ], 401);
+        }
+
+        // Fallback to the default behavior (redirect) for non-API routes
+        return parent::unauthenticated($request, $exception);
     }
 }

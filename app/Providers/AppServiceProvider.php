@@ -12,6 +12,8 @@ use App\Http\View\Composers\AdminPermissionComposer;
 
 use Illuminate\Pagination\Paginator;
 
+use Laravel\Passport\Passport;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Passport::hashClientSecrets();
+        
         Schema::defaultStringLength(191);
         Paginator::useBootstrap();
 

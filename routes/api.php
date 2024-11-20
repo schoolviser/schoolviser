@@ -14,19 +14,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => ['auth:api']], function(){
 
-    //Route::prefix('/account')->group(__DIR__.'/account.php');
-    //Route::prefix('/users')->group(__DIR__.'/group/users.php');
+
+// Login route using the traditional string syntax
+Route::post('/login', 'Auth\Api\LoginController@login');
+
+
+// Protected routes with 'auth:api' middleware
+Route::middleware('auth:api')->group(function () {
+    
+    Route::get('/hello', function(){
+        return response()->json(['hello' => 'hello']);
+    });
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    
+   
 
 });
-
-Route::prefix('auth')->group(function(){
-    //Route::post('/login', 'Auth\Api\LoginController@login');
-    //Route::get('/logout', 'Auth\Api\LogoutController@logout')->middleware('auth:api');
-});
-
-
-
-
-

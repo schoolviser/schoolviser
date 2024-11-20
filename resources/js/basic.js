@@ -100,15 +100,11 @@ require('./bootstrap');
     }
 
     // Fetch notifications count on page load
-    fetchNotificationsCount();
+    //fetchNotificationsCount();
 
     // Optional: Refresh notifications count every minute
-    setInterval(fetchNotificationsCount, 60000);
+    //setInterval(fetchNotificationsCount, 60000);
   }
-    
-  
-
-
 
 
 })(jQuery);

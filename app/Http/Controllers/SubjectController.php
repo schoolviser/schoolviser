@@ -12,7 +12,8 @@ class SubjectController extends Controller
 
     public function index()
     {
-        $subjects =  app(SubjectRepository::class)->get();
+        $page = request()->input("page", 1);
+        $subjects =  app(SubjectRepository::class)->fromCache()->paginate();
         return (request()->expectsJson()) ? response()->json($subject) : view('admin.subjects.index', compact('subjects'));
     }
 

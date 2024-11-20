@@ -42,8 +42,10 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        //Artisan::call('permission:sync');
         $this->middleware('guest')->except('logout');
+
+          // Apply the middleware only on the login page route
+          $this->middleware('track.page-access:login-page')->only('showLoginForm');
     }
 
     /**

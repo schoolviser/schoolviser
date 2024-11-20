@@ -8,10 +8,6 @@
 <a href="" data-bs-toggle="offcanvas" data-bs-target="#Id1">Add Subject</a>
 @endsection
 
-@section('above-sidebar')
-    Subject here may be used in the admission module if configured..
-@endsection
-
 @section('content')
 
 <div class="row row-1">
@@ -19,32 +15,45 @@
         @include('admin.includes.alerts.created')
     </div>
 
-    <div class="col-lg-12">
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <th>ID</th>
-                    <th>name</th>
-                    <th>Short Code</th>
-                    <th>Level</th>
-                    <th></th>
-                </thead>
-                <tbody>
-                    @foreach ($subjects as $subject)
-                    <tr class="">
-                        <td>{{ $subject->id }}</td>
-                        <td>{{ $subject->name }}</td>
-                        <td>{{ $subject->short_code }}</td>
-                        <td class="text-uppercase">{{ $subject->level }}</td>
-                        <th>
-                            <a href="{{route('site.settings.subjects.edit',['id'=>$subject->id])}}" class="btn btn-primary btn-sm"><fa class="fa fa-edit"></fa></a>
-                            <a href="" class="btn btn-danger btn-sm"><fa class="fa fa-trash"></fa></a>
-                        </th>
-                    </tr>
-                    @endforeach
-                   
-                </tbody>
-            </table>
+    <div class="col-lg-8">
+        <div class="card rounded-3 mb-3">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-lg-6 text-uppercase">
+                        <small class="mb-0 p-0 fw-bold">{{ 'Subjects' }}</small>
+                    </div>
+                    <div class="col-lg-6 text-end"><small>Action Icons</small></div>
+                </div>
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table  table-striped">
+                    <thead>
+                        <th>ID</th>
+                        <th>name</th>
+                        <th>Short Code</th>
+                        <th>Level</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        @foreach ($subjects as $subject)
+                        <tr class="">
+                            <td>{{ $subject->id }}</td>
+                            <td>{{ $subject->name }}</td>
+                            <td>{{ $subject->short_code }}</td>
+                            <td class="text-uppercase">{{ $subject->level }}</td>
+                            <th>
+                                <a href="{{route('site.settings.subjects.edit',['id'=>$subject->id])}}" class="btn btn-primary btn-sm"><fa class="fa fa-edit"></fa></a>
+                                <a href="" class="btn btn-danger btn-sm"><fa class="fa fa-trash"></fa></a>
+                            </th>
+                        </tr>
+                        @endforeach
+                       
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                {{ $subjects->links() }}
+            </div>
         </div>
         
     </div>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f968772cc9b9c2a75d05b8ac12fa3671",
+    "content-hash": "568e6c77b9047ddf214f8193e7e757cf",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -362,16 +362,16 @@
         },
         {
             "name": "delgont/armor",
-            "version": "v1.0.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delgont/armor.git",
-                "reference": "014070d0cc0f3504b46b0b1d734ec01f6a51fb47"
+                "reference": "1a8a7b4bbd0291f44483c50919e8f06307c5df65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delgont/armor/zipball/014070d0cc0f3504b46b0b1d734ec01f6a51fb47",
-                "reference": "014070d0cc0f3504b46b0b1d734ec01f6a51fb47",
+                "url": "https://api.github.com/repos/delgont/armor/zipball/1a8a7b4bbd0291f44483c50919e8f06307c5df65",
+                "reference": "1a8a7b4bbd0291f44483c50919e8f06307c5df65",
                 "shasum": ""
             },
             "require": {
@@ -422,22 +422,22 @@
             ],
             "support": {
                 "issues": "https://github.com/delgont/armor/issues",
-                "source": "https://github.com/delgont/armor/tree/v1.0.0"
+                "source": "https://github.com/delgont/armor/tree/v1.2.0"
             },
-            "time": "2024-11-06T12:52:16+00:00"
+            "time": "2024-11-19T15:21:06+00:00"
         },
         {
             "name": "delgont/core",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delgont/core.git",
-                "reference": "79f4715a176be65b3207f770de5eac825cec81c1"
+                "reference": "707b25d2ca6016d8c88a3a25f9a83fab4830352c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delgont/core/zipball/79f4715a176be65b3207f770de5eac825cec81c1",
-                "reference": "79f4715a176be65b3207f770de5eac825cec81c1",
+                "url": "https://api.github.com/repos/delgont/core/zipball/707b25d2ca6016d8c88a3a25f9a83fab4830352c",
+                "reference": "707b25d2ca6016d8c88a3a25f9a83fab4830352c",
                 "shasum": ""
             },
             "require": {
@@ -483,9 +483,9 @@
             ],
             "support": {
                 "issues": "https://github.com/delgont/core/issues",
-                "source": "https://github.com/delgont/core/tree/v1.7.0"
+                "source": "https://github.com/delgont/core/tree/v1.8.0"
             },
-            "time": "2024-09-21T14:30:37+00:00"
+            "time": "2024-11-18T10:43:38+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -1953,16 +1953,16 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v12.2.0",
+            "version": "v12.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "b24c6462835a16163141fbe588533d16603212b7"
+                "reference": "ca63a86697a4fa091c7dcabe88ebba91d97c785d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/b24c6462835a16163141fbe588533d16603212b7",
-                "reference": "b24c6462835a16163141fbe588533d16603212b7",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/ca63a86697a4fa091c7dcabe88ebba91d97c785d",
+                "reference": "ca63a86697a4fa091c7dcabe88ebba91d97c785d",
                 "shasum": ""
             },
             "require": {
@@ -2025,7 +2025,7 @@
                 "issues": "https://github.com/laravel/passport/issues",
                 "source": "https://github.com/laravel/passport"
             },
-            "time": "2024-04-17T17:56:14+00:00"
+            "time": "2024-08-05T13:44:51+00:00"
         },
         {
             "name": "laravel/prompts",

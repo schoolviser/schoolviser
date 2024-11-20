@@ -5,12 +5,6 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
-//use App\Jobs\ProcessRevenue;
-
-/**
- * Module Schedule Commands
- */
-
 class Kernel extends ConsoleKernel
 {
     /**
@@ -32,22 +26,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        /**Sync Bank Deposits FeePayments Withdrawals & Expenses */
-        //$schedule->command('bank:sync')->everyFiveMinutes()->withoutOverlapping();
-        //$schedule->command('receivable:sync')->everyFiveMinutes()->withoutOverlapping();
-        //$schedule->command('revenue:sync')->everyFiveMinutes()->withoutOverlapping();
+        
 
-        /**
-         * Vendor Scheduled Commands and JObs
-         */
-        //$schedule->command('vendor:cache')->dailyAt('12:00')->withoutOverlapping()->name('cache-vendor-data')->onOneServer();
+         // Run Accounting Module Scheduled Commands
+         $this->runAccountingScheduledCommands($schedule);
 
-        //$schedule->command('queue:work --stop-when-empty')->everyMinute()->withoutOverlapping(15*60);
+         // Run Admission Module Scheduled Commands
+         $this->runAdmissionScheduledCommands($schedule);
 
+         if (config('queue.default') == 'database') {
+            $schedule->command('queue:work database --stop-when-empty --memory=256')->everyMinute()->withoutOverlapping();
 
-         // Conditionally run accounting scheduled commands
-         if ($this->isAccountingModuleEnabled()) {
-            $this->runAccountingScheduledCommands($schedule);
+            $schedule->command('queue:restart')->everyFiveMinutes()->withoutOverlapping();
         }
 
     }
@@ -73,7 +63,7 @@ class Kernel extends ConsoleKernel
     protected function isAccountingModuleEnabled()
     {
         // Check if the accounting service provider exists in the configuration
-        return in_array('Modules\\Accounting\\AccountingServiceProvider', config('app.providers', []));
+        return ;
     }
 
     /**
@@ -84,9 +74,25 @@ class Kernel extends ConsoleKernel
      */
     protected function runAccountingScheduledCommands(Schedule $schedule)
     {
-        // Schedule accounting commands here
-        $schedule->command('update:expense-summary')->everyFiveMinutes()->withoutOverlapping();
-        $schedule->command('update:department-expense-summary')->everyFiveMinutes()->withoutOverlapping();
-        $schedule->command('update:monthly-expense-summary')->everyFiveMinutes()->withoutOverlapping();
+        if (in_array('Modules\\Accounting\\AccountingServiceProvider', config('app.providers', []))) {
+            $schedule->command('update:expense-summary')->everyFiveMinutes()->withoutOverlapping();
+            $schedule->command('update:department-expense-summary')->everyFiveMinutes()->withoutOverlapping();
+            $schedule->command('update:monthly-expense-summary')->everyFiveMinutes()->withoutOverlapping();
+        }
     }
+
+    /**
+     * Define Admission scheduled commands.
+     *
+     * @param Schedule $schedule
+     * @return void
+     */
+    protected function runAdmissionScheduledCommands(Schedule $schedule)
+    {
+        if (in_array('Modules\\Admission\\AdmissionServiceProvider', config('app.providers', []))) {
+            $schedule->command('notify:pending-applications')->twiceWeekly(2, 5)->withoutOverlapping();
+        }
+    }
+
+
 }

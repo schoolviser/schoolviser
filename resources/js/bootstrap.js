@@ -9,8 +9,6 @@ window._ = require('lodash');
 
 try {
     window.$ = window.jQuery = require('jquery');
-    require('jquery-ui/ui/widgets/autocomplete');
-    require('jquery-ui/ui/widgets/datepicker');
     require('bootstrap');
 } catch (e) {}
 

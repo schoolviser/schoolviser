@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use Delgont\Auth\Concerns\MultiAuthCredentials;
+use Delgont\Armor\Concerns\MultiAuthCredentials;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -16,20 +16,25 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+
         if(!Auth::attempt($this->credentials($request))){
             return response()->json([
                 'message' => 'Invalid email or password'
             ], 401);
         }
 
-        $user = $request->user();
 
+
+        $user = $request->user();
+        
         $token = $user->createToken('Access Token');
+        
+
 
         $user->access_token = $token->accessToken;
 
         return response()->json([
-            'user' => $user
+            'token' => $user->access_token
         ], 200);
     }
 
@@ -44,6 +49,6 @@ class LoginController extends Controller
 
     public function username()
     {
-        return 'username_email';
+        return 'email';
     }
 }
