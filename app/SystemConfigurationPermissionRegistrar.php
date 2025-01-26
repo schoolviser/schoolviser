@@ -12,9 +12,11 @@ class SystemConfigurationPermissionRegistrar extends PermissionRegistrar
     const CAN_CONFIGURE_SCHOOL_INFO = 'can_configure_school_info';
 
     //permision descriptions
-    public function descriptions()
+    public function descriptions() : array
     {
-        return [self::CAN_CONFIGURE_SCHOOL_INFO => 'Permission to configure and manage school information, including details such as name, address, contact information, and other institutional settings'];
+        return [
+            self::CAN_CONFIGURE_SCHOOL_INFO => 'Permission to configure and manage school information, including details such as name, address, contact information, and other institutional settings'
+        ];
     }
-    
+
 }

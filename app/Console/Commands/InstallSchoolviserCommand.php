@@ -11,6 +11,10 @@ use App\Models\Employee\Employee;
 
 use Modules\User\Entities\Master;
 
+use App\Services\LicenseManager;
+use Exception;
+
+use Illuminate\Support\Facades\Http;
 
 use Illuminate\Support\Facades\Artisan;
 
@@ -31,16 +35,13 @@ class InstallSchoolviserCommand extends Command
      */
     protected $description = 'Command description';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    private $licenseManager;
+
+    public function __construct(LicenseManager $licenseManager)
     {
         parent::__construct();
+        $this->licenseManager = $licenseManager;
     }
-
     /**
      * Execute the console command.
      *
@@ -48,16 +49,17 @@ class InstallSchoolviserCommand extends Command
      */
     public function handle()
     {
-        // Display the application version
-        $this->info('You are currently using Schoolviser version ' . config('schoolviser.version'));
 
-        // Prompt the user for confirmation
-        if (!$this->confirm('Would you like to proceed with running the backup-compatible command?', true)) {
-            $this->info('Operation aborted by the user.');
-            return Command::SUCCESS;
+        // Check if APP_KEY exists
+        if (empty(config('app.key'))) {
+            $this->warn('No application key found. Please generate one using:');
+            $this->line('  php artisan key:generate');
+            return Command::FAILURE;
         }
 
 
+        // Display the application version
+        $this->info('You are currently using Schoolviser version ' . config('schoolviser.version'));
         $this->call('armor:install');
         $this->info("\n  ");
 
@@ -71,13 +73,13 @@ class InstallSchoolviserCommand extends Command
 
 
         $this->info('Syncing A Level subjects...');
-        $this->call('subjects:sync', ['--A' => true]);
+        $this->call('schoolviser:sync-subjects', ['--A' => true]);
         $this->info('A Level subjects synced successfully.');
         $this->info("\n  ");
 
 
         $this->info('Syncing Courses...');
-        $this->call('courses:sync');
+        $this->call('schoolviser:sync-courses');
         $this->info("\n  ");
 
         $this->info("\n🎉 DONE: Schoolviser installation and setup completed!");

@@ -13,6 +13,10 @@ use App\Http\View\Composers\AdminPermissionComposer;
 use Illuminate\Pagination\Paginator;
 
 use Laravel\Passport\Passport;
+use Delgont\Armor\Armor;
+use App\Schoolviser;
+
+use App\Services\LicenseManager;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -25,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
+
     }
 
     /**
@@ -36,14 +40,25 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Passport::hashClientSecrets();
-        
+
         Schema::defaultStringLength(191);
+
         Paginator::useBootstrap();
 
         $this->BootObservers();
 
         //Admin Permission Registrars
         View::composer('admin.*', AdminPermissionComposer::class);
+
+        $this->app->singleton('viser', function () {
+            return new LicenseManager();
+        });
+
+        Schoolviser::hello();
+
+        Armor::registerPermissionables([
+            'role' => \Delgont\Armor\Models\Role::class
+        ]);
 
     }
 }

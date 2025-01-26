@@ -28,7 +28,7 @@
     <!-- Fonts -->
     @if (false)
     <link href="https://fonts.cdnfonts.com/css/open-dyslexic" rel="stylesheet">
-    @endif                                
+    @endif
     <!-- Base URL -->
     <meta name="base-url" content="{{ url('/') }}" />
 
@@ -132,11 +132,11 @@
                             <img src="{{ asset('images/settings_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px; margin-right: 2px;">
                             Site Settings
                         </a>
-                        
-                        <!-- Accounting Create New Links --> 
+
+                        <!-- Accounting Create New Links -->
                         @if (in_array(Modules\Accounting\Providers\AccountingServiceProvider::class, config('app.providers')))
                         <div class="dropdown ml-5">
-                           
+
                             <a class="nav-link my-0 py-0 d-flex align-items-center" id="messageDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ asset('images/add_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px; margin-right: 2px;">
                                 New
@@ -151,13 +151,13 @@
                         @endif
 
                         @yield('module-topbar-links')
-                        
+
                     </nav>
-                    
+
                 </div>
                 <div class="col-lg-2 text-end">
                     <a class="nav-link cursor-pointer" data-bs-toggle="offcanvas" data-bs-target="#userOffCanvas" aria-controls="accountQuickLinksOffCanvas">
-                    <div class="nav-profile-text text-capitalize px-3 d-inline">{{ auth()->user()->name }} </div>
+                    <div class="nav-profile-text text-capitalize px-3 d-inline">{{ 'Hi, '.auth()->user()->name }} </div>
                     <img src="{{ asset(auth()->user()->avator ?? 'images/avator.png') }}" alt="" class="rounded-circle d-inline" style="width: 35px;">
                     </a>
                 </div>
@@ -196,11 +196,11 @@
                                     $modules = config('schoolviser.modules', []);
                                     $modulesCount = count($modules); // Get the number of modules
                                 @endphp
-            
+
                                 <div class="above-sidebar">
                                     @yield('above-sidebar')
                                 </div>
-            
+
                                 <nav class="sidebar mb-5" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
                                     <ul class="nav">
                                         <li>
@@ -208,28 +208,28 @@
                                                 Dashboard
                                             </a>
                                         </li>
-            
+
                                         <!-- Student Module Links -->
                                         @if (in_array(Modules\Student\Providers\StudentServiceProvider::class, config('app.providers', [])))
                                             @includeIf('student::includes.navitems.main')
                                         @endif
-            
+
                                         <!-- Admission Module Links -->
                                         @if (class_exists('Modules\Admission\Providers\AdmissionServiceProvider') && in_array(Modules\Admission\Providers\AdmissionServiceProvider::class, config('app.providers', [])))
                                             @includeIf('admission::includes.navitems.main')
                                         @endif
-            
+
                                         <!-- Accounting Module Links -->
                                         @if (in_array(Modules\Accounting\Providers\AccountingServiceProvider::class, config('app.providers', [])))
                                             @includeIf('accounting::includes.navitems.main')
                                         @endif
-            
-                                        
+
+
                                         <!-- Other Modules -->
                                         @foreach ($modules as $module)
                                             @includeIf($module.'::includes.navitems.main', ['some' => 'data'])
                                         @endforeach
-                                        
+
                                     </ul>
                                 </nav >
                                 <div class="below-sidebar">
@@ -238,16 +238,16 @@
                              </div>
                         </div>
                     </div>
-                 
+
                     <div class="col-md-9 col-lg-9">
-                        
+
                         <div class="content"  id="content">@yield('content')</div>
                     </div>
                 </div>
              </div>
         </section>
 
-       
+
         <!-- // end container -->
 
     </div>
@@ -285,9 +285,9 @@
                 </div>
             </div>
         </section>
-        
+
     </footer>
-   
+
     @endif
 
 @include('admin.includes.offcanvas.user')

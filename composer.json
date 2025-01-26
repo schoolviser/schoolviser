@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "barryvdh/laravel-dompdf": "*",
-        "delgont/armor": "^1.2.0",
+        "delgont/armor": "^1.4.0",
         "delgont/core": "^1.8.0",
         "laravel/framework": "^11.0",
         "laravel/passport": "^12.3",

@@ -36,7 +36,7 @@ class LoginController extends Controller
     protected $redirectTo;
 
     /**
-     * Create a new controller instance. 
+     * Create a new controller instance.
      *
      * @return void
      */
@@ -57,12 +57,12 @@ class LoginController extends Controller
     }
 
 
-   
+
 
     public function username()
     {
         return 'username_email';
     }
 
-    
+
 }

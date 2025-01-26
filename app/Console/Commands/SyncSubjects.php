@@ -12,7 +12,7 @@ class SyncSubjects extends Command
      *
      * @var string
      */
-    protected $signature = 'subjects:sync {--O : Sync O Level subjects} {--A : Sync A Level subjects}';
+    protected $signature = 'schoolviser:sync-subjects {--O : Sync O Level subjects} {--A : Sync A Level subjects}';
 
     /**
      * The console command description.
@@ -31,10 +31,7 @@ class SyncSubjects extends Command
         $olevelSubjects = config('schoolviser.olevel_subjects', []);
         $alevelSubjects = config('schoolviser.alevel_subjects', []);
 
-        
-
         if ($this->option('O')) {
-            // Prompt the user for confirmation
             if (!$this->confirm('Do you wish to sync O level subjects into the database?', true)) {
                 $this->info('Subjects synchronization canceled.');
                 return Command::SUCCESS;
@@ -54,6 +51,9 @@ class SyncSubjects extends Command
         }
 
         $this->info("\n🎉 DONE: Subjects have been successfully synced!");
+
+        // Display synced subjects in a table
+        $this->displaySubjects();
     }
 
     /**
@@ -70,15 +70,11 @@ class SyncSubjects extends Command
             return;
         }
 
-        
-
         $this->info("Syncing " . count($subjects) . " subjects for Level: $level...");
-        
-        // Initialize counters for added/updated subjects
+
         $addedCount = 0;
         $updatedCount = 0;
 
-        // Create a progress bar
         $this->output->progressStart(count($subjects));
 
         foreach ($subjects as $code => $name) {
@@ -88,27 +84,64 @@ class SyncSubjects extends Command
                     'short_code' => $code,
                     'name' => $name,
                     'level' => $level,
-                    'compulsory' => '0', // Adjust as needed
+                    'compulsory' => '0',
                 ]
             );
 
-            // Count additions and updates
             if ($subject->wasRecentlyCreated) {
                 $addedCount++;
             } else {
                 $updatedCount++;
             }
 
-            // Advance the progress bar
             $this->output->progressAdvance();
         }
 
-        // Finish the progress bar
         $this->output->progressFinish();
 
-        // Show summary
         $this->info("\nSummary for Level: $level");
         $this->info("Subjects Added: $addedCount");
         $this->info("Subjects Updated: $updatedCount");
+    }
+
+    /**
+     * Display subjects in a paginated console table.
+     *
+     * @return void
+     */
+    protected function displaySubjects(): void
+    {
+        $pageSize = 10;
+        $currentPage = 1;
+
+        do {
+            $subjects = Subject::select('id', 'name', 'short_code', 'level')
+                ->orderBy('id')
+                ->skip(($currentPage - 1) * $pageSize)
+                ->take($pageSize)
+                ->get();
+
+            if ($subjects->isEmpty()) {
+                $this->info("No subjects to display.");
+                return;
+            }
+
+            $this->info("\nPage $currentPage:");
+            $this->table(
+                ['ID', 'Name', 'Short Code', 'Level'],
+                $subjects->toArray()
+            );
+
+            if ($subjects->count() < $pageSize) {
+                break;
+            }
+
+            $continue = $this->confirm('Do you want to see the next page?', true);
+            if (!$continue) {
+                break;
+            }
+
+            $currentPage++;
+        } while (true);
     }
 }

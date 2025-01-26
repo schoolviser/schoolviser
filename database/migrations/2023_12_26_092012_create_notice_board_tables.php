@@ -15,6 +15,7 @@ class CreateNoticeBoardTables extends Migration
     {
         Schema::create('notice_board', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->unique()->nullable();
             $table->string('title');
             $table->text('message');
             $table->date('notice_date');

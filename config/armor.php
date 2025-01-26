@@ -9,12 +9,13 @@ return [
      * Permission COnfiguratiin
      */
     'permission_delimiter' => '|',
-   
+
     'permission_registrars' => [
       /*
       * your permission registrars - have permission constants
       */
       App\DashboardPermissionRegistrar::class,
+      App\MomoPermissionRegistrar::class,
       App\SystemConfigurationPermissionRegistrar::class,
       Modules\User\UserPermissionRegistrar::class
 
@@ -25,14 +26,14 @@ return [
      */
 
     'role_delimiter' => '|',
-    
+
     'role_registrars' => [
       /*
       * your permission registrars - have permission constants
       */
       App\Roles\ExampleRoleRegistrar::class,
     ],
-    
+
     'role_registrars' => [
       /*
       * your permission registrars - have permission constants

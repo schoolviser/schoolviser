@@ -2,14 +2,21 @@
 
 return [
 
-  'version' => 'v1.1.0',
+  'version' => '1.2.0',
 
-  'school_name' => env('SCHOOL_NAME', 'Delgont School Of Nursing & Midwifery'),
+  'school_short_name' => env('APP_NAME', 'schoolviser'),
+  'school_name' => env('SCHOOLVISER_SCHOOL_NAME', 'Delgont School Of Nursing & Midwifery'),
 
-  
+  'school_type' => env('SCHOOLVISER_TYPE', 'tertiary'),
+
+  'license_url' => env('SCHOOLVISER_LICENSE_URL'),
+  'license_key' => env('SCHOOLVISER_LICENSE_KEY', 'default here'),
+  'schoolviser_id' => env('SCHOOLVISER_ID', 'default here'),
+  'secrete_key' => env('SCHOOLVISER_SECRETE_KEY', 'default here'),
+
+
   'logo' => 'images/logo.svg',
 
-  'version' => env('APP_VERSION', 'Dev'),
 
   'admin_layout' => env('ADMIN_LAYOUT', 'admin.layouts.master'),
 
@@ -22,9 +29,9 @@ return [
 
 
   'intakes' => [
-    '1' => 'Jan Intake',
+    '1' => 'January Intake',
     '2' => 'July Intake',
-    '3' => 'Configure Intage Name'
+    '3' => 'July Intake',
   ],
 
   'public_storage' => 'public/storage',
@@ -160,7 +167,7 @@ return [
     'roles' => [
       'master' => 'Manages the overall system configuration, user management, and access levels.',
       'admin' => 'Manages the overall system configuration, user management, and access levels.',
-      'Headd Teacher' => 'Oversees the school’s operations, academic programs, and student discipline.',
+      'Head Teacher' => 'Oversees the school’s operations, academic programs, and student discipline.',
       'Academic Registrar' => 'Manages academic-related activities, including curriculum and scheduling.',
     ],
 

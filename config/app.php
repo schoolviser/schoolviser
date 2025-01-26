@@ -164,7 +164,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
-       
+
 
         /*
          * Application Service Providers...
@@ -186,14 +186,15 @@ return [
         /**
          * Module Service Providers...
          */
-        Modules\User\Providers\UserServiceProvider::class, // 1
+        Modules\User\Providers\UserServiceProvider::class,
 
-       // Modules\Student\Providers\StudentServiceProvider::class, // Depends On Course
+        //Modules\Student\Providers\StudentServiceProvider::class,
+
         //Modules\Accounting\Providers\AccountingServiceProvider::class,
         //Modules\Fee\Providers\FeeServiceProvider::class, // Depends On Student, Course, User, Accounting
-        
-        Modules\Admission\Providers\AdmissionServiceProvider::class, // Depends 
-        Modules\Applicant\Providers\ApplicantServiceProvider::class, // Depends On Admission
+
+        //Modules\Admission\Providers\AdmissionServiceProvider::class, // Depends
+        //Modules\Applicant\Providers\ApplicantServiceProvider::class, // Depends On Admission
 
         //Modules\Vendor\Providers\VendorServiceProvider::class,
         //Modules\Requisition\Providers\RequisitionServiceProvider::class,

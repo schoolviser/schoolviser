@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "568e6c77b9047ddf214f8193e7e757cf",
+    "content-hash": "e47cd1448f835485bb5aa771f80095a9",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -362,16 +362,16 @@
         },
         {
             "name": "delgont/armor",
-            "version": "v1.2.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delgont/armor.git",
-                "reference": "1a8a7b4bbd0291f44483c50919e8f06307c5df65"
+                "reference": "0c445a27a913ca02a8022d602679f886956f73e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delgont/armor/zipball/1a8a7b4bbd0291f44483c50919e8f06307c5df65",
-                "reference": "1a8a7b4bbd0291f44483c50919e8f06307c5df65",
+                "url": "https://api.github.com/repos/delgont/armor/zipball/0c445a27a913ca02a8022d602679f886956f73e0",
+                "reference": "0c445a27a913ca02a8022d602679f886956f73e0",
                 "shasum": ""
             },
             "require": {
@@ -422,9 +422,9 @@
             ],
             "support": {
                 "issues": "https://github.com/delgont/armor/issues",
-                "source": "https://github.com/delgont/armor/tree/v1.2.0"
+                "source": "https://github.com/delgont/armor/tree/v1.4.0"
             },
-            "time": "2024-11-19T15:21:06+00:00"
+            "time": "2024-11-27T16:33:51+00:00"
         },
         {
             "name": "delgont/core",

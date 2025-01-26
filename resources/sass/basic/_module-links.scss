@@ -1,38 +1,5 @@
-.module-nav {
- display: flex;
- flex-wrap: wrap; 
- justify-content: flex-end; 
- gap: 15px;
-
- .module-link, a {
-  font-size: 16px;
-  font-weight: 500;
-  color: #333;
-  text-decoration: none;
-  position: relative;
-  padding: 2px 0;
-  transition: color 0.3s, border-bottom 0.3s;
- }
-
- .module-link:hover, a:hover {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
- }
- .module-link:focus, .module-link:active, a:hover, a:active {
-  color: #0056b3; /* Darker blue for active state */
-  border-bottom: 2px solid #0056b3;
- }
-}
-
-
-/* Responsive adjustments for smaller screens */
-@media (max-width: 768px) {
- .module-nav {
-     justify-content: center;
-     gap: 10px;
- }
-
- .module-link {
-     font-size: 14px;
- }
+.module-links a.btn{
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 5px;
 }

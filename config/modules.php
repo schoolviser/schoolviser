@@ -102,6 +102,7 @@ return [
         */
         'generator' => [
             'config' => ['path' => 'Config', 'generate' => true],
+            'class' => ['path' => '', 'generate' => true],
             'command' => ['path' => 'Console', 'generate' => true],
             'migration' => ['path' => 'Database/Migrations', 'generate' => true],
             'seeder' => ['path' => 'Database/Seeders', 'generate' => true],
@@ -131,7 +132,7 @@ return [
         ],
     ],
 
-    
+
     /*
     |--------------------------------------------------------------------------
     | Scan Path
@@ -148,7 +149,7 @@ return [
             base_path('vendor/*/*'),
         ],
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | Composer File Template

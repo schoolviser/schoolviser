@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Entities\Term;
 use App\Entities\AcademicYear;
-
 use App\Repositories\TermRepository;
-
 
 class TermController extends Controller
 {
@@ -19,22 +16,15 @@ class TermController extends Controller
      */
     public function index()
     {
-
         $page = request()->query('page') ?? 1;
 
-        $terms = app(TermRepository::class)->fromCache()->paginate(15,$page);
-        $years = AcademicYear::all();
-        return (request()->expectsJson()) ? response()->json($terms, 200) : view('admin.settings.terms.index', compact('terms', 'years'));
-    }
+        $terms = app(TermRepository::class)->fromCache()->paginate(15, $page);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $years = AcademicYear::all();
+
+        return request()->expectsJson()
+            ? response()->json(['terms' => $terms, 'years' => $years], 200)
+            : view('admin.settings.terms.index', compact('terms', 'years'));
     }
 
     /**
@@ -45,30 +35,23 @@ class TermController extends Controller
      */
     public function store(Request $request)
     {
-        $max_end_date =  Term::max('end_date') ?? '2007-01-01';
+        $max_end_date = Term::max('end_date') ?? '2007-01-01';
 
-        $request->validate([
+        $validatedData = $request->validate([
             'year' => 'required',
             'term' => 'required',
-            'start_date' => 'required|date|after_or_equal:'.$max_end_date,
+            'start_date' => 'required|date|after_or_equal:' . $max_end_date,
             'end_date' => 'required|date|after:start_date',
             'next_term_start_date' => 'nullable|date'
         ], [
-            'start_date.after_or_equal' => 'There is already a session btn '.request('start_date').' and '.$max_end_date
+            'start_date.after_or_equal' => "There is already a session between {$request->start_date} and {$max_end_date}"
         ]);
 
-        $term = new Term;
+        $term = Term::create($validatedData);
 
-        $term->year = $request->year;
-        $term->term = $request->term;
-        $term->academic_year_id = $year->id ?? null;
-        $term->start_date = $request->start_date;
-        $term->end_date = $request->end_date;
-        $term->next_term_start_date = $request->next_term_start_date;
-
-        $term->save();
-
-        return back()->withInput()->with('created', 'Term session created successfully');
+        return request()->expectsJson()
+            ? response()->json(['message' => 'Term session created successfully', 'term' => $term], 201)
+            : back()->withInput()->with('created', 'Term session created successfully');
     }
 
     /**
@@ -80,21 +63,11 @@ class TermController extends Controller
     public function show($id)
     {
         $term = Term::findOrFail($id);
-
         $years = AcademicYear::all();
 
-        return view('admin.settings.terms.show', compact('term','years'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return request()->expectsJson()
+            ? response()->json(['term' => $term, 'years' => $years], 200)
+            : view('admin.settings.terms.show', compact('term', 'years'));
     }
 
     /**
@@ -106,22 +79,21 @@ class TermController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        //$year = AcademicYear::whereId($request->year)->firstOrFail();
-
         $term = Term::findOrFail($id);
 
-        $term->year = $request->year;
-        $term->term = $request->term;
-        //$term->academic_year_id = $year->id;
-        $term->start_date = $request->start_date;
-        $term->end_date = $request->end_date;
-        $term->next_term_start_date = $request->next_term_start_date;
+        $validatedData = $request->validate([
+            'year' => 'required',
+            'term' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+            'next_term_start_date' => 'nullable|date'
+        ]);
 
-        $term->save();
+        $term->update($validatedData);
 
-
-        return back()->withInput()->with('updated', 'Term info updated successfully .....');
+        return request()->expectsJson()
+            ? response()->json(['message' => 'Term info updated successfully', 'term' => $term], 200)
+            : back()->withInput()->with('updated', 'Term info updated successfully');
     }
 
     /**
@@ -132,6 +104,11 @@ class TermController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $term = Term::findOrFail($id);
+        $term->delete();
+
+        return request()->expectsJson()
+            ? response()->json(['message' => 'Term deleted successfully'], 200)
+            : back()->with('deleted', 'Term deleted successfully');
     }
 }

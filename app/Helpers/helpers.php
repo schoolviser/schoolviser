@@ -4,7 +4,7 @@ use App\Repository\SettingRepository;
 use App\Repository\HostelRepository;
 use App\Repositories\TermRepository;
 
-use App\Models\Accounts\AccountingPeriod; 
+use App\Models\Accounts\AccountingPeriod;
 
 use App\Repository\AccountingPeriodRepository;
 
@@ -27,11 +27,11 @@ if(!function_exists('role_has_permission')){
 
 
 //Get the current accounting period
-if(!function_exists('period')){
-    function period($id = null){
-        return ($id) ? app(AccountingPeriodRepository::class)->fromCache()->getPeriod($id) : app(AccountingPeriodRepository::class)->fromCache()->getCurrentPeriod();
-    }
-}
+//if(!function_exists('period')){
+    //function period($id = null){
+       // return ($id) ? app(AccountingPeriodRepository::class)->fromCache()->getPeriod($id) : app(AccountingPeriodRepository::class)->fromCache()->getCurrentPeriod();
+   // }
+//}
 
 //Get the current term detials
 if(!function_exists('term')){

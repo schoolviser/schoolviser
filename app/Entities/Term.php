@@ -7,13 +7,28 @@ use Carbon\Carbon;
 
 use Modules\Student\Entities\TermlyRegistration;
 
+use Illuminate\Support\Str;
+
+
 use Delgont\Core\Concerns\ModelHasMeta;
 
 class Term extends Model
 {
     use ModelHasMeta;
-    
+
     protected $guarded = [];
+
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (empty($model->uuid)) {
+                $model->uuid = (string) Str::uuid();
+            }
+        });
+    }
 
 
 

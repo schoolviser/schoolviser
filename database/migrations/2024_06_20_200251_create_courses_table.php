@@ -13,9 +13,10 @@ class CreateCoursesTable extends Migration
      */
     public function up()
     {
-        
+
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->unique()->nullable();
             $table->string('name')->unique();
             $table->string('abbr')->unique()->nullable();
             $table->text('description')->nullable();
@@ -30,6 +31,7 @@ class CreateCoursesTable extends Migration
         });
         Schema::create('course_units', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->unique()->nullable();
             $table->string('name')->unique();
             $table->string('code')->unique()->nullable();
             $table->enum('year', ['1','2','3','4'])->default('1');

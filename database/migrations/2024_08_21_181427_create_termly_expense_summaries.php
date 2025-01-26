@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('termly_expense_summaries', function (Blueprint $table) {
 
             $table->id();
+            $table->uuid()->unique()->nullable();
             $table->string('amount');
             $table->string('month');
-            
+
 
             $table->unsignedBigInteger('term_id')->nullable();
             $table->foreign('term_id')->references('id')->on('terms')->onDelete('set null');

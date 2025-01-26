@@ -11,9 +11,9 @@
 @endsection
 
 @section('module-links')
-    
+<a href="{{route('settings')}}" class="">Settings</a>
 @endsection
-    
+
 
 @section('content')
 <div class="row row-1">
@@ -29,7 +29,7 @@
             </div>
             <form class="card-body row py-5" action="{{route('site.settings.school.info.update')}}" method="POST" enctype="multipart/form-data">
                 @csrf
-        
+
                 <div class="col-lg-6">
                     <label for="logo">School Logo</label>
                     <input type="file" name="school_logo" id="">
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="col-lg-12"><hr></div>
-                
+
                 <div class="col-lg-3 mt-lg-3">
                     <p class="m-lg-0">School Name</p>
                 </div>
@@ -67,7 +67,7 @@
                 <div class="col-lg-12 pt-5">
                     <button type="submit" class="btn btn-primary btn-md w-100 rounded-4">Update</button>
                 </div>
-                
+
             </form>
         </div>
     </div>

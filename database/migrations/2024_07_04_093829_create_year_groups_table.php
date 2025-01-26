@@ -15,6 +15,7 @@ class CreateYearGroupsTable extends Migration
     {
         Schema::create('year_groups', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->unique()->nullable();
             $table->string('name')->unique();
             $table->text('meta')->nullable();
             $table->unsignedBigInteger('academic_year_id');

@@ -94,7 +94,7 @@ img.alignleft {
     padding: 0;
     display: block;
    }
-   
+
    img.alignright {
     padding: 0;
     float: right;
@@ -103,7 +103,7 @@ img.alignleft {
     display: block;
     background: none;
    }
-   
+
    blockquote {
     font-size: 16px;
     line-height: 32px;
@@ -113,39 +113,39 @@ img.alignleft {
     position: relative;
     width: auto;
    }
-   
+
    blockquote small {
     display: block;
     margin-top: 20px;
    }
-   
+
    pre {
     line-height: 18px;
     margin-bottom: 18px;
    }
-   
+
    .btn,
    a {
     outline: 0 !important;
     text-decoration: none !important;
    }
-   
+
    ins {
     text-decoration: none;
    }
-   
+
    sup {
     bottom: 1ex;
    }
-   
+
    sub {
     top: .5ex;
    }
-   
+
    p {
     padding: 0 0 20px 0;
    }
-   
+
    .check li:before {
     content: "\f00c";
     font-family: "FontAwesome";
@@ -156,27 +156,27 @@ img.alignleft {
     position: relative;
     top: 2px;
    }
-   
+
    .check li {
     font-size: 14px;
     list-style: none;
     margin-bottom: 4px;
    }
-   
+
    .check {
     margin-left: 0;
     padding-left: 0
    }
-   
+
    .section {
     position: relative;
     display: block;
    }
-   
+
    .white {
     background-color: #ffffff;
    }
-   
+
    strong {
     color: #030303;
    }
@@ -186,14 +186,14 @@ img.alignleft {
     line-height: 4.063rem;
     font-weight: 300;
    }
-   
-   
+
+
    .dark-text a {
     font-size: 14px;
     font-weight: bold;
     padding-left: 20px;
    }
-   
+
    .dark-text hr {
     width: 130px;
     margin-left: 0;
@@ -201,17 +201,17 @@ img.alignleft {
     border-width: 1px;
     border-color: #030303;
    }
-   
- 
-   
+
+
+
    .lead {
     text-transform: capitalize;
    }
-   
+
    .left-align img {
     margin-top: 20px;
    }
-   
+
    .drop-caps p:first-child::first-letter {
     color: #030303;
     display: block;
@@ -223,7 +223,7 @@ img.alignleft {
     margin-top: 5px;
     padding: 4px;
    }
-   
+
    .drop-caps.full p:first-child::first-letter {
     background: #030303 none repeat scroll 0 0 !important;
     color: #ffffff;
@@ -233,31 +233,31 @@ img.alignleft {
     font-family: Georgia;
     border-radius: 5px;
    }
-   
+
    mark {
     background-color: #0E97EE;
     color: #ffffff;
     padding: 0 10px;
    }
-   
+
    a:focus,
    a:hover {
     color: #0E97EE;
    }
-   
-   
-   
+
+
+
    /*Docs*/
-   
+
    .body {
    position: relative;
    }
-   
+
 
    .affix {
    position: static;
    }
-   
+
    @media (min-width: 992px) {
    .affix,
    .affix-bottom {
@@ -276,7 +276,7 @@ img.alignleft {
      margin-bottom: 0
    }
    }
-   
+
    @media (min-width: 1200px) {
    .affix,
    .affix-bottom {
@@ -287,13 +287,13 @@ img.alignleft {
 
 
 
-   
+
 /**forms **/
 .form-control {
     border: .5px solid !important; /* Bootstrap primary color */
     border-radius: 4px;
 }
-   
+
 .form-control:focus, .form-control.focused {
     border: 1px solid #0056b3; /* Darker shade for focus */
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
@@ -304,15 +304,6 @@ img.alignleft {
     color: #6c757d; /* Bootstrap secondary color for placeholder */
 }
 
-.module-links{
-    .nav{
-        a{
-            margin-left: 2px !important;
-            color: #404040;
-            font-weight: 400;
-        }
-    }
-}
 
 .topbar-section.bg-primary{
     color: #fff;

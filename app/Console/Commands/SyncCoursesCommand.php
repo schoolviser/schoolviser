@@ -12,7 +12,7 @@ class SyncCoursesCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'courses:sync';
+    protected $signature = 'schoolviser:sync-courses';
 
     /**
      * The console command description.
@@ -52,7 +52,7 @@ class SyncCoursesCommand extends Command
                 ['abbr' => $abbr],
                 ['name' => $name]
             );
-            
+
             $this->output->progressAdvance();
         }
         $this->output->progressFinish();

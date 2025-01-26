@@ -15,8 +15,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\SyncSubjects::class,
         Commands\TestMail::class,
+        Commands\ShowMomoSettingsCommand::class,
     ];
-    
+
 
     /**
      * Define the application's command schedule.
@@ -26,7 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        
+
 
          // Run Accounting Module Scheduled Commands
          $this->runAccountingScheduledCommands($schedule);

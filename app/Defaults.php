@@ -6,10 +6,6 @@ namespace App;
 class Defaults
 {
     protected $defaults = [
-        Defaults\ClazzDefaults::class,
-        Defaults\DepartmentDefaults::class,
-
-        \Modules\Fee\Defaults::class,
         \Modules\Accounting\Defaults::class
     ];
 
@@ -23,5 +19,5 @@ class Defaults
             }
         }
     }
-    
+
 }

@@ -12,19 +12,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+ Route::get('/test', 'TestController')->name('test_home');
 
-Auth::routes();
+
+
+Route::middleware(['schoolviser.shield'])->group(function () {
+    Auth::routes();
+});
 
 Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
+
 
  Route::get('/', 'DashboardController')->name('home');
 
  Route::get('/settings', 'Setting\SettingController')->middleware(['usertype:master|employee'])->name('settings');
- 
+
  Route::get('/site-settings/terms', 'TermController@index')->middleware(['usertype:master'])->name('settings.terms');
  Route::post('/site-settings/terms/store', 'TermController@store')->middleware(['usertype:master'])->name('settings.terms.store');
  Route::get('/site-settings/terms/{id}', 'TermController@show')->middleware(['usertype:master'])->name('settings.terms.show');
  Route::post('/site-settings/terms/update/{id}', 'TermController@update')->middleware(['usertype:master'])->name('settings.terms.update');
+ Route::get('/site-settings/terms/delete/{id}', 'TermController@destroy')->middleware(['usertype:master'])->name('settings.terms.delete');
 
  Route::get('/site-settings/classes', 'ClazzController@index')->middleware(['usertype:master'])->name('settings.clazzs');
  Route::post('/site-settings/classes/store', 'ClazzController@store')->middleware(['usertype:master'])->name('settings.clazzs.store');
@@ -33,7 +40,7 @@ Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
  Route::get('/site-settings/classes/edit/{id}', 'ClazzController@edit')->middleware(['usertype:master'])->name('settings.clazzs.edit');
 
 
-            
+
  Route::get('/site-settings', 'SiteSettingsController@index')->middleware(['usertype:master'])->name('site.settings');
  Route::get('/site-settings/school-info', 'SchoolInfoController@index')->middleware(['usertype:master'])->name('site.settings.school.info');
  Route::post('/site-settings/school-info/update', 'SchoolInfoController@update')->middleware(['usertype:master'])->name('site.settings.school.info.update');
@@ -43,6 +50,14 @@ Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
  Route::get('/site-settings/subjects/edit/{id}', 'SubjectController@edit')->middleware(['usertype:master'])->name('site.settings.subjects.edit');
  Route::post('/site-settings/subjects/update/{id}', 'SubjectController@update')->middleware(['usertype:master'])->name('site.settings.subjects.update');
  Route::post('/site-settings/subjects/store', 'SubjectController@store')->middleware(['usertype:master'])->name('site.settings.subjects.store');
+
+
+ Route::get('/site-settings/mtn-momo', 'MomoSettingsController@index')->middleware(['usertype:master'])->name('site.settings.mtn.momo');
+ Route::post('/site-settings/mtn-momo/store', 'MomoSettingsController@storeSettings')->middleware(['usertype:master'])->name('site.settings.mtn.momo.store');
+ Route::get('/site-settings/mtn-momo/generate-access-token', 'MomoSettingsController@generateAccesstoken')->middleware(['usertype:master'])->name('site.settings.mtn.momo.generate-token');
+
+ Route::get('/site-settings/configure-course-groups', 'CourseGroupController@index')->middleware(['usertype:master'])->name('site.settings.course.groups');
+
 
 
 });
@@ -62,6 +77,11 @@ Route::domain(env('APPLICATION_DOMAIN'))->group(function () {
  });
 
 });
+
+Route::get('/vue', function () {
+    return view('admin.indexvue');
+})->name('vue.index');
+
 
 
 

@@ -13,9 +13,9 @@
 @endsection
 
 @section('module-links')
-    
+
 @endsection
-    
+
 
 @section('content')
 <div class="row row-1">
@@ -23,23 +23,19 @@
   <!-- GENERAL SETTINGS -->
   <div class="col-lg-4">
     @include('admin.includes.settings.general')
+    @includeIf(false, 'admin.includes.settings.finance')
   </div>
 
   <!-- User Module Settings -->
   @includeIf('user::includes.settings.main', ['some' => 'data'])
 
   <!-- Admission Module Setttings -->
-
   @includeIf('admission::includes.settings.main', ['some' => 'data'])
 
+  @includeIf('accounting::includes.settings.main', ['module_name' => 'Accounting Module'])
 
-  @if (count($modules = config('schoolviser.modules', [])) > 0)
-    @foreach ($modules as $module)
-        @includeIf($module.'::includes.settings.main')
-    @endforeach
-  @else
-    <p>Module Settings</p>
-  @endif
+
+
 
 </div>
 @endsection
