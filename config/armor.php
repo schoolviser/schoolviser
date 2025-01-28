@@ -17,8 +17,8 @@ return [
       App\DashboardPermissionRegistrar::class,
       App\MomoPermissionRegistrar::class,
       App\SystemConfigurationPermissionRegistrar::class,
-      Modules\User\UserPermissionRegistrar::class
-
+      Modules\User\UserPermissionRegistrar::class,
+      App\CoursePermissionRegistrar::class
     ],
 
     /**

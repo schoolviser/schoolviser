@@ -1,4 +1,3 @@
-
 @extends(config('schoolviser.admin_layout'))
 
 @section('module-page-heading', 'Settings')
@@ -23,7 +22,8 @@
   <!-- GENERAL SETTINGS -->
   <div class="col-lg-4">
     @include('admin.includes.settings.general')
-    @includeIf(false, 'admin.includes.settings.finance')
+    @includeIf(true, 'admin.includes.settings.finance')
+    @includeWhen((config('schoolviser.type') == 'tertiary') ? true : false,'admin.includes.settings.courses')
   </div>
 
   <!-- User Module Settings -->
@@ -33,8 +33,6 @@
   @includeIf('admission::includes.settings.main', ['some' => 'data'])
 
   @includeIf('accounting::includes.settings.main', ['module_name' => 'Accounting Module'])
-
-
 
 
 </div>

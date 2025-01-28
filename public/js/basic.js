@@ -3017,6 +3017,12 @@ function withinMaxClamp(min, value, max) {
   \*******************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 (function ($) {
   "use strict";
@@ -3108,6 +3114,58 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
     // Optional: Refresh notifications count every minute
     //setInterval(fetchNotificationsCount, 60000);
   }
+  $("#createCourseGroupForm").on("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Clear previous errors
+    $(".error").text("");
+
+    // Serialize the form data
+    var formData = $(this).serialize();
+
+    // Perform the AJAX request
+    $.ajax({
+      url: $(this).attr("action"),
+      // Form action URL
+      method: "POST",
+      // HTTP method
+      data: formData,
+      // Form data
+      success: function success(response) {
+        // Show success message
+        alert(response.message);
+
+        // Append the new course group to the table
+        $("#courseGroupTable tbody").append("\n                    <tr>\n                        <td>".concat(response.data.id, "</td>\n                        <td>").concat(response.data.name, "</td>\n                        <td>").concat(response.data.course ? response.data.course.name : "N/A", "</td>\n                    </tr>\n                "));
+
+        // Reset the form
+        $("#createCourseGroupForm")[0].reset();
+      },
+      error: function error(xhr) {
+        // Handle validation errors
+        if (xhr.status === 422) {
+          var errors = xhr.responseJSON.errors;
+          for (var _i = 0, _Object$entries = Object.entries(errors); _i < _Object$entries.length; _i++) {
+            var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+              field = _Object$entries$_i[0],
+              messages = _Object$entries$_i[1];
+            // Show error messages next to the relevant inputs
+            var errorField = ".error-" + field.replace("_", "-");
+            // Check if the error field exists in the DOM
+            if ($(errorField).length) {
+              $(errorField).text(messages[0]); // Show the error message
+            } else {
+              // If the error field is not found, log it (optional)
+              alert("Error field not found for: ".concat(field));
+            }
+          }
+        } else {
+          // Handle other errors (e.g., server errors)
+          alert("Something went wrong. Please try again later.");
+        }
+      }
+    });
+  });
 })(jQuery);
 
 /***/ }),

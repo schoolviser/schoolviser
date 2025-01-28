@@ -1,14 +1,8 @@
 {
-    "/js/basic.js": "/js/basic.js?id=f382639dc1e6a4b8b3db9be1756241cc",
-    "/js/auth.js": "/js/auth.js?id=4f6fa82d5ced4427cf250ede4adae6ef",
-    "/js/app.js": "/js/app.js?id=a06eaf131045cfe376e6650313d128ad",
-    "/css/auth.css": "/css/auth.css?id=d5be418dcfea848aeba724bb7fbab13a",
-    "/css/basic.css": "/css/basic.css?id=78905386e561ed650588021c3a7fc52f",
-    "/css/app.css": "/css/app.css?id=6a0ca2e4eaf1c291887475f38cacac83",
-    "/js/accounting.js": "/js/accounting.js?id=5567110fec5c818f48b86cd0802f3304",
-    "/js/monthly-expense-summary.js": "/js/monthly-expense-summary.js?id=fbb9e47614ca2525c249066d3c9e360b",
-    "/css/accounting.css": "/css/accounting.css?id=68b329da9893e34099c7d8ad5cb9c940",
-    "/js/student.js": "/js/student.js",
-    "/css/student.css": "/css/student.css",
-    "/js/student-search.js": "/js/student-search.js"
+    "/js/basic.js": "/js/basic.js",
+    "/js/auth.js": "/js/auth.js",
+    "/js/app.js": "/js/app.js",
+    "/css/auth.css": "/css/auth.css",
+    "/css/basic.css": "/css/basic.css",
+    "/css/app.css": "/css/app.css"
 }

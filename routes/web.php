@@ -56,7 +56,17 @@ Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
  Route::post('/site-settings/mtn-momo/store', 'MomoSettingsController@storeSettings')->middleware(['usertype:master'])->name('site.settings.mtn.momo.store');
  Route::get('/site-settings/mtn-momo/generate-access-token', 'MomoSettingsController@generateAccesstoken')->middleware(['usertype:master'])->name('site.settings.mtn.momo.generate-token');
 
+ Route::get('/site-settings/configure-courses', 'CourseController@index')->middleware(['usertype:master'])->name('site.settings.courses');
+ Route::get('/site-settings/configure-courses/create', 'CourseController@create')->middleware(['usertype:master'])->name('site.settings.courses.create');
+ Route::post('/site-settings/configure-courses/store', 'CourseController@store')->middleware(['usertype:master'])->name('site.settings.courses.store');
+ Route::get('/site-settings/configure-courses/edit/{id}', 'CourseController@edit')->middleware(['usertype:master'])->name('site.settings.courses.edit');
+ Route::post('/site-settings/configure-courses/update/{id}', 'CourseController@update')->middleware(['usertype:master'])->name('site.settings.courses.update');
+ Route::get('/site-settings/configure-courses/destroy/{id}', 'CourseController@destroy')->middleware(['usertype:master'])->name('site.settings.courses.destroy');
+
  Route::get('/site-settings/configure-course-groups', 'CourseGroupController@index')->middleware(['usertype:master'])->name('site.settings.course.groups');
+ Route::post('/site-settings/configure-course-groups/store', 'CourseGroupController@store')->middleware(['usertype:master'])->name('site.settings.course.groups.store');
+ Route::get('/site-settings/configure-course-groups/destroy/{id}', 'CourseGroupController@destroy')->middleware(['usertype:master'])->name('site.settings.course.groups.destroy');
+ Route::post('/site-settings/configure-course-groups/update/{id}', 'CourseGroupController@update')->middleware(['usertype:master'])->name('site.settings.course.groups.update');
 
 
 

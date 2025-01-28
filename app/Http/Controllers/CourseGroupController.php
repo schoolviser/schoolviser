@@ -37,24 +37,29 @@ class CourseGroupController extends Controller
     public function store(Request $request)
     {
         // Validate incoming request data
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'short_code' => 'nullable|string|max:10|unique:course_groups',
             'description' => 'nullable|string',
-            'graduated' => 'required|in:1,0',
             'completes_on' => 'nullable|date',
-            'active' => 'required|in:1,0',
             'course_id' => 'nullable|exists:courses,id',
             'term_id' => 'nullable|exists:terms,id',
         ]);
 
+        // Create the course group
         $courseGroup = CourseGroup::create($request->all());
 
+        // Eager load the 'course' relationship
+        $courseGroup->load('course');
+
+        // Return the course group with its course details
         return response()->json([
             'data' => $courseGroup,
-            'message' => 'Course group created successfully.'
+            'message' => 'Course group created successfully.',
         ], 201);
     }
+
+
 
     /**
      * Display a specific course group.
@@ -98,32 +103,23 @@ class CourseGroupController extends Controller
         }
 
         // Validate incoming request data
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'short_code' => "nullable|string|max:10|unique:course_groups,short_code,$id",
             'description' => 'nullable|string',
-            'graduated' => 'required|in:1,0',
             'completes_on' => 'nullable|date',
-            'active' => 'required|in:1,0',
             'course_id' => 'nullable|exists:courses,id',
             'term_id' => 'nullable|exists:terms,id',
         ]);
 
-        // Handle validation errors
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->errors(),
-                'message' => 'Validation failed.'
-            ], 422);
-        }
 
         // Update the course group with the new data
         $courseGroup->update($request->all());
 
-        return response()->json([
+        return (request()->expectsJson()) ? response()->json([
             'data' => $courseGroup,
             'message' => 'Course group updated successfully.'
-        ], 200);
+        ], 200) : back()->with('updated', 'Course group updated successfully.');
     }
 
     /**
@@ -134,20 +130,21 @@ class CourseGroupController extends Controller
      */
     public function destroy($id)
     {
-        // Find the course group by ID
-        $courseGroup = CourseGroup::find($id);
+        $group = CourseGroup::findOrFail($id);
 
-        if (!$courseGroup) {
-            return response()->json([
-                'message' => 'Course group not found.'
-            ], 404);
+        // Check if the group has students
+        if ($group->students()->exists()) {
+            return (request()->expectsJson()) ? response()->json([
+                'message' => 'Group cannot be deleted because it has associated students.',
+            ], 400) : back()->with('failed', 'Group cannot be deleted because it has associated students.');
         }
 
-        // Delete the course group
-        $courseGroup->delete();
+        // Proceed to delete the group
+        $group->delete();
 
-        return response()->json([
-            'message' => 'Course group deleted successfully.'
-        ], 200);
+        return (request()->expectsJson()) ? response()->json([
+            'message' => 'Group deleted successfully.',
+        ], 200) : back()->with('deleted', 'Course Group deleted');
     }
+
 }
