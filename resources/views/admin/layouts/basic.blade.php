@@ -167,12 +167,12 @@
 
         <section>
             <div class="container-xl container-lg">
-                <div class="row py-3">
-                    <div class="col-lg-6">
+                <div class="row py-lg-4">
+                    <div class="col-lg-4">
                         <h2 class="text-capitalize p-0 m-0" style="font-weight: 700;">@yield('module-page-heading')</h2>
                     </div>
-                    <div class="col-lg-6 text-lg-end module-links module-quick-links module-nav">
-                    @yield('module-links')
+                    <div class="col-lg-8 text-lg-end  module-links module-quick-links module-nav">
+                        @yield('module-links')
                     </div>
                     <div class="col-lg-6">
                         <small class="fw-bold">@yield('module-page-description')</small>

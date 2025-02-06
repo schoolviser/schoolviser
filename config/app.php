@@ -188,7 +188,7 @@ return [
          */
         Modules\User\Providers\UserServiceProvider::class,
 
-        //Modules\Student\Providers\StudentServiceProvider::class,
+        Modules\Student\Providers\StudentServiceProvider::class,
 
         //Modules\Accounting\Providers\AccountingServiceProvider::class,
         //Modules\Fee\Providers\FeeServiceProvider::class, // Depends On Student, Course, User, Accounting

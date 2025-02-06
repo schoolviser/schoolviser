@@ -25,7 +25,7 @@ Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
 
  Route::get('/', 'DashboardController')->name('home');
 
- Route::get('/settings', 'Setting\SettingController')->middleware(['usertype:master|employee'])->name('settings');
+ Route::get('/settings', 'Setting\SettingController')->middleware(['usertype:master'])->name('settings');
 
  Route::get('/site-settings/terms', 'TermController@index')->middleware(['usertype:master'])->name('settings.terms');
  Route::post('/site-settings/terms/store', 'TermController@store')->middleware(['usertype:master'])->name('settings.terms.store');
