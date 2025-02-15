@@ -60,19 +60,13 @@ class DashboardController extends Controller
             })->count()
         ]);
 
-        $studentsPerCourse = Course::withCount(['students' => function($studentQuery){
+        $studentsPerCourseGraphData = Course::whereHas('students')->withCount(['students' => function($studentQuery){
             $studentQuery->whereHas('currentIntakeRegistration');
         }])->get()->mapWithKeys(function($item){
             return [($item['abbr']) ? $item['abbr'] : $item['name'] => $item['students_count']];
         })->toArray();
 
 
-        app('viser')->getLicenseType();
-
-
-        $studentsPerCourse = [];
-
-
-        return view('admin.index', compact('overview'));
+        return view('admin.index', compact('overview', 'studentsPerCourseGraphData'));
     }
 }

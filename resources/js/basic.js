@@ -164,4 +164,13 @@ require('./bootstrap');
        });
    });
 
+  $("#studentsInformationOffcanvas").on("shown.bs.offcanvas", function () {
+      $(this)
+          .find(".offcanvas-body")
+          .html(
+              "<p><strong>This is still under development...</strong><br>Students' information will be loaded here dynamically.</p>"
+          );
+  });
+
+
 })(jQuery);

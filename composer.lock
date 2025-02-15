@@ -362,16 +362,16 @@
         },
         {
             "name": "delgont/armor",
-            "version": "v1.4.0",
+            "version": "v1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delgont/armor.git",
-                "reference": "0c445a27a913ca02a8022d602679f886956f73e0"
+                "reference": "6b37f21b171c3c5580acd1fd67c32d497db70933"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delgont/armor/zipball/0c445a27a913ca02a8022d602679f886956f73e0",
-                "reference": "0c445a27a913ca02a8022d602679f886956f73e0",
+                "url": "https://api.github.com/repos/delgont/armor/zipball/6b37f21b171c3c5580acd1fd67c32d497db70933",
+                "reference": "6b37f21b171c3c5580acd1fd67c32d497db70933",
                 "shasum": ""
             },
             "require": {
@@ -422,9 +422,9 @@
             ],
             "support": {
                 "issues": "https://github.com/delgont/armor/issues",
-                "source": "https://github.com/delgont/armor/tree/v1.4.0"
+                "source": "https://github.com/delgont/armor/tree/v1.5.4"
             },
-            "time": "2024-11-27T16:33:51+00:00"
+            "time": "2025-02-09T10:22:24+00:00"
         },
         {
             "name": "delgont/core",

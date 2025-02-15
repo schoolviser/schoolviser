@@ -3,12 +3,6 @@
     $modulesCount = count($modules); // Get the number of modules
 @endphp
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
-<html lang="en" class="">
-<!--<![endif]-->
 
 <head>
 
@@ -25,10 +19,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Fonts -->
-    @if (false)
-    <link href="https://fonts.cdnfonts.com/css/open-dyslexic" rel="stylesheet">
-    @endif
+
     <!-- Base URL -->
     <meta name="base-url" content="{{ url('/') }}" />
 
@@ -55,11 +46,6 @@
     <!-- Page Level Js -->
     @yield('requiredJs')
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
 </head>
 
@@ -120,15 +106,21 @@
         <section id="topBar" class="topbar-section bg-primary">
            <div class="container">
             <div class="row py-2">
-                <a class="col-lg-3 d-flex align-items-center" href="{{ route('home') }}">
+                <a class="col-12 col-lg-3 d-flex align-items-center py-2 px-4" href="{{ route('home') }}">
                   <img src="{{ asset('images/logo.svg') }}" style="max-height: 40px; margin-right: 2px" alt="logo" class="img-fluid" />
                   <span class="text-small">{{config('schoolviser.version')}}</span>
                 </a>
-                <div class="col-lg-7">
+                <div class="col-6 col-lg-3 d-md-none">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
+                        ☰ Menu
+                    </button>
+                </div>
+
+                <div class="col-6 col-lg-7 d-none d-md-block">
                     <nav class="nav justify-content-end">
 
                         <!-- Site Settings -->
-                        <a class="nav-link my-0 py-0 d-flex align-items-center" href="{{ route('site.settings') }}">
+                        <a class="nav-link d-none my-0 py-0 d-lg-flex align-items-center" href="{{ route('site.settings') }}">
                             <img src="{{ asset('images/settings_24dp_F3F3F3_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px; margin-right: 2px;">
                             Site Settings
                         </a>
@@ -142,7 +134,7 @@
                                 New
                             </a>
                             <div class="dropdown-menu" aria-labelledby="messageDropdown">
-                                <a href="{{route('accounting.expenses.record.payment')}}" class="text-muted font-14 dropdown-item">Expense Payment</a>
+                                <a href="{{route('accounting.expenses.create')}}" class="text-muted font-14 dropdown-item">Expense Payment</a>
                                 <a href="" class="text-muted font-14 dev dropdown-item">Bill</a>
                                 <a href="{{route('accounting.invoices.create')}}" class="text-muted font-14 dropdown-item">New Invoice</a>
                                 <a href="" class="text-muted font-14 dev dropdown-item">New Project</a>
@@ -155,7 +147,7 @@
                     </nav>
 
                 </div>
-                <div class="col-lg-2 text-end">
+                <div class="col-6 col-lg-2 text-end">
                     <a class="nav-link cursor-pointer" data-bs-toggle="offcanvas" data-bs-target="#userOffCanvas" aria-controls="accountQuickLinksOffCanvas">
                     <div class="nav-profile-text text-capitalize px-3 d-inline">{{ 'Hi, '.auth()->user()->name }} </div>
                     <img src="{{ asset(auth()->user()->avator ?? 'images/avator.png') }}" alt="" class="rounded-circle d-inline" style="width: 35px;">
@@ -169,12 +161,12 @@
             <div class="container-xl container-lg">
                 <div class="row py-lg-4">
                     <div class="col-lg-4">
-                        <h2 class="text-capitalize p-0 m-0" style="font-weight: 700;">@yield('module-page-heading')</h2>
+                        <h2 class="text-capitalize py-1 p-lg-0 m-lg-0 module-page-heading" style="font-weight: 700;">@yield('module-page-heading')</h2>
                     </div>
-                    <div class="col-lg-8 text-lg-end  module-links module-quick-links module-nav">
+                    <div class="col-lg-8 text-lg-end  module-links module-quick-links module-nav pb-4">
                         @yield('module-links')
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 py-3 py-md-0">
                         <small class="fw-bold">@yield('module-page-description')</small>
                     </div>
                     <div class="col-lg-6 text-end">
@@ -182,8 +174,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3 col-lg-3">
-                        <div class="card rounded-3">
+                    <div class="col-md-3 col-lg-3 d-none d-md-block">
+                        <div class="card mb-3 rounded-3">
                             <div class="card-header">
                                 <div class="row">
                                     <div class="col-lg-12 text-uppercase">
@@ -201,17 +193,26 @@
                                     @yield('above-sidebar')
                                 </div>
 
-                                <nav class="sidebar mb-5" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
-                                    <ul class="nav">
-                                        <li>
-                                            <a href="{{ route('home') }}">
-                                                Dashboard
+                                <!-- Sidebar for Larger Screens -->
+                                <nav class="sidebar mb-5 d-none d-md-block" role="navigation">
+
+                                    <ul class="nav list-group">
+                                        <li class="list-group-item border-0">
+                                            <a class="nav-link d-flex align-items-center" href="{{ route('home') }}">
+                                                <img src="{{ asset('images/dashboard_24dp_434343_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px; margin-right: 4px;">
+                                                <span class="menu-title fw-bold text-muted" style="font-size: 15px;">{{ __('Dashboard') }}</span>
                                             </a>
+                                            <hr class="mb-0 mt-2" />
                                         </li>
 
                                         <!-- Student Module Links -->
                                         @if (in_array(Modules\Student\Providers\StudentServiceProvider::class, config('app.providers', [])))
                                             @includeIf('student::includes.navitems.main')
+                                        @endif
+
+                                        <!-- Fees Module Links -->
+                                        @if (in_array(Modules\Fee\Providers\FeeServiceProvider::class, config('app.providers', [])))
+                                            @includeIf('fee::includes.navitems.main')
                                         @endif
 
                                         <!-- Admission Module Links -->
@@ -224,14 +225,14 @@
                                             @includeIf('accounting::includes.navitems.main')
                                         @endif
 
-
                                         <!-- Other Modules -->
                                         @foreach ($modules as $module)
                                             @includeIf($module.'::includes.navitems.main', ['some' => 'data'])
                                         @endforeach
-
                                     </ul>
-                                </nav >
+                                </nav>
+
+
                                 <div class="below-sidebar">
                                     @yield('below-sidebar')
                                 </div>
@@ -244,7 +245,7 @@
                         <div class="content"  id="content">@yield('content')</div>
                     </div>
                 </div>
-             </div>
+            </div>
         </section>
 
 
@@ -291,6 +292,9 @@
     @endif
 
 @include('admin.includes.offcanvas.user')
+
+ <!-- Offcanvas Sidebar for Small Screens -->
+ @includeIf('admin.includes.offcanvas.sidebar_small', ['some' => 'data'])
 
 </body>
 

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use Modules\Student\Entities\Student;
 use Illuminate\Support\Str;
+use Modules\Fee\Entities\Fee;
+
 
 class Course extends Model
 {
@@ -34,6 +36,11 @@ class Course extends Model
     public function students()
     {
         return $this->hasMany(Student::class, 'course_id');
+    }
+
+    public function fees()
+    {
+        return $this->hasMany(Fee::class);
     }
 
 }

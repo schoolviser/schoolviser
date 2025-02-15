@@ -29,8 +29,13 @@
   <!-- User Module Settings -->
   @includeIf('user::includes.settings.main', ['some' => 'data'])
 
+    <!-- Fee Module Setttings -->
+  @includeIf('fee::includes.settings.main', ['some' => 'data'])
+
   <!-- Admission Module Setttings -->
   @includeIf('admission::includes.settings.main', ['some' => 'data'])
+
+
 
   @includeIf('accounting::includes.settings.main', ['module_name' => 'Accounting Module'])
 

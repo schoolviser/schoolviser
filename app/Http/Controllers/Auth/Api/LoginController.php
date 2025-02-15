@@ -26,10 +26,8 @@ class LoginController extends Controller
 
 
         $user = $request->user();
-        
-        $token = $user->createToken('Access Token');
-        
 
+        $token = $user->createToken('Access Token');
 
         $user->access_token = $token->accessToken;
 

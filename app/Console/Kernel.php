@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
 
+         $this->runStudentScheduledCommands($schedule);
+
 
          // Run Accounting Module Scheduled Commands
          $this->runAccountingScheduledCommands($schedule);
@@ -92,6 +94,15 @@ class Kernel extends ConsoleKernel
     {
         if (in_array('Modules\\Admission\\AdmissionServiceProvider', config('app.providers', []))) {
             $schedule->command('notify:pending-applications')->twiceWeekly(2, 5)->withoutOverlapping();
+        }
+    }
+
+     protected function runStudentScheduledCommands(Schedule $schedule)
+    {
+        if (in_array('Modules\\Admission\\StudentServiceProvider', config('app.providers', []))) {
+            $schedule->command('schoolviser:generate-student-access-numbers')
+             ->daily()
+             ->withoutOverlapping();
         }
     }
 

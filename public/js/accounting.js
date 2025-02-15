@@ -54,12 +54,12 @@ $(function () {
     // Check if element exists
     var cashFlowChartCtx = $("#cashFlowChart").get(0).getContext("2d");
     var cashFlowChart = new Chart(cashFlowChartCtx, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels: cashFlowChartLabels,
         datasets: [{
           label: 'Cash Inflows',
-          data: [100, 200],
+          data: [],
           borderColor: 'rgb(136,211,202)',
           backgroundColor: 'rgb(136,211,202)',
           fill: false,
