@@ -42,6 +42,17 @@
             @endif
 
 
+            <li class="list-group-item border-0">
+                <a class="nav-link d-flex align-items-center" href="{{ route('settings') }}">
+                    <img src="{{ asset('images/settings_24dp_333_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px; margin-right: 4px;">
+                    <span class="menu-title fw-bold text-muted" style="font-size: 15px;">{{ __('Site Settings') }}</span>
+                </a>
+                <hr class="mb-0 mt-2" />
+            </li>
+
+
+
+
         </ul>
 
     </div>

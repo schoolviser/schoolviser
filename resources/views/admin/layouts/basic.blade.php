@@ -12,9 +12,6 @@
 
     <title>@yield('title')</title>
 
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="keywords" content="">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -106,15 +103,17 @@
         <section id="topBar" class="topbar-section bg-primary">
            <div class="container">
             <div class="row py-2">
-                <a class="col-12 col-lg-3 d-flex align-items-center py-2 px-4" href="{{ route('home') }}">
-                  <img src="{{ asset('images/logo.svg') }}" style="max-height: 40px; margin-right: 2px" alt="logo" class="img-fluid" />
-                  <span class="text-small">{{config('schoolviser.version')}}</span>
-                </a>
-                <div class="col-6 col-lg-3 d-md-none">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
-                        ☰ Menu
-                    </button>
+                <div class="col-12 col-lg-3">
+                  <a href="{{ route('home') }}" class="d-flex align-items-center py-2">
+                    <img src="{{ asset('images/logo.svg') }}" style="max-height: 40px; margin-right: 2px" alt="logo" class="img-fluid" />
+                    <small class="text-small">{{config('schoolviser.version')}}</small>
+                  </a>
                 </div>
+
+                <button class="col-6 col-lg-3 d-md-none d-flex align-items-center btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">
+                    <img src="{{ asset('images/menu_24dp_EFEFEF_FILL0_wght400_GRAD0_opsz24.svg') }}" />
+                    <span >Menu</span>
+                </button>
 
                 <div class="col-6 col-lg-7 d-none d-md-block">
                     <nav class="nav justify-content-end">
@@ -158,20 +157,35 @@
         </section>
 
         <section>
-            <div class="container-xl container-lg">
-                <div class="row py-lg-4">
-                    <div class="col-lg-4">
-                        <h2 class="text-capitalize py-1 p-lg-0 m-lg-0 module-page-heading" style="font-weight: 700;">@yield('module-page-heading')</h2>
+            <div class="container container-xl container-lg">
+                <div class="row py-3 py-md-4">
+                    <div class="col-9 col-md-4">
+                        <h2 class="text-capitalize pt-3 pb-1 p-lg-0 m-lg-0 module-page-heading" style="font-weight: 700;">@yield('module-page-heading')</h2>
                     </div>
-                    <div class="col-lg-8 text-lg-end  module-links module-quick-links module-nav pb-4">
+                    <div class="d-none d-md-block mb-3 col-md-8 text-lg-end  module-links module-quick-links module-nav">
                         @yield('module-links')
                     </div>
-                    <div class="col-lg-6 py-3 py-md-0">
-                        <small class="fw-bold">@yield('module-page-description')</small>
+
+                    <div class="d-block d-md-none col-3 text-lg-end  mobile-module-links">
+                        <div class="dropdown pt-3 pb-1 p-lg-0 m-lg-0">
+                            <button
+                                class="btn btn-primary dropdown-toggle"
+                                type="button"
+                                id="triggerId"
+                                data-bs-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <img src="{{ asset('images/menu_24dp_EFEFEF_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="">
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="triggerId">
+                                @yield('mobile-module-links')
+
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="col-lg-6 text-end">
-                        <small class="fw-bold">@yield('module-page-description-right')</small>
-                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-md-3 col-lg-3 d-none d-md-block">

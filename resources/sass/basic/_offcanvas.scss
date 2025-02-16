@@ -1,0 +1,19 @@
+// Offcanvas
+
+body.modal-open {
+    overflow: hidden;
+}
+.offcanvas-backdrop.show, .modal-backdrop.show {
+      opacity: 1;
+      background-color: rgba(15,23,50,.5);
+      //backdrop-filter: blur(4px);
+}
+
+.offcanvas{
+    .offcanvas-header{
+        border-bottom: 1px solid;
+        .offcanvas-title{
+            font-weight: 500;
+        }
+    }
+}

@@ -3,9 +3,6 @@
 
 @section('module-page-heading', 'Dashboard')
 
-@section('module-page-description', config('schoolviser.school_name'))
-@section('module-page-description-right', config('schoolviser.school_name'))
-
 
 @section('requiredJs')
     <script src="{{ asset('chart.js/Chart.min.js') }}" defer></script>

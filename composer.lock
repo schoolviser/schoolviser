@@ -428,16 +428,16 @@
         },
         {
             "name": "delgont/core",
-            "version": "v1.8.0",
+            "version": "v1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delgont/core.git",
-                "reference": "707b25d2ca6016d8c88a3a25f9a83fab4830352c"
+                "reference": "18d33daffa9fa813427622716064e70ffcbdc3c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delgont/core/zipball/707b25d2ca6016d8c88a3a25f9a83fab4830352c",
-                "reference": "707b25d2ca6016d8c88a3a25f9a83fab4830352c",
+                "url": "https://api.github.com/repos/delgont/core/zipball/18d33daffa9fa813427622716064e70ffcbdc3c4",
+                "reference": "18d33daffa9fa813427622716064e70ffcbdc3c4",
                 "shasum": ""
             },
             "require": {
@@ -483,9 +483,9 @@
             ],
             "support": {
                 "issues": "https://github.com/delgont/core/issues",
-                "source": "https://github.com/delgont/core/tree/v1.8.0"
+                "source": "https://github.com/delgont/core/tree/v1.8.1"
             },
-            "time": "2024-11-18T10:43:38+00:00"
+            "time": "2025-02-16T17:23:07+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
