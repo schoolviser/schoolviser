@@ -32,10 +32,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         Login::class => [
             LoginListener::class
-        ],
-        \Illuminate\Auth\Events\Authenticated::class => [
-            \App\Listeners\StoreDefaultCompanyInSession::class,
-        ],
+        ]
     ];
 
     /**

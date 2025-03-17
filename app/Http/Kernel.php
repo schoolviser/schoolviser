@@ -43,7 +43,7 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
+            //\Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
     ];
 
@@ -65,9 +65,11 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
         'term' => \App\Http\Middleware\Term::class,
         'licensed' => \App\Http\Middleware\Licensed::class,
         'auth.applicant' => \Modules\Applicant\Http\Middleware\Applicant::class,
+        'company' => \Modules\Accounting\Http\Middleware\EnsureDefaultCompanyIsSet::class,
         'period' => \Modules\Accounting\Http\Middleware\EnsureCurrentPeriodIsSet::class,
         'schoolviser.shield' => \App\Http\Middleware\SchoolviserShield::class,
         'validate.session' => \App\Http\Middleware\ValidateSessionToken::class,

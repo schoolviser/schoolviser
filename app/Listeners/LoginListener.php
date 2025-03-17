@@ -45,18 +45,18 @@ class LoginListener
             $ip = $this->request->ip();
             $userAgent = $this->request->userAgent();
 
-            
-            
+
+
             $known = $user->authentications()->whereIpAddress($ip)->whereUserAgent($userAgent)->whereLoginSuccessful(true)->first();
 
             //Notify the User for unknow IP
             if($ip !== $user->last_ip){
                 $user->notify(new AccountAccessedFromDifferentIP($ip));
             }
-            
+
             $newUser = Carbon::parse($user->{$user->getCreatedAtColumn()})->diffInMinutes(Carbon::now()) < 1;
 
-            // Update the user's last_ip column with the current IP address
+            // Update the user's last_ip column with the current IP addressMi
             $user->update([
                 'last_ip' => $ip,
             ]);
@@ -68,7 +68,7 @@ class LoginListener
                 'login_successful' => true,
                 'location' => null,
             ]);
-            
+
 
 
         }

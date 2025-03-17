@@ -28,6 +28,8 @@ use App\Schoolviser;
 use Modules\Student\Entities\IntakeRegistration;
 use App\Entities\Course;
 
+use Modules\User\Entities\User;
+
 
 
 class DashboardController extends Controller

@@ -2,7 +2,7 @@
 
 return [
 
-  'version' => '1.5.0',
+  'version' => '1.7.0',
 
   'school_short_name' => env('APP_NAME', 'schoolviser'),
   'school_name' => env('SCHOOLVISER_SCHOOL_NAME', 'Delgont School Of Nursing & Midwifery'),

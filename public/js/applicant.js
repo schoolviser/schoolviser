@@ -3101,23 +3101,6 @@ $(function () {
     });
     $(this).closest("tr").remove(); // Remove the row
   });
-  var dropContainer = document.getElementById("dropcontainer");
-  var fileInput = document.getElementById("images");
-  dropContainer.addEventListener("dragover", function (e) {
-    // prevent default to allow drop
-    e.preventDefault();
-  }, false);
-  dropContainer.addEventListener("dragenter", function () {
-    dropContainer.classList.add("drag-active");
-  });
-  dropContainer.addEventListener("dragleave", function () {
-    dropContainer.classList.remove("drag-active");
-  });
-  dropContainer.addEventListener("drop", function (e) {
-    e.preventDefault();
-    dropContainer.classList.remove("drag-active");
-    fileInput.files = e.dataTransfer.files;
-  });
 
   // Education background start
   var educationRowIndex = $("#educationTable tr").length; // Initialize row index
@@ -3125,7 +3108,7 @@ $(function () {
 
   // Add a new education row
   $("#addEducationItem").on("click", function () {
-    var newRow = "\n        <tr class=\"education-row\">\n            <td>\n                <select name=\"education_background[".concat(educationRowIndex, "][qualifications]\" class=\"form-control qualification-input\">\n                    <option value=\"\" disabled selected>Select Qualification</option>\n                    <option value=\"PLE\">Primary Leaving Examinations (PLE) Certificate</option>\n                    <option value=\"UCE\">Uganda Certificate of Education (UCE)</option>\n                    <option value=\"UACE\">Uganda Advanced Certificate of Education (UACE)</option>\n                    <option value=\"Certificate\">Certificate</option>\n                    <option value=\"Diploma\">Diploma</option>\n                    <option value=\"Higher Diploma\">Higher Diploma</option>\n                    <option value=\"Bachelors\">Bachelor's Degree</option>\n                    <option value=\"Postgraduate Diploma\">Postgraduate Diploma</option>\n                    <option value=\"Masters\">Master's Degree</option>\n                    <option value=\"PhD\">Doctorate (PhD)</option>\n                </select>\n            </td>\n            <td>\n                <input type=\"text\" name=\"education_background[").concat(educationRowIndex, "][school]\" placeholder=\"School Name\" class=\"form-control school-input\">\n            </td>\n            <td>\n                <input type=\"date\" name=\"education_background[").concat(educationRowIndex, "][start_date]\" class=\"form-control start-date-input\">\n            </td>\n            <td>\n                <input type=\"date\" name=\"education_background[").concat(educationRowIndex, "][end_date]\" class=\"form-control end-date-input\">\n            </td>\n            <td>\n                <button class=\"remove-education btn btn-md btn-danger\">Remove</button>\n            </td>\n        </tr>");
+    var newRow = "\n        <tr class=\"education-row\">\n            <td>\n                <select name=\"education_backgrounds[".concat(educationRowIndex, "][qualifications]\" class=\"form-control qualification-input\">\n                    <option value=\"\" disabled selected>Select Qualification</option>\n                    <option value=\"PLE\">Primary Leaving Examinations (PLE) Certificate</option>\n                    <option value=\"UCE\">Uganda Certificate of Education (UCE)</option>\n                    <option value=\"UACE\">Uganda Advanced Certificate of Education (UACE)</option>\n                    <option value=\"Certificate\">Certificate</option>\n                    <option value=\"Diploma\">Diploma</option>\n                    <option value=\"Higher Diploma\">Higher Diploma</option>\n                    <option value=\"Bachelors\">Bachelor's Degree</option>\n                    <option value=\"Postgraduate Diploma\">Postgraduate Diploma</option>\n                    <option value=\"Masters\">Master's Degree</option>\n                    <option value=\"PhD\">Doctorate (PhD)</option>\n                </select>\n            </td>\n            <td>\n                <input type=\"text\" name=\"education_backgrounds[").concat(educationRowIndex, "][school]\" placeholder=\"School Name\" class=\"form-control school-input\">\n            </td>\n            <td>\n                <input type=\"date\" name=\"education_backgrounds[").concat(educationRowIndex, "][start_date]\" class=\"form-control start-date-input\">\n            </td>\n            <td>\n                <input type=\"date\" name=\"education_backgrounds[").concat(educationRowIndex, "][end_date]\" class=\"form-control end-date-input\">\n            </td>\n            <td>\n                <button class=\"remove-education btn btn-md btn-danger\">Remove</button>\n            </td>\n        </tr>");
     $("#educationTable").append(newRow);
     educationRowIndex++;
   });
@@ -3148,6 +3131,214 @@ $(function () {
       return q !== qualification;
     }); // Remove from tracking array
     $(this).closest("tr").remove();
+  });
+
+  //Adding upload docs
+  $("#addDocument").on("click", function () {
+    $("#documentContainer").append("\n            <div class=\"document-input\">\n                <input type=\"text\" name=\"descriptions[]\" placeholder=\"Document Description\" required>\n                <input type=\"file\" name=\"documents[]\" required>\n                <button type=\"button\" class=\"remove-btn\">Remove</button>\n            </div>\n        ");
+  });
+  $(document).on("click", ".remove-btn", function () {
+    $(this).closest(".document-input").remove();
+  });
+
+  //Personal details ajax request
+  $("#personalInfoForm").on("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    var form = $(this);
+    var submitButton = form.find("button[type='submit']");
+    var formData = new FormData(this);
+    $.ajax({
+      url: form.attr("action"),
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        submitButton.prop("disabled", true).text("Saving...");
+        form.find(".text-danger").text(""); // Clear only errors inside this form
+      },
+      success: function success(response) {
+        alert("Personal info updated successfully!"); // Show success message
+        submitButton.hide(); // Hide submit button after success
+        $("#personalFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
+        form.find(".card").addClass("card-form-completed");
+      },
+      error: function error(xhr) {
+        if (xhr.status === 422) {
+          var errors = xhr.responseJSON.errors;
+          $.each(errors, function (key, value) {
+            $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+          });
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+        submitButton.prop("disabled", false).text("Save");
+      }
+    });
+  });
+
+  //NOK details ajax request
+  $("#nokForm").on("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    var form = $(this);
+    var submitButton = form.find("button[type='submit']");
+    var formData = new FormData(this);
+    $.ajax({
+      url: form.attr("action"),
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        submitButton.prop("disabled", true).text("Saving...");
+        form.find(".text-danger").text(""); // Clear only errors inside this form
+      },
+      success: function success(response) {
+        alert("Next of kin info updated successfully!"); // Show success message
+        submitButton.prop("disabled", false).text("Update");
+        $("#nokFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
+        form.removeClass("card-form-incomplete");
+        form.addClass("card-form-completed");
+        $(".nok").addClass("card-form-completed");
+      },
+      error: function error(xhr) {
+        if (xhr.status === 422) {
+          var errors = xhr.responseJSON.errors;
+          $.each(errors, function (key, value) {
+            $("[name=\"".concat(key, "\"]")).addClass("is-invalid");
+            $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+          });
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+        submitButton.prop("disabled", false).text("Save");
+      }
+    });
+  });
+
+  //UCE results ajax request
+  $("#uceForm").on("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    var form = $(this);
+    var submitButton = form.find("button[type='submit']");
+    var formData = new FormData(this);
+    $.ajax({
+      url: form.attr("action"),
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        submitButton.prop("disabled", true).text("Saving...");
+        form.find(".text-danger").text(""); // Clear only errors inside this form
+      },
+      success: function success(response) {
+        alert("UCE info updated successfully!"); // Show success message
+        submitButton.prop("disabled", false).text("Update");
+        $("#uceFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
+        $(".uce").removeClass("card-form-incomplete");
+        $(".uce").addClass("card-form-completed");
+        form.removeClass("card-form-incomplete");
+        form.addClass("card-form-completed");
+      },
+      error: function error(xhr) {
+        if (xhr.status === 422) {
+          var errors = xhr.responseJSON.errors;
+          $.each(errors, function (key, value) {
+            $("[name=\"".concat(key, "\"]")).addClass("is-invalid");
+            $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+          });
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+        submitButton.prop("disabled", false).text("Save");
+      }
+    });
+  });
+
+  //Education bck
+  $("#educationBackForm").on("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    var form = $(this);
+    var submitButton = form.find("button[type='submit']");
+    var formData = new FormData(this);
+    $.ajax({
+      url: form.attr("action"),
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        submitButton.prop("disabled", true).text("Saving...");
+        form.find(".text-danger").text(""); // Clear only errors inside this form
+      },
+      success: function success(response) {
+        alert("education background info updated successfully!"); // Show success message
+        submitButton.prop("disabled", false).text("Update");
+        $("#educationFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
+        $("#ednback").removeClass("card-form-incomplete");
+        $("#ednback").addClass("card-form-completed");
+        form.removeClass("card-form-incomplete");
+        form.addClass("card-form-completed");
+      },
+      error: function error(xhr) {
+        if (xhr.status === 422) {
+          var errors = xhr.responseJSON.errors;
+          $.each(errors, function (key, value) {
+            $("[name=\"".concat(key, "\"]")).addClass("is-invalid");
+            $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+          });
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+        submitButton.prop("disabled", false).text("Save");
+      }
+    });
+  });
+
+  //Choose Couses
+  $("#chooseCoursesForm").on("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    var form = $(this);
+    var submitButton = form.find("button[type='submit']");
+    var formData = new FormData(this);
+    $.ajax({
+      url: form.attr("action"),
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        submitButton.prop("disabled", true).text("Saving...");
+        form.find(".text-danger").text(""); // Clear only errors inside this form
+      },
+      success: function success(response) {
+        alert("Your course choices updated or saved successfully...!"); // Show success message
+        submitButton.prop("disabled", false).text("Update");
+        $("#chooseCoursesFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
+        $("#mcc").removeClass("card-form-incomplete");
+        $("#mcc").addClass("card-form-completed");
+        form.closest('.card').removeClass("card-form-incomplete");
+        form.closest('.card').addClass("card-form-completed");
+      },
+      error: function error(xhr) {
+        if (xhr.status === 422) {
+          var errors = xhr.responseJSON.errors;
+          $.each(errors, function (key, value) {
+            $("[name=\"".concat(key, "\"]")).addClass("is-invalid");
+            $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+          });
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+        submitButton.prop("disabled", false).text("Save");
+      }
+    });
   });
 });
 

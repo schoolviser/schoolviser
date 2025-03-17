@@ -44,6 +44,8 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
 
+        $this->redirectTo = 'hello';
+
           // Apply the middleware only on the login page route
           $this->middleware('track.page-access:login-page')->only('showLoginForm');
     }
@@ -55,8 +57,6 @@ class LoginController extends Controller
     {
         return $this->multiAuthCredentials($request);
     }
-
-
 
 
     public function username()

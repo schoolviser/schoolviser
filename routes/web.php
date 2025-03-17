@@ -81,12 +81,6 @@ Route::group(['middleware' => ['auth','usertype:master']], function(){
 });
 
 
-Route::domain(env('APPLICATION_DOMAIN'))->group(function () {
- Route::get('/', function () {
-  return "Coming Soon - Under development";
- });
-
-});
 
 Route::get('/vue', function () {
     return view('admin.indexvue');

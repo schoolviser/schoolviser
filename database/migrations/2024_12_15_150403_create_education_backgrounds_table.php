@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->text('meta')->nullabl();
+            $table->text('meta')->nullable();
             $table->morphs('model');
             $table->timestamps();
         });

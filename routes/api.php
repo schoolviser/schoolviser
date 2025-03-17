@@ -22,7 +22,7 @@ Route::post('/login', 'Auth\Api\LoginController@login');
 
 // Protected routes with 'auth:api' middleware
 Route::middleware('auth:api')->group(function () {
-    
+
     Route::get('/hello', function(){
         return response()->json(['hello' => 'hello']);
     });
@@ -30,7 +30,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    
-   
+
+
 
 });

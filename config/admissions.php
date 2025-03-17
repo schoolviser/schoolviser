@@ -2,7 +2,7 @@
 
 return [
 
-  'use_application_domain' => false,
+  'use_application_domain' => env('USE_APPLICATION_DOMAIN', false),
 
   'application_domain' => 'apply.aliceanume.ac.ug',
 

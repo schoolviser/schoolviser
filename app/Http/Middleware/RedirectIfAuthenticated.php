@@ -14,13 +14,14 @@ class RedirectIfAuthenticated
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string|null  $guard 
+     * @param  string|null  $guard
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)
     {
+
         if (Auth::guard($guard)->check()) {
-            $userType = Auth::guard()->user()->user_type;
+            $userType = Auth::guard($guard)->user()->user_type;
             if ($userType == 'Modules\User\Entities\Master') {
                 //redirect basing on the usertype
                 return redirect(RouteServiceProvider::HOME);

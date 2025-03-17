@@ -25,14 +25,20 @@ class LoginController extends Controller
 
 
 
-        $user = $request->user();
+        $user = Auth::user();
 
-        $token = $user->createToken('Access Token');
+        if(!$user){
+            return response()->json([
+                'message' => 'User not found'
+            ], 401);
+        }
 
-        $user->access_token = $token->accessToken;
+        $token = $user->createToken('Access Token')->accessToken;
+
+        //$user->access_token = $token->accessToken;
 
         return response()->json([
-            'token' => $user->access_token
+            'token' => $token
         ], 200);
     }
 
@@ -47,6 +53,6 @@ class LoginController extends Controller
 
     public function username()
     {
-        return 'email';
+        return 'username_email';
     }
 }

@@ -1,8 +1,13 @@
 {
-    "/js/basic.js": "/js/basic.js",
-    "/js/auth.js": "/js/auth.js",
-    "/js/app.js": "/js/app.js",
-    "/css/auth.css": "/css/auth.css",
-    "/css/basic.css": "/css/basic.css",
-    "/css/app.css": "/css/app.css"
+    "/js/basic.js": "/js/basic.js?id=a1a778ad940929ff201e376adbf1cc30",
+    "/js/auth.js": "/js/auth.js?id=b97a2bc851ebdad3be55f206398a314a",
+    "/js/app.js": "/js/app.js?id=513b150ae9c9f892b4afffe855a1ce22",
+    "/css/auth.css": "/css/auth.css?id=f9bedefee0da673d10c83686d11fecb5",
+    "/css/basic.css": "/css/basic.css?id=6429f3b4730253ffebba5b477c5ecd50",
+    "/css/app.css": "/css/app.css?id=f61b1bf91d0d70103efec62119b30f0f",
+    "/js/accounting.js": "/js/accounting.js?id=dc4384df882177e1d5e3a2d1c082ef0a",
+    "/js/monthly-expense-summary.js": "/js/monthly-expense-summary.js?id=5ae678a4c7738cd40de0c219aca4fa53",
+    "/css/accounting.css": "/css/accounting.css?id=68b329da9893e34099c7d8ad5cb9c940",
+    "/js/applicant.js": "/js/applicant.js",
+    "/css/applicant.css": "/css/applicant.css"
 }
