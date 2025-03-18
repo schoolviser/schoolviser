@@ -19,6 +19,7 @@ class LoginController extends Controller
 
         if(!Auth::attempt($this->credentials($request))){
             return response()->json([
+                'suucess' => false,
                 'message' => 'Invalid email or password'
             ], 401);
         }
@@ -29,6 +30,7 @@ class LoginController extends Controller
 
         if(!$user){
             return response()->json([
+                'success' => false,
                 'message' => 'User not found'
             ], 401);
         }
@@ -38,6 +40,8 @@ class LoginController extends Controller
         //$user->access_token = $token->accessToken;
 
         return response()->json([
+            'success' => true,
+            'message' => 'Login succesful',
             'token' => $token
         ], 200);
     }
