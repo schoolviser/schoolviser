@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e47cd1448f835485bb5aa771f80095a9",
+    "content-hash": "2bad344cf5e6ee5c0b033753e1d455a3",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -362,16 +362,16 @@
         },
         {
             "name": "delgont/armor",
-            "version": "v1.5.4",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delgont/armor.git",
-                "reference": "6b37f21b171c3c5580acd1fd67c32d497db70933"
+                "reference": "1b91be53c00cdd2f0fa05c8d990383faba30ae4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delgont/armor/zipball/6b37f21b171c3c5580acd1fd67c32d497db70933",
-                "reference": "6b37f21b171c3c5580acd1fd67c32d497db70933",
+                "url": "https://api.github.com/repos/delgont/armor/zipball/1b91be53c00cdd2f0fa05c8d990383faba30ae4f",
+                "reference": "1b91be53c00cdd2f0fa05c8d990383faba30ae4f",
                 "shasum": ""
             },
             "require": {
@@ -422,22 +422,22 @@
             ],
             "support": {
                 "issues": "https://github.com/delgont/armor/issues",
-                "source": "https://github.com/delgont/armor/tree/v1.5.4"
+                "source": "https://github.com/delgont/armor/tree/v1.7.0"
             },
-            "time": "2025-02-09T10:22:24+00:00"
+            "time": "2025-05-15T12:00:40+00:00"
         },
         {
             "name": "delgont/core",
-            "version": "v1.8.1",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/delgont/core.git",
-                "reference": "18d33daffa9fa813427622716064e70ffcbdc3c4"
+                "reference": "12c7673644be08a3cd2be58e62fd223e701cf90a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/delgont/core/zipball/18d33daffa9fa813427622716064e70ffcbdc3c4",
-                "reference": "18d33daffa9fa813427622716064e70ffcbdc3c4",
+                "url": "https://api.github.com/repos/delgont/core/zipball/12c7673644be08a3cd2be58e62fd223e701cf90a",
+                "reference": "12c7673644be08a3cd2be58e62fd223e701cf90a",
                 "shasum": ""
             },
             "require": {
@@ -483,9 +483,9 @@
             ],
             "support": {
                 "issues": "https://github.com/delgont/core/issues",
-                "source": "https://github.com/delgont/core/tree/v1.8.1"
+                "source": "https://github.com/delgont/core/tree/v1.10.0"
             },
-            "time": "2025-02-16T17:23:07+00:00"
+            "time": "2025-05-19T18:13:22+00:00"
         },
         {
             "name": "dflydev/dot-access-data",

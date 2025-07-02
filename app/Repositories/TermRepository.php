@@ -17,6 +17,20 @@ class TermRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    public function getAll()
+    {
+        return $this->cached(CacheKeys::TERMS, function(){
+            return $this->model->get();
+        });
+    }
+
+    public function getTerm($id)
+    {
+        return $this->cached(CacheKeys::TERM.$id, function() use ($id){
+            return $this->model->whereId($id)->orWhereUuid($id)->firstOrFail();
+        });
+    }
+
 
     public function getCurrentTerm()
     {
@@ -33,5 +47,5 @@ class TermRepository extends BaseRepository
         });
     }
 
-   
+
 }

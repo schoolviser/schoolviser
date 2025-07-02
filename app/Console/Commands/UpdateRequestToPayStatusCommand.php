@@ -16,14 +16,14 @@ class UpdateRequestToPayStatusCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'momo:update-request-to-pay-status {transactionId? : The transaction ID or partial ID to search}';
+    protected $signature = 'momo:update-request-to-pay-status {transactionId? : The transaction ID}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Search for and update the status of a Request to Pay transaction using the MoMo API';
+    protected $description = 'Update the status of a Request to Pay transaction using the MoMo API';
 
     /**
      * Execute the console command.
@@ -32,51 +32,16 @@ class UpdateRequestToPayStatusCommand extends Command
      */
     public function handle()
     {
-        $partialTransactionId = $this->argument('transactionId');
+        $transactionId = $this->argument('transactionId');
 
-        if (!$partialTransactionId) {
-            $this->error('Please provide at least the first 3 digits of a transaction ID.');
-            return Command::FAILURE;
-        }
-
-        // Search for matching transactions
-        $transactions = MomoRequestToPay::where('transaction_id', 'like', "{$partialTransactionId}%")
-            ->select('id', 'transaction_id', 'momo_transaction_id', 'status', 'transaction_status')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        if ($transactions->isEmpty()) {
-            $this->error("No transactions found matching: {$partialTransactionId}");
-            return Command::FAILURE;
-        }
-
-        // Display the list of transactions in a table
-        $this->info("Matching transactions:");
-        $this->table(
-            ['ID', 'Transaction ID', 'MoMo Transaction ID', 'Status', 'Transaction Status'],
-            $transactions->map(function ($transaction) {
-                return [
-                    'ID' => $transaction->id,
-                    'Transaction ID' => $transaction->transaction_id,
-                    'MoMo Transaction ID' => $transaction->momo_transaction_id ?? 'N/A',
-                    'Status' => $transaction->status,
-                    'Transaction Status' => $transaction->transaction_status,
-                ];
-            })->toArray()
-        );
-
-        // Prompt the user to select a transaction ID
-        $chosenTransactionId = $this->ask('Enter the full Transaction ID from the list to update');
-
-        // Find the selected transaction in the database
-        $transaction = MomoRequestToPay::where('transaction_id', $chosenTransactionId)->first();
+        $transaction = MomoRequestToPay::where('transaction_id', $transactionId)->first();
 
         if (!$transaction) {
-            $this->error("No transaction found with ID: {$chosenTransactionId}");
+            $this->error("No transaction found with ID: {$transactionId}");
             return Command::FAILURE;
         }
 
-        $this->info("Fetching status for Transaction ID: {$chosenTransactionId}");
+        $this->info("Fetching status for Transaction ID: {$transactionId}");
 
         // Create a new Collection instance to call the API
         $collection = new Collection();

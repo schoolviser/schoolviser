@@ -1,0 +1,44 @@
+
+
+
+/* hover links */
+.sidebar .nav>li:not(.active)>a:hover {
+ color: #0E97EE;
+ text-decoration: none;
+ background-color: transparent;
+ border-left-width: 1px;
+ border-left-color: #0E97EE;
+}
+/* focus links */
+.sidebar .nav>li>a:focus {
+ text-decoration: none;
+ background-color: transparent;
+}
+/* active links */
+.sidebar .nav>.active>a {
+ color: #0E97EE;
+ text-decoration: none;
+ background-color: transparent;
+ border-left-color: #0E97EE;
+}
+.sidebar .nav>.active>a,
+.sidebar .nav>.active:hover>a,
+.sidebar .nav>.active:focus>a {
+font-weight: 700;
+}
+/* nested active links */
+.sidebar .nav .nav>.active>a,
+.sidebar .nav .nav>.active:hover>a,
+.sidebar .nav .nav>.active:focus>a {
+font-weight: 500;
+}
+/* nested links */
+.sidebar .nav .nav{
+ li{
+     width: 100% !important;
+     a{
+         padding-left: 40px;
+         font-size: 14px;
+     }
+ }
+}

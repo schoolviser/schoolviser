@@ -3025,8 +3025,6 @@ $(function () {
 
   // Initialize the rowIndex
   var rowIndex = $("#subjectsTable tr").length;
-  console.log(baseUrl);
-  console.log(rowIndex);
 
   // Loop through the existing UCE results to add them to the addedSubjects array
   $("#subjectsTable tr").each(function () {
@@ -3036,7 +3034,7 @@ $(function () {
     }
   });
   $("#addSubjectItem").on("click", function () {
-    var newRow = "\n            <tr class=\"subject-row\">\n                <td class=\"subject-code\"></td>\n                <td>\n                    <input list=\"subjectList-".concat(rowIndex, "\" name=\"subjects[").concat(rowIndex, "][name]\" placeholder=\"Type or Select Subject\" class=\"form-control subject-input\">\n                    <datalist id=\"subjectList-").concat(rowIndex, "\">\n                        <!-- Subjects will be loaded via AJAX -->\n                    </datalist>\n                </td>\n                <td>\n                    <select name=\"subjects[").concat(rowIndex, "][score]\" id=\"\" class=\"form-control\">\n                        <option value=\"D1\">D1</option>\n                        <option value=\"D2\">D2</option>\n                        <option value=\"C3\">C3</option>\n                        <option value=\"C4\">C4</option>\n                        <option value=\"C5\">C5</option>\n                        <option value=\"C6\">C6</option>\n                        <option value=\"P7\">P7</option>\n                        <option value=\"P8\">P8</option>\n                        <option value=\"F9\">F9</option>\n                    </select>\n                </td>\n                <td>\n                    <button class=\"remove-subject btn btn-md btn-danger\">Remove</button>\n                </td>\n\n            </tr>");
+    var newRow = "\n            <tr class=\"subject-row\">\n                <td class=\"subject-code\"></td>\n                <td>\n                    <input list=\"subjectList-".concat(rowIndex, "\" name=\"subjects[").concat(rowIndex, "][name]\" placeholder=\"Type or Select Subject\" class=\"form-control subject-input\">\n                    <datalist id=\"subjectList-").concat(rowIndex, "\">\n                        <!-- Subjects will be loaded via AJAX -->\n                    </datalist>\n                    <small class=\"text-danger error-subjects-").concat(rowIndex, "-name\"></small>\n                </td>\n                <td>\n                    <select name=\"subjects[").concat(rowIndex, "][score]\" id=\"\" class=\"form-control\">\n                        <option value=\"D1\">D1</option>\n                        <option value=\"D2\">D2</option>\n                        <option value=\"C3\">C3</option>\n                        <option value=\"C4\">C4</option>\n                        <option value=\"C5\">C5</option>\n                        <option value=\"C6\">C6</option>\n                        <option value=\"P7\">P7</option>\n                        <option value=\"P8\">P8</option>\n                        <option value=\"F9\">F9</option>\n                    </select>\n                    <small class=\"text-danger error-subjects-").concat(rowIndex, "-score\"></small>\n                </td>\n                <td>\n                    <button class=\"remove-subject btn btn-md btn-danger\">Remove</button>\n                </td>\n\n            </tr>");
     $("#subjectsTable").append(newRow);
 
     // Load products for the datalist of the new row
@@ -3156,19 +3154,20 @@ $(function () {
       processData: false,
       beforeSend: function beforeSend() {
         submitButton.prop("disabled", true).text("Saving...");
-        form.find(".text-danger").text(""); // Clear only errors inside this form
+        form.find(".text-danger").text(""); // Clear all previous error messages
       },
       success: function success(response) {
         alert("Personal info updated successfully!"); // Show success message
-        submitButton.hide(); // Hide submit button after success
         $("#personalFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
         form.find(".card").addClass("card-form-completed");
+        submitButton.prop("disabled", false).text("Update Personal Info");
       },
       error: function error(xhr) {
         if (xhr.status === 422) {
           var errors = xhr.responseJSON.errors;
           $.each(errors, function (key, value) {
-            $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+            var errorClass = ".error-".concat(key.replace(/_/g, "-")); // Convert underscores to dashes
+            $(errorClass).text(value[0]); // Assign the first error message
           });
         } else {
           alert("An error occurred. Please try again.");
@@ -3197,7 +3196,7 @@ $(function () {
       },
       success: function success(response) {
         alert("Next of kin info updated successfully!"); // Show success message
-        submitButton.prop("disabled", false).text("Update");
+        submitButton.prop("disabled", false).text("Update info");
         $("#nokFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
         form.removeClass("card-form-incomplete");
         form.addClass("card-form-completed");
@@ -3207,8 +3206,8 @@ $(function () {
         if (xhr.status === 422) {
           var errors = xhr.responseJSON.errors;
           $.each(errors, function (key, value) {
-            $("[name=\"".concat(key, "\"]")).addClass("is-invalid");
-            $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+            var errorClass = ".error-".concat(key.replace(/_/g, "-")); // Convert underscores to dashes
+            $(errorClass).text(value[0]); // Assign the first error message
           });
         } else {
           alert("An error occurred. Please try again.");
@@ -3233,28 +3232,38 @@ $(function () {
       processData: false,
       beforeSend: function beforeSend() {
         submitButton.prop("disabled", true).text("Saving...");
-        form.find(".text-danger").text(""); // Clear only errors inside this form
+        form.find(".text-danger").text(""); // Clear all previous error messages
       },
       success: function success(response) {
         alert("UCE info updated successfully!"); // Show success message
         submitButton.prop("disabled", false).text("Update");
         $("#uceFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
-        $(".uce").removeClass("card-form-incomplete");
-        $(".uce").addClass("card-form-completed");
-        form.removeClass("card-form-incomplete");
-        form.addClass("card-form-completed");
+        $(".uce").removeClass("card-form-incomplete").addClass("card-form-completed");
+        form.removeClass("card-form-incomplete").addClass("card-form-completed");
       },
       error: function error(xhr) {
-        if (xhr.status === 422) {
+        if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
           var errors = xhr.responseJSON.errors;
           $.each(errors, function (key, value) {
-            $("[name=\"".concat(key, "\"]")).addClass("is-invalid");
-            $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+            var errorKey = key.replace(/_/g, "-"); // Convert underscores to dashes
+            var errorClass = ".error-".concat(errorKey);
+
+            // Check if it's a subject-related error
+            if (key.startsWith("subjects.")) {
+              var index = key.match(/\d+/)[0]; // Extract subject index
+              var fieldName = key.split(".").pop(); // Get field name (name or score)
+              var errorSelector = ".error-subjects-".concat(index, "-").concat(fieldName);
+              $(errorSelector).text(value[0]); // Assign error message to the correct subject field
+            } else if (key === "subjects") {
+              $(".error-subjects").text(value[0]); // Display min subjects error above table
+            } else {
+              $(errorClass).text(value[0]); // Assign other errors (school, index_number, etc.)
+            }
           });
         } else {
           alert("An error occurred. Please try again.");
         }
-        submitButton.prop("disabled", false).text("Save");
+        submitButton.prop("disabled", false).text("Update");
       }
     });
   });
@@ -3300,6 +3309,47 @@ $(function () {
     });
   });
 
+  //Choose Course
+  $("#chooseCourseForm").on("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    var form = $(this);
+    var submitButton = form.find("button[type='submit']");
+    var formData = new FormData(this);
+    $.ajax({
+      url: form.attr("action"),
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        submitButton.prop("disabled", true).text("Saving...");
+        form.find(".text-danger").text(""); // Clear only errors inside this form
+      },
+      success: function success(response) {
+        alert("Your course choice updated or saved successfully...!"); // Show success message
+        submitButton.prop("disabled", false).text("Update Course");
+        $("#chooseCourseFormCompletionHolder").html('<p class="text-success m-0">Form Completed</p>');
+        $(".choose-course-card").removeClass("card-form-incomplete");
+        $(".choose-course-card").addClass("card-form-completed");
+        submitButton.removeClass('btn-primary');
+        submitButton.addClass("btn-secondary");
+      },
+      error: function error(xhr) {
+        if (xhr.status === 422) {
+          var errors = xhr.responseJSON.errors;
+          $.each(errors, function (key, value) {
+            var errorClass = ".error-".concat(key.replace(/_/g, "-")); // Convert underscores to dashes
+            $(errorClass).text(value[0]); // Assign the first error message
+          });
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+        submitButton.prop("disabled", false).text("Save");
+      }
+    });
+  });
+
   //Choose Couses
   $("#chooseCoursesForm").on("submit", function (e) {
     e.preventDefault(); // Prevent default form submission
@@ -3332,6 +3382,43 @@ $(function () {
           $.each(errors, function (key, value) {
             $("[name=\"".concat(key, "\"]")).addClass("is-invalid");
             $("[name=\"".concat(key, "\"]")).next(".text-danger").text(value[0]);
+          });
+        } else {
+          alert("An error occurred. Please try again.");
+        }
+        submitButton.prop("disabled", false).text("Save");
+      }
+    });
+  });
+
+  //Submit
+  $("#submitApplicatiion").on("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    var form = $(this);
+    var submitButton = form.find("button[type='submit']");
+    var formData = new FormData(this);
+    $.ajax({
+      url: form.attr("action"),
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      beforeSend: function beforeSend() {
+        submitButton.prop("disabled", true).text("Submitting...");
+        form.find(".text-danger").text(""); // Clear only errors inside this form
+      },
+      success: function success(response) {
+        alert("Your Application submitted successfully"); // Show success message
+        submitButton.hide();
+        $('.hide-submitted').hide();
+      },
+      error: function error(xhr) {
+        if (xhr.status === 422) {
+          var errors = xhr.responseJSON.errors;
+          $.each(errors, function (key, value) {
+            var errorClass = ".error-".concat(key.replace(/_/g, "-")); // Convert underscores to dashes
+            $(errorClass).text(value[0]); // Assign the first error message
           });
         } else {
           alert("An error occurred. Please try again.");

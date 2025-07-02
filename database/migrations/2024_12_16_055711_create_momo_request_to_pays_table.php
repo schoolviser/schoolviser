@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('payee_note')->nullable();
             $table->string('currency', 3)->default('UGX');
             $table->enum('status', ['pending', 'successful', 'failed'])->default('pending');
-            $table->enum('transaction_status', ['pending', 'successful', 'failed'])->default('pending'); // Added
+            $table->enum('transaction_status', ['pending', 'successful', 'failed'])->default('pending');
             $table->json('response_details')->nullable();
             $table->timestamp('payment_date')->nullable();
             $table->json('callback_data')->nullable(); //data to be used by the callback functions onSuccess and onFail

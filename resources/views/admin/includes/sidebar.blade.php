@@ -9,7 +9,7 @@
         <div class="small font-weight-bold pt-1 d-none">{{ option('school_name') }}</div>
       </a>
     </li>
-    
+
     <li class="nav-item">
       <a class="nav-link" href="{{ route('dashboard') }}">
         <i class="mdi mdi-home menu-icon"></i>
@@ -86,7 +86,7 @@
 
     <!-- Fees Management -->
     @include('dashboard.includes.sidebarItems.employees')
-   
+
 
     <li class="">
       <span class="nav-item-head">Accounting</span>
@@ -94,7 +94,7 @@
       <!-- Accounts Management -->
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#accounts" aria-expanded="false" aria-controls="accounts">
-          <i class="mdi mdi-wallet menu-icon"></i>
+          <i class=""></i>
           <span class="menu-title">Accounting</span>
           <i class="menu-arrow"></i>
         </a>
@@ -234,7 +234,7 @@
         </ul>
       </div>
     </li>
-         
+
      @endif
 
      <li class="nav-item">
@@ -269,6 +269,6 @@
       </form>
     </li>
 
-    
+
   </ul>
 </nav>

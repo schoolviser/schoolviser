@@ -15,4 +15,9 @@ class Schoolviser
     {
         return static::$hello;
     }
+
+     public static function enableAccounting(): void
+    {
+        config(['accounting.enable_accounting' => true]);
+    }
 }

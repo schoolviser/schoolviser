@@ -5,6 +5,12 @@
   */
 
 /*!
+  * vue-router v4.5.0
+  * (c) 2024 Eduardo San Martin Morote
+  * @license MIT
+  */
+
+/*!
  * The buffer module from node.js, for the browser.
  *
  * @author   Feross Aboukhadijeh <http://feross.org>
@@ -34,3 +40,21 @@
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
  */
+
+/**
+* @vue/runtime-core v3.5.13
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/
+
+/**
+* @vue/runtime-dom v3.5.13
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/
+
+/**
+* @vue/shared v3.5.13
+* (c) 2018-present Yuxi (Evan) You and Vue contributors
+* @license MIT
+**/

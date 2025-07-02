@@ -4,8 +4,8 @@ $(function () {
   * Data and config for chartjs
   */
  'use strict';
- 
- 
+
+
  var options = {
    scales: {
      yAxes: [{
@@ -89,7 +89,7 @@ $(function () {
  }
 
   // Get context with jQuery - using jQuery's .get() method.
-  if ($("#expenseSummaryBarChart").length) {
+  if ($("#expenseSummaryBarChart").length) {offcanvas;
     var barChartCanvas = $("#expenseSummaryBarChart").get(0).getContext("2d");
     // This will get the first returned node in the jQuery collection.
     var barChart = new Chart(barChartCanvas, {
@@ -177,5 +177,6 @@ $(function () {
       data : monthlyRevenueExpenseLineChartData,
     });
   }
- 
+
+
 });

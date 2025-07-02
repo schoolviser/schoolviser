@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,13 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
- Route::get('/test', 'TestController')->name('test_home');
+
+if (Config::get('app.frontend') === 'vue') {
+    Route::get('/app', function(){
+        return view('admin.layouts.app');
+    })->middleware(['auth','term', 'check.suspended'])->name('app');
+}
+
+
+
+Route::get('/test', 'TestController')->name('test_home');
 
 
 
 Route::middleware(['schoolviser.shield'])->group(function () {
     Auth::routes();
 });
+
+
 
 Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
 
@@ -82,9 +95,11 @@ Route::group(['middleware' => ['auth','usertype:master']], function(){
 
 
 
-Route::get('/vue', function () {
-    return view('admin.indexvue');
-})->name('vue.index');
+
+
+
+
+
 
 
 

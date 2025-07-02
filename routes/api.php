@@ -23,9 +23,9 @@ Route::post('/login', 'Auth\Api\LoginController@login');
 // Protected routes with 'auth:api' middleware
 Route::middleware('auth:api')->group(function () {
 
-    Route::get('/hello', function(){
-        return response()->json(['hello' => 'hello']);
-    });
+    Route::get('/terms', 'Api\TermController@index')->middleware(['usertype:master'])->name('settings.terms');
+    Route::get('/terms/current', 'Api\TermController@current')->middleware(['usertype:master'])->name('settings.terms');
+    Route::post('/terms/store', 'Api\TermController@store')->middleware(['usertype:master'])->name('settings.terms');
 
     Route::get('/user', function (Request $request) {
         return $request->user();

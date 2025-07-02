@@ -36,7 +36,7 @@ if(!function_exists('role_has_permission')){
 //Get the current term detials
 if(!function_exists('term')){
     function term($id = null){
-        return app(TermRepository::class)->fromCache()->getCurrentTerm();
+        return ($id) ? app(TermRepository::class)->fromCache()->getTerm($id) :app(TermRepository::class)->fromCache()->getCurrentTerm();
     }
 }
 

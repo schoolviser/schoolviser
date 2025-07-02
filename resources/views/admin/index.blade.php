@@ -30,7 +30,6 @@
                         <div class="col-12 col-lg-6"><small class="mb-0 p-0" data-bs-target="#FeeParticularsTable" data-bs-toggle="collapse" style="cursor: pointer;">{{ 'Totoal Students' }}</small></div>
                         <div class="col-6 col-lg-4 text-md-end" style="font-weight: 800; font-size: 20px;">{{ $overview->total_students }}</div>
                         <div class="col-6 col-lg-2 text-end">
-                            <a href="" data-bs-toggle="offcanvas" data-bs-target="#studentsInformationOffcanvas"><img src="{{asset('images/view_day_24dp_434343_FILL0_wght400_GRAD0_opsz24.svg')}}" alt=""></a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +40,7 @@
                   <div class="card-body row m-0 py-2 pl-1 text-uppercase" style="font: 20px;">
                     <div class="col-12 col-lg-6 d-flex align-items-center">
                       <img src="{{ asset('images/girl_24dp_434343_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px;">
-                      <small class="mb-0 p-0" data-bs-target="#FeeParticularsTable" data-bs-toggle="collapse" style="cursor: pointer;">{{ 'Female' }}</small>
+                      <a href="{{ route('students.gender.based', ['gender' => 'female']) }}" class="mb-0 p-0 text-small">{{ 'Female' }}</a>
                     </div>
                     <div class="col-lg-6 text-md-end p-md-0" style="font-weight: 800; font-size: 20px;">{{ $overview->total_female }}</div>
                   </div>
@@ -53,7 +52,7 @@
                   <div class="card-body row m-0 py-2 pl-1 text-uppercase" style="font: 20px;">
                     <div class="col-12 col-lg-6 d-flex align-items-center">
                       <img src="{{ asset('images/man_24dp_434343_FILL0_wght400_GRAD0_opsz24.svg') }}" alt="Settings Icon" style="width: 24px; height: 24px;">
-                      <small class="mb-0 p-0" data-bs-target="#FeeParticularsTable" data-bs-toggle="collapse" style="cursor: pointer;">{{ 'Male' }}</small>
+                        <a href="{{ route('students.gender.based', ['gender' => 'male']) }}" class="mb-0 p-0 text-small">{{ 'Male' }}</a>
                     </div>
                     <div class="col-12 col-lg-6 text-md-end p-md-0" style="font-weight: 800; font-size: 20px">{{ $overview->total_male }}</div>
                   </div>
@@ -99,7 +98,7 @@
 
 
     <div
-        class="offcanvas offcanvas-start rounded-end-3"
+        class="offcanvas offcanvas-start rounded-end-3" data-url="{{ 'hello' }}"
         data-bs-scroll="true"
         tabindex="-1"
         id="studentsInformationOffcanvas"

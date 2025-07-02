@@ -29,6 +29,8 @@ class CheckRequestToPayStatusCommand extends Command
             } elseif ($status === 'failed') {
                 $request->update(['status' => 'failed']);
                 $this->info("Request {$request->transaction_id} marked as failed.");
+            }else{
+                $this->info('hello');
             }
         }
 
@@ -44,42 +46,41 @@ class CheckRequestToPayStatusCommand extends Command
             switch ($transactionStatus['status']) {
                 case 'SUCCESSFUL':
                     return 'successful';
-                    return ['status' => 'success', 'details' => $transactionStatus];
                 case 'FAILED':
                     return 'failed';
-                    return ['status' => 'failed'];
                 case 'PENDING':
                 default:
                 return 'pending';
-                    return ['status' => 'pending'];
             }
         }
+        return 'faiiled';
 
     }
 
     private function processSuccessfulRequest(MomoRequestToPay $request): void
     {
-        $handlerClass = $request->handler;
+        $callbackClass = $request->callback;
 
-        if (class_exists($handlerClass)) {
+
+        if (class_exists($callbackClass)) {
             try {
-                $handlerInstance = app($handlerClass);
+                $callbackInstance = app($callbackClass);
 
-                if (method_exists($handlerInstance, 'handle')) {
+                if (method_exists($callbackInstance, 'onSuccess')) {
                     $callbackData = $request->callback_data ?? [];
-                    $handlerInstance->handle($callbackData);
+                    $callbackInstance::onSuccess($callbackData);
 
                     // Update request status
                     $request->update(['status' => 'successful']);
-                    $this->info("Handler '{$handlerClass}' processed the request successfully.");
+                    $this->info("Callbackclass '{$callbackClass}' processed the request successfully.");
                 } else {
-                    $this->error("The handler '{$handlerClass}' does not have a 'handle' method.");
+                    $this->error("The Callbackclass '{$callbackClass}' does not have a 'handle' method.");
                 }
             } catch (\Exception $e) {
-                $this->error("Error processing handler '{$handlerClass}': " . $e->getMessage());
+                $this->error("Error processing handler '{$callbackClass}': " . $e->getMessage());
             }
         } else {
-            $this->error("Handler class '{$handlerClass}' not found.");
+            $this->error("Callbackclass class '{$callbackClass}' not found.");
         }
     }
 }
