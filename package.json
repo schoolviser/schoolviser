@@ -30,5 +30,23 @@
         "vue-router": "^4.5.0",
         "webpack": "^5.75.0",
         "@vitejs/plugin-vue": "^4.6.0"
-    }
+    },
+    "name": "sms",
+    "version": "1.0.0",
+    "description": "<p align=\"left\"><a href=\"https://delgont.co.ug/portfolio/schoolviser/\" target=\"_blank\"><img src=\"https://raw.githubusercontent.com/schoolviser/art/main/site/logo.svg\" width=\"400\"></a></p>",
+    "main": "vite-module-loader.js",
+    "directories": {
+        "test": "tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/schoolviser/schoolviser.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/schoolviser/schoolviser/issues"
+    },
+    "homepage": "https://github.com/schoolviser/schoolviser#readme"
 }

@@ -1,12 +1,8 @@
 {
-    "/js/basic.js": "/js/basic.js?id=8afdf9c99b894a49ba54ab566b414ba3",
-    "/js/auth.js": "/js/auth.js?id=4f6fa82d5ced4427cf250ede4adae6ef",
-    "/js/app.js": "/js/app.js?id=7f5c0c8961a26ea6f191cb0b30aa4a71",
-    "/css/auth.css": "/css/auth.css?id=d5be418dcfea848aeba724bb7fbab13a",
-    "/css/basic.css": "/css/basic.css?id=a1d7babfd077ce62410547f8043fe8ae",
-    "/css/app.css": "/css/app.css?id=3077f919ac5726d74d2798205c133d12",
-    "/js/accounting.js": "/js/accounting.js?id=de3a2f18fe33aaa43a608225a6586ad3",
-    "/js/add-expense.js": "/js/add-expense.js?id=66c0be238b2893e9c9780a56ef76b470",
-    "/js/monthly-expense-summary.js": "/js/monthly-expense-summary.js?id=5ae678a4c7738cd40de0c219aca4fa53",
-    "/css/accounting.css": "/css/accounting.css?id=68b329da9893e34099c7d8ad5cb9c940"
+    "/js/basic.js": "/js/basic.js",
+    "/js/auth.js": "/js/auth.js",
+    "/js/app.js": "/js/app.js",
+    "/css/auth.css": "/css/auth.css",
+    "/css/basic.css": "/css/basic.css",
+    "/css/app.css": "/css/app.css"
 }

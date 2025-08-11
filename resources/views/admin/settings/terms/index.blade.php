@@ -18,8 +18,6 @@
   Add Intake
 </a>
 
-
-
 @endsection
 
 @section('content')

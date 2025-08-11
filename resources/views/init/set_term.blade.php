@@ -9,13 +9,13 @@
      <div class="col-lg-6 offset-lg-3">
       @include('admin.includes.alerts.created')
      </div>
-     <div class="col-lg-6 offset-lg-3">
+     <div class="col-lg-6 py-5">
 
       <div class="card rounded-3">
        <div class="card-body">
         <div class="text-start pb-4">
          <a href="index.html" class="app-brand-link gap-2">
-           <img src="{{ asset('images/logo.svg') }}" alt="">
+           <img src="{{ asset('images/logo-white.svg') }}" alt="">
              <span>👋</span>
          </a>
        </div>
@@ -70,5 +70,48 @@
        </div>
       </div>
      </div>
+
+     @if (count($terms))
+    <div class="col-lg-6">
+      <div class="row">
+        <div class="col-12 py-5">
+          <div class="card">
+            <div class="table-responsive card-body">
+              <table class="table table-hover table-striped">
+                <thead class="">
+                  <th class="">SN</th>
+                    <th>Year</th>
+                    <th>{{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Terms' : 'Intakes'}}</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Next {{(config('schoolviser.type','') == 'primary' || config('schoolviser.type','') == 'secondary') ? 'Term' : 'Intake'}}</th>
+                </thead>
+                <tbody>
+                    @foreach ($terms as $term)
+                      
+                      <tr class="">
+                        <td>{{ $loop->index + 1 }}</td>
+                        <td><small class="text-capitalize">{{ $term->year }}</small></td>
+                        <td><small class="text-capitalize ">{{ $intakes[$term->term] }}</small></td>
+                        <td><small class="text-capitalize">{{ $term->start_date }}</small></td>
+                        <td><small class="text-capitalize">{{ $term->end_date }}</small></td>
+                        <td><small class="text-capitalize">{{ $term->next_term_start_date }}</small></td>
+                      </tr>
+                    
+                    @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-12 my-2">
+        </div>
+      </div>
+    </div>
+
+
+    @else
+
+    @endif
     </div>
 @endsection

@@ -27,9 +27,7 @@ Route::get('/test', 'TestController')->name('test_home');
 
 
 
-Route::middleware(['schoolviser.shield'])->group(function () {
-    Auth::routes();
-});
+Auth::routes();
 
 
 

@@ -17,8 +17,8 @@ class SetTermController extends Controller
      */
     public function index()
     {
-
-        return view('init.set_term');
+        $terms = Term::all();
+        return view('init.set_term', compact('terms'));
     }
 
     
@@ -57,7 +57,7 @@ class SetTermController extends Controller
 
     public function storePeriod(Request $request)
     {
-        $max_end_date =  AccountingPeriod::max('end_date') ?? '2007-01-01';
+        $max_end_date =  Term::max('end_date') ?? '2007-01-01';
 
         $request->validate([
             'name' => 'required',

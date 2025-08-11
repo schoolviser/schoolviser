@@ -1,6 +1,5 @@
 @extends(env('ADMIN_LAYOUT'))
 
-
 @section('module-page-heading', 'Dashboard')
 
 

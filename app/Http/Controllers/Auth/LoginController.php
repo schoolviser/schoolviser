@@ -47,7 +47,7 @@ class LoginController extends Controller
         $this->redirectTo = 'hello';
 
           // Apply the middleware only on the login page route
-          $this->middleware('track.page-access:login-page')->only('showLoginForm');
+          //$this->middleware('track.page-access:login-page')->only('showLoginForm');
     }
 
     /**
