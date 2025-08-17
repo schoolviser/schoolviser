@@ -32,9 +32,7 @@ Auth::routes();
 
 
 Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
-
-
- Route::get('/', 'DashboardController')->name('home');
+    Route::get('/', 'DashboardController')->name('home');
 
  Route::get('/settings', 'Setting\SettingController')->middleware(['usertype:master'])->name('settings');
 

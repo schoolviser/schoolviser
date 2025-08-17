@@ -1,13 +1,17 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
 // Configuration
 
 @import '~bootstrap/scss/functions';
 
 
+// Template custom variables
+@import 'basic/variables';
+
 
 @import '~bootstrap/scss/variables';
 
-// Template custom variables
-@import 'basic/variables';
 
 @import '~bootstrap/scss/variables-dark';
 

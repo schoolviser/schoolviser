@@ -1,46 +1,23 @@
-$blue: #5e50f9;
-$indigo: #6610f2;
-$purple: #6a008a;
-$pink: #e91e63;
-$red: #f96868;
-$orange: #f2a654;
-$yellow: #f6e84e;
-$green: #46c35f;
-$teal: #58d8a3;
-$cyan: #57c7d4;
-$black: #000;
-$white: #ffffff;
-$white-smoke: #f2f7f8;
-$violet: #41478a;
-$darkslategray: #2e383e;
-$dodger-blue: #3498db;
-$light:       #e4e9f0;
+// Optional: Customize body background and text
 
-$primary: #0434c4;
+$body-bg: #f8fafc;
+$body-color: #01303F;
 
-$theme-colors: (
-  "primary":    $primary,
-  "secondary":  $secondary,
-  "success":    $success,
-  "info":       $info,
-  "warning":    $warning,
-  "danger":     $danger,
-  "light":      $light,
-  "dark":       $dark,
-);
 
-$table-padding: 0.2rem;
 
-html.dark {
-  $table-color: #ffffff;
-  $table-bg: #343a40;
-  $table-border-color: #454d55;
-  $table-accent-bg: #495057;
-  $table-striped-color: #3e444a;
-  $table-striped-bg: #343a40;
-  $table-active-color: #ffffff;
-  $table-active-bg: #495057;
-  $table-hover-color: #ffffff;
-  $table-hover-bg: #3e444a;
-}
+// Custom Bootstrap theme color overrides
+$primary:   #02A9F7;
+$secondary: #89D6FB;
+$success:   #89D6FB;
+$info:      #02A9F7;
+$warning:   #02577A;
+$darker:    #01303F;
+$light:     #D4F0FC;
+$dark:      #02577A;
+
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
 

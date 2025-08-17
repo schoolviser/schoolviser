@@ -152,8 +152,8 @@
         <div id="content" class="p-4">
             <div class="row mb-4">
                 <div class="col-9 col-md-4 col-lg-6">
-                    <h4 class="text-capitalize pt-3 pb-2 p-lg-0 m-lg-0 module-page-heading">@yield('module-page-heading')</h4>
-                    <small class="text-muted">@yield('module-heading-description')</small>
+                    <h4 class="text-capitalize pt-3 pb-2 p-lg-0 m-lg-0 module-page-heading fw-bold">@yield('module-page-heading')</h4>
+                    <small class="text-muted">@yield('module-page-description')</small>
 
                 </div>
                 <div class="d-none d-md-block mb-3 col-md-8 col-lg-6 text-lg-end  module-links module-quick-links module-nav">
