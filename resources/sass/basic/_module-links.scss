@@ -14,14 +14,17 @@
     text-decoration: none;
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid transparent;
-    font-weight: 400;
+    font-weight: 500;
+    background-color: #e8eaed;
+    margin-bottom: 2px;
+
 }
 
 .page-link-btn:hover, .module-links a:hover {
-    background-color: #e8eaed; /* Slightly darker gray on hover */
+    background-color: #e8eaed;
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .page-link-btn:active {
-    background-color: #dadce0; /* Active state */
+    background-color: #dadce0;
 }

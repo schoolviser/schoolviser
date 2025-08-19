@@ -17,6 +17,13 @@ class TermRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    public function getActiveTerms()
+    {
+        return $this->cached(CacheKeys::ACTIVE_TERMS, function(){
+            return $this->model::active()->get();
+        });
+    }
+
     public function getAll()
     {
         return $this->cached(CacheKeys::TERMS, function(){
@@ -26,8 +33,11 @@ class TermRepository extends BaseRepository
 
     public function getTerm($id)
     {
-        return $this->cached(CacheKeys::TERM.$id, function() use ($id){
-            return $this->model->whereId($id)->orWhereUuid($id)->firstOrFail();
+        return $this->cached(CacheKeys::TERM.$id, function () use ($id) {
+            return $this->model
+                ->where('id', $id)
+                ->orWhere('uuid', $id)
+                ->firstOrFail();
         });
     }
 

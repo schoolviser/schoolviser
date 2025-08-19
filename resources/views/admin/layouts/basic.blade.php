@@ -24,13 +24,15 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="{{ asset('fonts/font-awesome-4.3.0/css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/basic.css') }}">
 
     <!-- Page Level Css -->
     @yield('requiredCss')
+    @yield('required-css')
 
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
@@ -46,11 +48,11 @@
     <script src="{{ asset('js/basic.js') }}" defer></script>
     <!-- Page Level Js -->
     @yield('requiredJs')
-
+    @yield('required-js')
 
 </head>
 
-<body style="background-color: rgb(241,250,248)">
+<body style="background-coloor: rgb(241,250,248)">
     <button onclick="topFunction()" id="goToTopBtn" title="Go to top"><i class="fa fa-chevron-up" aria-hidden="true"></i></button>
 
     <script>
@@ -157,7 +159,7 @@
 
                 </div>
                 <div class="d-none d-md-block mb-3 col-md-8 col-lg-6 text-lg-end  module-links module-quick-links module-nav">
-                    @yield('module-links')
+                    @yield('module-page-links', 'provide module page links')
                 </div>
 
                 <div class="d-block d-md-none col-3 text-lg-end  mobile-module-links">
@@ -188,6 +190,7 @@
     @include('admin.includes.offcanvas.user')
     @includeIf('admin.includes.offcanvas.sidebar_small', ['some' => 'data'])
 
+    @yield('scripts')
 </body>
 
 </html>

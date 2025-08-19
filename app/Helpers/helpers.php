@@ -40,6 +40,13 @@ if(!function_exists('term')){
     }
 }
 
+//Get the current term detials
+if(!function_exists('active_terms')){
+    function active_terms(){
+        return app(TermRepository::class)->getActiveTerms();
+    }
+}
+
 
 
 //returns a option value

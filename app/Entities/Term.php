@@ -30,6 +30,11 @@ class Term extends Model
         });
     }
 
+    public function scopeActive($query)
+    {
+        return $query->whereStatus('active');
+    }
+
 
 
     //Term cache prefix
