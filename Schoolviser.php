@@ -1,0 +1,23 @@
+<?php
+
+namespace Modules\Schoolviser;
+
+class Schoolviser
+{
+    public static $hello = false;
+
+    public static function hello()
+    {
+        static::$hello = true;
+    }
+
+    public static function getHello()
+    {
+        return static::$hello;
+    }
+
+     public static function enableAccounting(): void
+    {
+        config(['accounting.enable_accounting' => true]);
+    }
+}

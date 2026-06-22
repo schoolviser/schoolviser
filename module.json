@@ -1,0 +1,14 @@
+{
+    "name": "Schoolviser",
+    "alias": "schoolviser",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Schoolviser\\Providers\\SchoolviserServiceProvider",
+        "Modules\\Schoolviser\\Providers\\RepositoryServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

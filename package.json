@@ -1,0 +1,37 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "autoprefixer": "^10.4.21",
+        "axios": "^1.8.2",
+        "concurrently": "^9.0.1",
+        "cross-env": "^7.0.3",
+        "laravel-mix": "^6.0.43",
+        "lodash": "^4.17.21",
+        "postcss": "^8.4.24",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.56.1",
+        "sass-loader": "^10.1.1",
+        "vue": "^3.5.16",
+        "vue-loader": "^17.3.0"
+    },
+    "dependencies": {
+        "@popperjs/core": "2.11.8",
+        "autosize": "^6.0.1",
+        "axios": "^1.11.0",
+        "bootstrap": "5.3.8",
+        "bootstrap-cookie-alert": "^1.2.2",
+        "bootstrap-daterangepicker": "^3.1.0",
+        "bootstrap-icons": "^1.13.1",
+        "bootstrap-maxlength": "^2.0.0"
+    }
+}

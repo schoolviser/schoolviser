@@ -1,0 +1,73 @@
+<?php
+
+
+Route::group(['middleware' => ['auth','term', 'check.suspended']], function(){
+    Route::get('/', 'DashboardController')->name('home');
+
+ Route::get('/settings', 'Setting\SettingController')->middleware(['usertype:master'])->name('settings');
+
+
+ Route::get('/site-settings/classes', 'ClazzController@index')->middleware(['usertype:master'])->name('settings.clazzs');
+ Route::post('/site-settings/classes/store', 'ClazzController@store')->middleware(['usertype:master'])->name('settings.clazzs.store');
+ Route::post('/site-settings/classes/update/{id}', 'ClazzController@update')->middleware(['usertype:master'])->name('settings.clazzs.update');
+ Route::get('/site-settings/classes/destroy/{id}', 'ClazzController@destroy')->middleware(['usertype:master'])->name('settings.clazzs.destroy');
+ Route::get('/site-settings/classes/edit/{id}', 'ClazzController@edit')->middleware(['usertype:master'])->name('settings.clazzs.edit');
+
+
+
+ Route::get('/site-settings', 'SiteSettingsController@index')->middleware(['usertype:master'])->name('site.settings');
+ Route::get('/site-settings/school-info', 'SchoolInfoController@index')->middleware(['usertype:master'])->name('site.settings.school.info');
+ Route::post('/site-settings/school-info/update', 'SchoolInfoController@update')->middleware(['usertype:master'])->name('site.settings.school.info.update');
+
+ Route::get('/site-settings/subjects', 'SubjectController@index')->middleware(['usertype:master'])->name('site.settings.subjects');
+ Route::get('/site-settings/subjects/show/{id}', 'SubjectController@show')->middleware(['usertype:master'])->name('site.settings.subjects.show');
+ Route::get('/site-settings/subjects/edit/{id}', 'SubjectController@edit')->middleware(['usertype:master'])->name('site.settings.subjects.edit');
+ Route::post('/site-settings/subjects/update/{id}', 'SubjectController@update')->middleware(['usertype:master'])->name('site.settings.subjects.update');
+ Route::post('/site-settings/subjects/store', 'SubjectController@store')->middleware(['usertype:master'])->name('site.settings.subjects.store');
+
+
+ Route::get('/site-settings/mtn-momo', 'MomoSettingsController@index')->middleware(['usertype:master'])->name('site.settings.mtn.momo');
+ Route::post('/site-settings/mtn-momo/store', 'MomoSettingsController@storeSettings')->middleware(['usertype:master'])->name('site.settings.mtn.momo.store');
+ Route::get('/site-settings/mtn-momo/generate-access-token', 'MomoSettingsController@generateAccesstoken')->middleware(['usertype:master'])->name('site.settings.mtn.momo.generate-token');
+
+ 
+
+ Route::get('/site-settings/configure-course-groups', 'CourseGroupController@index')->middleware(['usertype:master'])->name('site.settings.course.groups');
+ Route::post('/site-settings/configure-course-groups/store', 'CourseGroupController@store')->middleware(['usertype:master'])->name('site.settings.course.groups.store');
+ Route::get('/site-settings/configure-course-groups/destroy/{id}', 'CourseGroupController@destroy')->middleware(['usertype:master'])->name('site.settings.course.groups.destroy');
+ Route::post('/site-settings/configure-course-groups/update/{id}', 'CourseGroupController@update')->middleware(['usertype:master'])->name('site.settings.course.groups.update');
+
+
+});
+
+
+Route::group(['middleware' => ['auth','usertype:master']], function(){
+ Route::get('/init', 'Init\InitController')->name('init');
+ Route::get('/set-up/set-periods', 'Init\SetTermController@index')->name('init.set.term');
+ Route::post('/init/set/term', 'Init\SetTermController@store')->name('init.set.term.store');
+ Route::post('/init/set/period', 'Init\SetTermController@storePeriod')->name('init.set.period.store');
+});
+
+Route::get('/admin/configurations', function () {
+    $config = config('schoolviser');
+    return view('admin.configurations', compact('config'));
+})->middleware('auth');
+
+
+switch (config('schoolviser.type')) {
+    case 'tertiary':
+        require __DIR__.'/web/tertiary.php';
+        break;
+
+    case 'secondary':
+        require __DIR__.'/web/secondary.php';
+        break;
+
+    case 'primary':
+        require __DIR__.'/web/primary.php';
+        break;
+
+    default:
+        require __DIR__.'/web/default.php';
+        break;
+}

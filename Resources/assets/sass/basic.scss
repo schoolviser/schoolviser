@@ -1,0 +1,311 @@
+// Fonts
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+// Configuration
+
+@import '~bootstrap/scss/functions';
+
+
+// Template custom variables
+@import 'basic/variables';
+
+
+@import '~bootstrap/scss/variables';
+
+
+@import '~bootstrap/scss/variables-dark';
+
+@import '~bootstrap/scss/maps';
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/utilities';
+
+
+// Layout & components
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/button-group";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+@import "~bootstrap/scss/card";
+@import "~bootstrap/scss/accordion";
+@import "~bootstrap/scss/breadcrumb";
+@import "~bootstrap/scss/pagination";
+@import "~bootstrap/scss/badge";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/progress";
+@import "~bootstrap/scss/list-group";
+@import "~bootstrap/scss/close";
+@import "~bootstrap/scss/toasts";
+@import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/tooltip";
+@import "~bootstrap/scss/popover";
+@import "~bootstrap/scss/spinners";
+@import "~bootstrap/scss/offcanvas";
+
+// Helpers
+@import "~bootstrap/scss/helpers";
+
+// Utilities
+@import "~bootstrap/scss/utilities/api";
+
+@import "main";
+@import "basic/sidebar";
+@import "basic/module-links";
+@import "basic/offcanvas";
+@import "basic/forms";
+
+
+#topbar {
+    border-bottom: 1px solid rgb(215, 212, 212) !important;
+    background-color: white;
+}
+
+
+// =-- Start Here
+img.alignleft {
+    float: left;
+    margin: 6px 20px 6px 0;
+    display: inline;
+    border: 0px;
+    background: none;
+    padding: 0;
+    display: block;
+   }
+
+   img.alignright {
+    padding: 0;
+    float: right;
+    margin: 6px 0 6px 20px;
+    border: 0px;
+    display: block;
+    background: none;
+   }
+
+   blockquote {
+    font-size: 16px;
+    line-height: 32px;
+    font-family: 'Droid Serif', Georgia, "Times New Roman", serif;
+    font-weight: normal;
+    font-style: italic;
+    position: relative;
+    width: auto;
+   }
+
+   blockquote small {
+    display: block;
+    margin-top: 20px;
+   }
+
+   pre {
+    line-height: 18px;
+    margin-bottom: 18px;
+   }
+
+   .btn,
+   a {
+    outline: 0 !important;
+    text-decoration: none !important;
+   }
+
+   ins {
+    text-decoration: none;
+   }
+
+   sup {
+    bottom: 1ex;
+   }
+
+   sub {
+    top: .5ex;
+   }
+
+   p {
+    padding: 0 0 20px 0;
+   }
+
+   .check li:before {
+    content: "\f00c";
+    font-family: "FontAwesome";
+    font-size: 16px;
+    left: 0;
+    color: #242424;
+    padding-right: 5px;
+    position: relative;
+    top: 2px;
+   }
+
+   .check li {
+    font-size: 14px;
+    list-style: none;
+    margin-bottom: 4px;
+   }
+
+   .check {
+    margin-left: 0;
+    padding-left: 0
+   }
+
+   .section {
+    position: relative;
+    display: block;
+   }
+
+   .white {
+    background-color: #ffffff;
+   }
+
+   strong {
+    color: #030303;
+   }
+
+   .dark-text {
+    font-size: 4.125rem;
+    line-height: 4.063rem;
+    font-weight: 300;
+   }
+
+
+   .dark-text a {
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 20px;
+   }
+
+   .dark-text hr {
+    width: 130px;
+    margin-left: 0;
+    margin-top: 40px;
+    border-width: 1px;
+    border-color: #030303;
+   }
+
+
+
+   .lead {
+    text-transform: capitalize;
+   }
+
+   .left-align img {
+    margin-top: 20px;
+   }
+
+   .drop-caps p:first-child::first-letter {
+    color: #030303;
+    display: block;
+    float: left;
+    font-size: 75px;
+    line-height: 60px;
+    text-transform: uppercase;
+    margin-right: 10px;
+    margin-top: 5px;
+    padding: 4px;
+   }
+
+   .drop-caps.full p:first-child::first-letter {
+    background: #030303 none repeat scroll 0 0 !important;
+    color: #ffffff;
+    margin-right: 15px;
+    padding: 20px;
+    font-size: 36px;
+    font-family: Georgia;
+    border-radius: 5px;
+   }
+
+   mark {
+    background-color: #0E97EE;
+    color: #ffffff;
+    padding: 0 10px;
+   }
+
+   a:focus,
+   a:hover {
+    color: #0E97EE;
+   }
+
+
+
+   /*Docs*/
+
+   .body {
+   position: relative;
+   }
+
+
+   .affix {
+   position: static;
+   }
+
+   @media (min-width: 992px) {
+   .affix,
+   .affix-bottom {
+     width: 213px
+   }
+   .affix {
+     position: fixed;
+     top: 20px
+   }
+   .affix-bottom {
+     position: absolute
+   }
+   .affix .bs-docs-sidenav,
+   .affix-bottom .bs-docs-sidenav {
+     margin-top: 0;
+     margin-bottom: 0
+   }
+   }
+
+   @media (min-width: 1200px) {
+   .affix,
+   .affix-bottom {
+     width: 263px
+   }
+   }
+
+
+
+
+.topbar-section.bg-primary{
+    color: #fff;
+    a{
+        color: #fff;
+    }
+}
+
+
+
+.dropdown-list-image {
+    position: relative;
+    height: 2.5rem;
+    width: 2.5rem;
+}
+.dropdown-list-image img {
+    height: 2.5rem;
+    width: 2.5rem;
+}
+.btn-light {
+    color: #2cdd9b;
+    background-color: #e5f7f0;
+    border-color: #d8f7eb;
+}
+
+.students{
+    .card{
+        .card-body{
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    }
+}
+
+
+
+
