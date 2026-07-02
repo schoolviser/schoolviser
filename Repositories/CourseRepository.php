@@ -20,6 +20,20 @@ class CourseRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    /*
+     * Return all courses without pagination or relations.
+     * Only minimal fields for dropdowns or AJAX selects.
+     */
+    public function getAllCoursesMinimal()
+    {
+        $this->ensureCompanyIsSet();
+
+        return $this->model->newQuery()
+        ->whereCompanyId($this->companyId)
+        ->select(['id', 'name'])
+        ->get();
+    }
+
     public function getAllCourses()
     {
         $this->ensureCompanyIsSet();

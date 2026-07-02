@@ -57,7 +57,6 @@ class AcademicYearRepository extends BaseRepository
     public function getYear($id)
     {
         $this->ensureCompanyIsSet();
-
         return $this->model::whereCompanyId($this->companyId)->whereId($id)->firstOrFail();
     }
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->uuid()->unique()->nullable();
             $table->string('name');
             $table->string('abbr')->nullable();
+             $table->boolean('active')->default(true); 
             $table->unsignedBigInteger('clazz_id');
             $table->timestamps();
             $table->foreign('clazz_id')->references('id')->on('clazzs');
@@ -27,10 +28,17 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->unique(['name', 'company_id','clazz_id'], 'uniq_stream_name');
 
+            $table->unsignedBigInteger('term_id')->nullable(); // Term when it was created
+            $table->unsignedBigInteger('academic_year_id')->nullable(); // Year when it was created
+
 
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('term_id')->references('id')->on('terms')->onDelete('set null');
+            $table->foreign('academic_year_id')->references('id')->on('academic_years')->onDelete('set null');
+
             $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('updated_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('deleted_by')->references('id')->on('users')->onDelete('set null');

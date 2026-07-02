@@ -80,7 +80,7 @@
                             </td>
 
                             <td class="text-capitalize">
-                                <a href="{{route('managecourses.cohorts.index')}}">Sets / Cohorts</a><br />
+                                <a href="{{route('managecourses.coursegroups.index')}}">Course Groups</a><br />
                             </td>
 
                             </td>

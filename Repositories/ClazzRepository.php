@@ -30,15 +30,7 @@ class ClazzRepository extends BaseRepository
         $cacheKey = CacheKeys::ALL_CLAZZES.$this->companyId;
 
         return $this->cachedForever($cacheKey, function(){
-            return $this->model::whereCompanyId($this->companyId)->get()->map(function($item, $key){
-                return new Any([
-                    'id' => $item->id,
-                    'name' => $item->name,
-                    'abbr' => $item->abbr,
-                    'level' => $item->level,
-                    'protected' => true
-                ]);
-            });
+            return $this->model::whereCompanyId($this->companyId)->with(['streams'])->get();
         });
 
     }

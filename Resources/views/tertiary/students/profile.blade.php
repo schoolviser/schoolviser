@@ -67,22 +67,16 @@
     <div class="row">
 
       <div class="col-12 col-lg-3  order-sm-1 order-lg-2 mb-3">
-
-        <div class="card pt-4 mb-xl-9">
-            <div class="card-header">
-                <h2 class="card-title">Students Photo</h2>
-            </div>
+        <div class="card mb-xl-9">
             <div class="card-body p-0">
-                <img src="{{ asset('media/avatars/blank.png') }}" class="img-fluid rounde student-avator w-100" alt="image" />
+                <img src="{{ $student->photo ? asset('storage/'.$student->photo) : asset('media/avatars/blank.png') }}" class="img-fluid rounded student-avator w-100" alt="image" />
             </div>
+            
             <div class="card-footer">
                 <form action="{{ route('tertiary.students.updatePhoto', ['id' => $student->id]) }}" method="POST" enctype="multipart/form-data" class="m-2">
                     @csrf
-                    <label for="choosePhoto" class="custom-file-upload text-small bg-light px-2 py-1 rounded-4 border border-primary">
-                        Choose Photo
-                    </label>
-                    <input type="file" id="choosePhoto" name="photo" class="render-image-on-input-file-change d-none" data-imgholder=".student-avator" />
-                    <input type="submit" class="btn btn-sm btn-dark " id="avatorChangeBtn" value="upload" />
+                    <input type="file" id="choosePhoto" name="photo" class="render-image-on-input-file-change" data-imgholder=".student-avator" />
+                    <input type="submit" class="btn btn-sm btn-dark w-100 " id="avatorChangeBtn" value="upload" />
                     <small class="text-danger">{{ $errors->first('photo') }}</small>
                 </form>
             </div>
@@ -103,7 +97,7 @@
                         </div>
                         <div class="card-toolbar">
                             @companyRoleHasPermission('can_update_students_personal_info')
-                                <a href="" data-bs-toggle="offcanvas" data-bs-target="#updateInfo" class="btn btn-sm btn-light">Update Info</a>
+                                <a href="" data-bs-toggle="offcanvas" data-bs-target="#updateInfo" class="btn btn-sm btn-light-primary">Update Info</a>
                                 @include('schoolviser::tertiary.students.partials.offcanvas._update_personal_info_offcanvas')
                             @endcompanyRoleHasPermission
 
@@ -117,21 +111,16 @@
                             <div class="col-12 col-sm-12 col-lg-12">
                                 <h2 class="text-dark text-capitalize fw-bold m-0">{{ $student->first_name." ".$student->last_name}}</h2>
                                 <small class="text-end font-20">
-                                    @if ($student->course)
-                                        {{ $student->course->name }}
-                                    @endif
-
-                                    @if ($student->courseGroup)
-                                        {{ '| '.$student->courseGroup->name }}
-                                    @endif
+                                   
                                 </small>
                                 <hr />
                             </div>
 
                             <div class="col-lg-12">
-                                <span class="text-capitalise"><b class="text-success">Gender: </b>{{ $student->gender }}</span><br />
+                                <span class="text-capitalize"><b class="text-success">Gender: </b>{{ $student->gender }}</span><br />
                                 <span><b>Nationality: </b>{{ $student->nationality }}</span><br />
                                 <span><b>Nin: </b>{{ $student->nin }}</span><br />
+                                <span><b>Phone: </b>{{ $student->phone }}</span><br />
                             </div>
 
                         </div>
@@ -204,11 +193,12 @@
                                 <th>Semester</th>
                                 <th>new_or_continuing</th>
                                 <th>registered_on</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($student->intakeRegistrations as $registration)
-                             <tr>
+                             <tr style="color: {{ $registration->locked ? 'purple' : 'green' }}">
                                 <td>{{ $registration->academicYear?->name }}</td>
                                 <td>{{ termLabel($registration->term->term, $registration->term->name) }}</td>
                                 <td>{{ 'Year '.$registration->year }}</td>
@@ -216,8 +206,38 @@
                                 <td>{{ $registration->new_or_continuing }}</td>
                                 <td>{{ $registration->created_at }}</td>
                                 <td>
-                                    @if (!$registration->locked)
+                                    @if ($registration->isLocked())
+                                        @companyRoleHasPermission('can_unlock_student_registration')
+                                            <form action="{{ route('tertiary.intake.registrations.unlock', $registration->uuid) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-light" 
+                                                        data-bs-toggle="tooltip" 
+                                                        data-bs-placement="top" 
+                                                        title="This registration is locked. Editing is disabled until unlocked.">
+                                                    <i class="bi bi-lock"></i> UnLock Registration
+                                                </button>
+                                            </form>
+                                        @endcompanyRoleHasPermission
+                                    @else
+                                        @companyRoleHasPermission('can_lock_student_registration')
+                                            <form action="{{ route('tertiary.intake.registrations.lock', $registration->uuid) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-light"
+                                                        data-bs-toggle="tooltip" 
+                                                        data-bs-placement="top" 
+                                                        title="Locking will disable editing for this registration.">
+                                                    <i class="bi bi-unlock"></i> Lock Registration
+                                                </button>
+                                            </form>
+                                        @endcompanyRoleHasPermission
                                     @endif
+
+
+                                    <!-- view intake registrations details -->
+                                    @companyRoleHasPermission('can_view_student_registrations')
+                                        <a href="" class="btn btn-sm btn-light-success"><i class="bi bi-eye"></i></a>
+                                    @endcompanyRoleHasPermission
+
                                 </td>
                              </tr>
                             @endforeach

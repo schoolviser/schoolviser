@@ -25,25 +25,39 @@ Route::prefix('tertiary-students')->name('tertiary.students.')->middleware(['ter
     Route::get('/overview', 'TertiaryOverviewController@index')->name('overview');
     Route::get('/unregistered-students', 'TertiaryStudentController@unregistered')->name('unregistered');
     Route::post('/enroll/{student_id}', 'TertiaryStudentController@enroll')->name('enroll');
+    Route::post('/build-enroll', 'TertiaryStudentController@bulkEnroll')->name('bulkEnroll');
     Route::get('/unenroll/{registration_id}', 'TertiaryStudentController@deregister')->name('unenroll');
 
     Route::get('/add-student', 'TertiaryStudentController@create')->name('create')->middleware(['company.role.permission:can_register_student']);
     Route::post('/add-student', 'TertiaryStudentController@store')->name('store')->middleware(['company.role.permission:can_register_student']);
 
     Route::get('/show/{id}', 'TertiaryStudentController@show')->name('show')->middleware(['company.role.permission:can_view_students_profile']);
+    
     Route::get('/edit/{id}', 'TertiaryStudentController@edit')->name('edit');
     Route::get('/destroy/{id}', 'TertiaryStudentController@destroy')->name('delete')->middleware(['company.role.permission:can_delete_student_info']);
 
-    Route::post('/update/personal-info/{id}', 'TertiaryStudentController@updatePersonalInfo')->name('updatePersonalInfo')->middleware(['company.role.permission:can_update_students_personal_info']);;
-    Route::post('/update/reg-info/{id}', 'TertiaryStudentController@updateAcademicInfo')->name('updateAcademicInfo')->middleware(['company.role.permission:can_update_students_registration_info']);
+    Route::post('/update/personal-info/{id}', 'TertiaryStudentController@updatePersonalInfo')->name('updatePersonalInfo')->middleware(['company.role.permission:can_update_students_personal_info']);
+    
+    Route::post('/update/reg-info/{studentId}/{intakeRegistrationId}', 'TertiaryStudentController@updateAcademicInfo')->name('updateAcademicInfo')->middleware(['company.role.permission:can_update_students_registration_info']);
 
-    Route::post('/profile/update/photo/{id}', 'StudentController@updatePhoto')->name('updatePhoto')->middleware(['company.role.permission:can_update_students_photo']);
+    Route::post('/profile/update/photo/{id}', 'TertiaryStudentController@updatePhoto')->name('updatePhoto')->middleware(['company.role.permission:can_update_students_photo']);
 
-    Route::get('/export', 'TertiaryStudentController@export')->name('export');
+    Route::get('/export/{intakeid?}', 'TertiaryStudentController@export')->name('export');
+    Route::post('/selected-students-export', 'TertiaryStudentController@selectedStudentsExport')->name('selectedStudentsExport');
 
     Route::get('import', function(){
         return 'import students';
     })->name('students.import');
+
+});
+
+Route::prefix('tertiary')->name('tertiary.')->middleware(['tertiary'])->group(function() {
+
+    Route::prefix('intake-registtrations')->name('intake.registrations.')->group(function() {
+        Route::get('/m/{intakeid?}', 'IntakeRegistrationController@index')->name('index')->middleware(['company.role.permission:can_view_student_registrations']);
+        Route::post('/lock-registration/{id}', 'IntakeRegistrationController@lockRegistration')->name('lock')->middleware(['company.role.permission:can_lock_student_registration']);
+        Route::post('/unlock-registration/{id}', 'IntakeRegistrationController@unLockRegistration')->name('unlock')->middleware(['company.role.permission:can_unlock_student_registration']);
+    });
 
 });
 

@@ -1,15 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Academics;
+namespace Modules\Schoolviser\Http\Controllers\Academics;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Academics\Subject;
+use Modules\Schoolviser\Entities\Subject;
 
+# Respositories
+use Modules\Schoolviser\Repositories\SubjectRepository;
 
 class SubjectController extends Controller
 {
+    public function __construct(
+        protected SubjectRepository $subjectRepository
+    ){
+
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +25,11 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = Subject::with(['papers'])->get();
-        return view('dashboard.academics.subjects.index', compact('subjects'));
+        $company = company();
+        $page = request()->get('page', 1);
+
+        $subjects = $this->subjectRepository->company($company->id)->fromCache()->getPaginatedSubjects(15, $page);
+        return view('schoolviser::academics.subjects.index', compact('subjects'));
     }
 
 

@@ -13,6 +13,7 @@ class TermCacheKeys extends ModelCacheKeys
 
     const PREVIOUS_TERM = 'Term:Previous:';
     const TOTAL_REGISTRATIONS_PER_TERM = 'Total:Registrations:Per:Term:';
+    const TOTAL_REGISTRATIONS_PER_TERM_IN_ACADEMIC_YEAR = 'total:registrations:per:intake:in:academic:year:';
 
     public static function clearTermsCache($companyId)
     {

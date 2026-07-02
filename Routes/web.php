@@ -23,6 +23,14 @@ Route::prefix(config('delxero.dashboard_prefix', '/'))->middleware(['invalidate.
     // Settings
     Route::prefix(config('schoolviser.settings_route_prefix', 'settings'))->group(function(){
 
+        # Ademics Settings
+        Route::prefix('academics')->group(function(){
+             Route::prefix('subjects')->name('subjects.')->group(function(){
+                Route::get('/', 'Academics\SubjectController@index')->name('index');
+                Route::get('/show/{id}', 'Academics\SubjectController@show')->name('show');
+            });
+        });
+
         # Academic Year Routes
         Route::prefix('manage-academic-years')->name('manageacademicyears.')->group(function(){
             Route::get('/', 'AcademicYearController@index')->name('index');
@@ -35,6 +43,7 @@ Route::prefix(config('delxero.dashboard_prefix', '/'))->middleware(['invalidate.
         # Term Routes
         Route::prefix('manage-terms')->name('manageterms.')->group(function(){
             Route::get('/', 'TermController@index')->name('index');
+            Route::get('/current-year-terms', 'TermController@currentYearTermsMinimal')->name('currentYearTermsMinimal');
             Route::post('/store', 'TermController@store')->name('store');
             Route::get('/show-details/{id}', 'TermController@show')->name('show');
             Route::get('/edit-term/{id}', 'TermController@edit')->name('edit');
@@ -61,8 +70,9 @@ Route::prefix(config('delxero.dashboard_prefix', '/'))->middleware(['invalidate.
             Route::get('/create', 'CourseController@create')->name('create');
             Route::post('/store', 'CourseController@store')->name('store');
             Route::get('/edit/{id}', 'CourseController@edit')->name('edit');
-            Route::post('/update/{id}', 'CourseController@update')->name('update');
+            Route::post('/update/{uuid}', 'CourseController@update')->name('update');
             Route::get('/destroy/{id}', 'CourseController@destroy')->name('destroy');
+            Route::get('/all-courses-minimal', 'CourseController@allCoursesMinimal')->name('allCoursesMinimal');
 
             Route::prefix('cohorts')->name('cohorts.')->group(function () {
                 Route::get('/', 'CohortController@index')->name('index');
@@ -74,10 +84,16 @@ Route::prefix(config('delxero.dashboard_prefix', '/'))->middleware(['invalidate.
                 Route::get('/destroy/{id}', 'CohortController@destroy')->name('destroy');
             });
 
-            Route::prefix('course-groups')->name('cohorts.')->group(function () {
+            Route::prefix('course-groups')->name('coursegroups.')->group(function () {
                 Route::get('/', 'CourseGroupController@index')->name('index');
+                Route::post('/update/{id}', 'CourseGroupController@update')->name('update');
+                Route::post('/store', 'CourseGroupController@store')->name('store');
             });
 
+        });
+
+        Route::prefix('subjects')->name('subjects.')->group(function(){
+            Route::get('/', 'Academics\SubjectController@index')->name('index');
         });
 
         Route::get('schoolviser-setup', 'SchoolviserSetupController@index')->name('schoolviser.setup');

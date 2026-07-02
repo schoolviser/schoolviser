@@ -65,9 +65,6 @@ Route::prefix('students')->group(function() {
 
         Route::get('/unregistered-students', 'StudentController@unregistered')->name('students.unregistered');
 
-         Route::get('import', function(){
-            return 'import students';
-        })->name('students.import');
 
 
     }

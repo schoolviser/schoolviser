@@ -2,13 +2,16 @@
 
 namespace Modules\Schoolviser\Services;
 
-use App\Services\ModelBaseService;
+use Delgont\Core\Services\ModelService;
+
 use App\Traits\Repositories\EnsureCompanyIsSet;
 use Modules\Schoolviser\Entities\TermlyRegistration;
-use Modules\Schoolviser\Cache\CacheKeys\TermlyRegistrationCacheKeys as CacheKeys;
-use Modules\Schoolviser\Cache\CacheKeys\StudentCacheKeys;
+use Modules\Schoolviser\Entities\SecondaryStudent;
 
-class TermlyRegistrationService extends ModelBaseService
+use Modules\Schoolviser\Cache\CacheKeys\TermlyRegistrationCacheKeys;
+use Modules\Schoolviser\Cache\CacheKeys\SecondaryStudentCacheKeys;
+
+class TermlyRegistrationService extends ModelService
 {
     use EnsureCompanyIsSet;
 
@@ -18,23 +21,30 @@ class TermlyRegistrationService extends ModelBaseService
     }
 
 
-    public function updateRegistration(TermlyRegistration $termlyRegistration, $data) : TermlyRegistration
+    /**
+     * Update student registrations
+     */
+    public function updateRegistration(SecondaryStudent $student, TermlyRegistration $termlyRegistration, array $data) : TermlyRegistration
     {
         $this->ensureCompanyIsSet();
 
-        $request = (object) $data;
+        $this->run('before', 'updateRegistration', $termlyRegistration, $data);
 
-        $termlyRegistration->residence = $request->residence;
-        $termlyRegistration->clazz_id = $request->clazz_id;
-        $termlyRegistration->new_or_continuing = $request->new_or_continuing;
-        $termlyRegistration->hostel_id = $request->hostel_id ?? null;
-        $termlyRegistration->term_id = $request->term_id;
+        $termlyRegistration->fill([
+            'residence'        => $data['residence'] ?? $termlyRegistration->residence,
+            'clazz_id'         => $data['clazz_id'] ?? $termlyRegistration->clazz_id,
+            'new_or_continuing'=> $data['new_or_continuing'] ?? $termlyRegistration->new_or_continuing,
+            'hostel_id'        => $data['hostel_id'] ?? $termlyRegistration->hostel_id,
+            'term_id'          => $data['term_id'] ?? $termlyRegistration->term_id,
+        ]);
 
         $termlyRegistration->save();
 
-        CacheKeys::clearRegistrationCache($termlyRegistration->id);
-        Cachekeys::clearPaginatedRegistrationCache($termlyRegistration->company_id, $termlyRegistration->term_id, 15, 100);
-        StudentCacheKeys::clearStudentProfileCache($termlyRegistration->company_id, $termlyRegistration->student_id);
+        $this->run('after', 'updateRegistration', $termlyRegistration, $data);
+
+        TermlyRegistrationCacheKeys::clearCacheWithKeysStarting('REGISTRATION', [$this->companyId, $termlyRegistration->uuid]);
+        TermlyRegistrationCacheKeys::clearPaginatedRegistrationCache($termlyRegistration->company_id, $termlyRegistration->term_id, 15, 100);
+        SecondaryStudentCacheKeys::clearCacheWithKeysEnding('PROFILE', [$this->companyId, $student->uuid]);
 
         return $termlyRegistration;
     }

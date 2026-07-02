@@ -112,7 +112,7 @@ return [
 
     // Mathematical Subjects
     '425' => 'Mathematics',
-    '475' => 'Mathematics (subsidiary)',
+    '475' => 'Subsidiary Mathematics',
 
     // Science Subjects
     '510' => 'Physics',

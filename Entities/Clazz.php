@@ -82,4 +82,9 @@ class Clazz extends Model
         return $this->hasMany(Routine::class);
     }
 
+    public function streams()
+    {
+        return $this->hasMany(Stream::class, 'clazz_id');
+    }
+
 }

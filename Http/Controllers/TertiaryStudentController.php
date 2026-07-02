@@ -21,12 +21,16 @@ use Illuminate\Support\Facades\Cache;
 use Modules\Schoolviser\Repositories\IntakeRegistrationRepository;
 use Modules\Schoolviser\Repositories\AcademicYearRepository;
 use Modules\Schoolviser\Repositories\CourseRepository;
-use Modules\Schoolviser\Repositories\StudentRepository;
+use Modules\Schoolviser\Repositories\TertiaryStudentReposiory;
+
+use Modules\Schoolviser\Services\TertiaryStudentService;
 
 use Modules\Schoolviser\Cache\CacheKeys\IntakeRegistrationCacheKeys;
-use Modules\Schoolviser\Cache\CacheKeys\StudentCacheKeys;
+use Modules\Schoolviser\Cache\CacheKeys\TertiaryStudentCacheKeys;
 
-use Modules\Schoolviser\Exports\StudentsExport;
+# EXPORTS:
+use Modules\Schoolviser\Exports\TertiaryStudentsExport;
+use Modules\Schoolviser\Exports\SelectedTertiaryStudentExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -36,7 +40,9 @@ class TertiaryStudentController extends Controller
 
     public function __construct(
         protected IntakeRegistrationRepository $intakeRegistrationRepository,
-        protected StudentRepository $studentRepository
+        protected TertiaryStudentReposiory $tertiaryStudentRepo,
+        protected TertiaryStudentService $tertiaryStudentService
+
         )
     {
 
@@ -93,17 +99,18 @@ class TertiaryStudentController extends Controller
     public function index($intakeuuid = null)
     {
         // Detect current page from query string (default 1)
-        $page = request()->get('page', 1);
+        $page = request('page') ?? 1;
+
+        $term = $intakeuuid ? term($intakeuuid) : term();
 
         // 2. Fetch registrations + term
-        [$registrations, $term] = $intakeuuid
-            ? [$this->intakeRegistrationRepository->fromCache()->company(company()->id)->getIntakePaginatedRegistrations($intakeuuid, 15, $page), term($intakeuuid)]
-            : [$this->intakeRegistrationRepository->fromCache()->company(company()->id)->getCurrentPaginatedRegistrations(15, $page), term()];
+        $registrations = $this->intakeRegistrationRepository->fromCache()->company(company()->id)->getPaginatedIntakeRegistrations($term->id, 15, $page);
 
         // Transform students
         $students = $registrations->getCollection()->transform(function ($item) {
             return new Any([
                 'id'            => $item->student->id,
+                'uuid'            => $item->student->uuid,
                 'first_name'    => $item->student->first_name,
                 'last_name'     => $item->student->last_name,
                 'regno'         => $item->student->regno,
@@ -160,27 +167,9 @@ class TertiaryStudentController extends Controller
      * @param Request $request
      * @return Renderable
      */
-    public function store(Request $request)
+    public function store(\Modules\Schoolviser\Http\Requests\StoreTertiaryStudentRequest $request)
     {
-
-       $request->validate([
-            'regno'           => 'nullable|unique:students,regno',
-            'school_pay_code' => 'nullable|unique:students,school_pay_code',
-            'photo'           => 'nullable|mimes:jpeg,bmp,png',
-            'first_name'      => 'required|min:3|max:50',
-            'last_name'       => 'required|min:3|max:50',
-            'email'           => 'nullable|email|unique:students,email',
-            'dob'             => 'nullable|date',
-            'entry_date'      => 'nullable|date',
-            'country'         => 'nullable|max:100',
-            'phone'           => [
-                'nullable',
-                'max:20',
-                Rule::unique('students', 'phone')->where(function ($query) {
-                    return $query->where('company_id', company()->id);
-                }),
-            ],
-        ]);
+        $request->validated();
 
         $company = company();
 
@@ -200,12 +189,23 @@ class TertiaryStudentController extends Controller
         $student->phone = $request->phone;
         $student->company_id = $company->id;
 
-         if ($request->hasFile('photo')) {
-            $photo = $request->file('photo');
-            $filename = 'student_' . time() . '.' . $photo->getClientOriginalExtension();
-            $path = $photo->storeAs('students/photos', $filename);
-            $student->photo = $filename;
+        if ($request->hasFile('photo')) {
+            $photoFile = $request->file('photo');
+
+            $company = company($this->companyId);
+
+            // Build path: {delxero_account_number}/avatars/students/{student_id}.{ext}
+            $directory = $company->delxero_account_number . '/avatars/students';
+            $extension = $photoFile->getClientOriginalExtension(); // e.g. jpg, jpeg, png
+            $filename  = $student->id . '.' . $extension;
+
+            // Store file in public disk
+            $path = $photoFile->storeAs($directory, $filename, 'public');
+
+            // Update student record with full path
+            $student->photo = $path;
         }
+
 
         $saved = $student->save();
 
@@ -233,7 +233,7 @@ class TertiaryStudentController extends Controller
         ]);
 
        //Clear Cache
-       IntakeRegistrationCacheKeys::clearCurrentPaginatedRegistrationsCache(15, 50, company()->id);
+       IntakeRegistrationCacheKeys::clearPaginatedIntakeRegistrationsCachedData($company->id, $registration->term_id, 15, 50);
 
        // Add student to DelxeroMkt Hotspot If enable and students user profile is set
 
@@ -263,7 +263,9 @@ class TertiaryStudentController extends Controller
      */
     public function show($id)
     {
-        $student = app(StudentRepository::class)->fromCache()->company(company()->id)->getTertiaryStudentProfile($id);
+        
+        $companyId = company()->id;
+        $student =  $this->tertiaryStudentRepo->company($companyId)->fromCache()->getStudentProfile($id);
 
         $courses = app(CourseRepository::class)->company(company()->id)->getAllCourses();
 
@@ -309,19 +311,15 @@ class TertiaryStudentController extends Controller
 
 
     /**
-     * Display a listing of unregistered students.
+     * Get the unregistered students
      * @return Renderable
      */
-    public function unregistered()
+    public function unregistered($intakeuuid = null)
     {
-        $intake = term();
+        $intake = $intakeuuid ? term($intakeuuid) : term();
         $company = company();
 
-        //$students = $this->studentRepository->company($company->id)->getUnregisteredTertiaryStudents($intake);
-
-        $students = Student::whereCompanyId($company->id)->whereDoesntHave('currentIntakeRegistration')->with(['course', 'intakeRegistrations' => function($q){
-            $q->with('term');
-        },'courseGroup'])->paginate();
+        $students = $this->tertiaryStudentRepo->company($company->id)->getPaginatedUnregisteredStudents($intake->id);
 
         $courseGroups = CourseGroup::all();
         $courses = Course::all();
@@ -338,60 +336,85 @@ class TertiaryStudentController extends Controller
     }
 
 
+    /**
+     * Register student into the intake
+     */
     public function enroll(Request $request, $student_id)
     {
-
         $request->validate([
-            'term' => 'required',
-            'year' => 'required',
-            'semester' => 'required',
-            'new_or_continuing' => 'required',
+            'term_id'          => 'required',
+            'year'             => 'required',
+            'semester'         => 'required',
+            'new_or_continuing'=> 'required',
         ]);
 
         $company = company();
-        $student = Student::whereId($student_id)->firstOrFail();
-        $term = term($request->term);
+        $student = $this->tertiaryStudentRepo->company($company->id)->getStudentById($student_id);
+        $term    = term($request->term_id);
 
-        // Then enforce uniqueness manually:
-        $exists = IntakeRegistration::where('company_id', company()->id)
-            ->where('term_id', $term->id)
-            ->where('semester', $request->semester)
-            ->where('year', $request->year)
-            ->where('student_id', $student_id)
-            ->exists();
-
-        if ($exists) {
-            return back()->withErrors(['term' => 'This student is already enrolled in the selected intake.']);
-        }
-
-
-        // Check if this term allows intake registrations
-
-        $registration = new IntakeRegistration;
-        $registration->new_or_continuing = $request->new_or_continuing;
-        $registration->term_id = $term->id;
-        $registration->academic_year_id = $term->academic_year_id;
-        $registration->company_id = $company->id;
-
-        $registration->semester = $request->semester;
-        $registration->year = $request->year;
-        $registration->student_id = $student->id;
-
-
-        $registration->save();
-
-        IntakeRegistrationCacheKeys::clearCurrentPaginatedRegistrationsCache(15, 50, company()->id);
-
-        log_activity([
-            'action'    => 'registered.student',
-            'company_id' => company()?->id,
-            'message'   => auth()->user()->name." registered student for intake ".$term->uuid,
-            'visibility' => 'company_admin',
+        // Append academic_year_id onto the request object
+        $request->merge([
+            'academic_year_id' => $term->academic_year_id,
         ]);
 
-        return back()->withInput()->with('success', 'Student enrolled successfully ..');
-
+        // Pass the enriched request into the service
+        $this->tertiaryStudentService
+            ->company($company->id)
+            ->register($student, $request, function ($registration, $student) {
+                // Callback code, e.g. logging or cache clearing
+            });
+        return back()->with('success', 'Student registered successfully ......');
+        
     }
+
+    public function bulkEnroll(Request $request)
+    {
+        $request->validate([
+            'student_ids'       => 'required|string', // comma-separated IDs
+            'term_id'           => 'required|exists:terms,id',
+            'semester'          => 'required|integer|min:1|max:2',
+            'year'              => 'required|integer|min:1|max:5',
+            'new_or_continuing' => 'required|in:new,continuing',
+        ]);
+
+        $company = company();
+        $studentIds = explode(',', $request->student_ids);
+
+        $term = term($request->term_id);
+
+
+        foreach ($studentIds as $studentId) {
+            $student = $this->tertiaryStudentRepo
+                ->company($company->id)
+                ->fromCache()
+                ->getStudent($studentId);
+
+            if (!$student) {
+                continue; // skip invalid IDs
+            }
+
+            // Merge academic_year_id into request data
+            $term = term($request->term_id);
+            $data = $request->all();
+            $data['academic_year_id'] = $term->academic_year_id;
+
+            // Call your service register method
+            $this->tertiaryStudentService
+                ->company($company->id)
+                ->register($student, new Request($data), function ($registration, $student) {
+                    log_activity([
+                        'action'     => 'bulk.enrolled.student',
+                        'company_id' => company()?->id,
+                        'message'    => auth()->user()->name." bulk enrolled student {$student->first_name} {$student->last_name}",
+                        'visibility' => 'company_admin',
+                    ]);
+                });
+        }
+
+        return back()->with('success', 'Selected students enrolled successfully.');
+    }
+
+
 
     public function deregister($registration_id)
     {
@@ -408,7 +431,6 @@ class TertiaryStudentController extends Controller
      */
     public function updatePersonalInfo(Request $request, $id)
     {
-
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
@@ -417,20 +439,17 @@ class TertiaryStudentController extends Controller
             'regno' => 'nullable',
         ]);
 
-        $student = Student::whereId($id)->firstOrFail();
+        $company = company();
+        $term = term();
 
-        $student->first_name = $request->first_name;
-        $student->last_name = $request->last_name;
-        $student->gender = $request->gender;
-        $student->date_of_birth = $request->dob;
-        $student->nationality = $request->nationality;
-        $student->address = $request->address;
-        $student->regno = $request->regno;
-        $student->phone = $request->phone;
-        $student->nin = $request->nin;
-        $student->city = $request->city;
+        // Merge term_id into the request data
+        $request = $request->merge(['term_id' => $term->id])->all();
 
-        $student->save();
+        $student = $this->tertiaryStudentRepo->company($company->id)->fromCache()->getStudentById($id);
+
+        $this->tertiaryStudentService->company($company->id)->updatePersonalInfo($student, $request, function($student){
+            // Call backs
+        });
 
        // log activity
         log_activity([
@@ -440,49 +459,47 @@ class TertiaryStudentController extends Controller
             'visibility' => 'company_admin',
         ]);
 
-        //Clear Cache
-        StudentCacheKeys::clearTertiaryStudentProfileCache(company()->id, $student->uuid);
-        IntakeRegistrationCacheKeys::clearCurrentPaginatedRegistrationsCache(10, 1, company()->id);
-
         return back()->withInput()->with('success', 'Student Personal Info Updated Successfully ....');
     }
 
-    public function updateAcademicInfo(Request $request, $id)
+    public function updateAcademicInfo(Request $request, $studentId, $intakeRegistrationId)
     {
-        $registration = IntakeRegistration::current()->whereStudentId($id)->first();
+        $company = company();
 
-        $student = Student::findOrFail($id);
+        $student = $this->tertiaryStudentRepo->company($company->id)->getStudent($studentId);
+        $registration = $this->intakeRegistrationRepository->company($company->id)->getIntakeRegistration($intakeRegistrationId);
 
-        $registration->residence = $request->residence;
-        $registration->new_or_continuing = $request->new_or_continuing;
-        $registration->year = $request->year;
-        $registration->semester = $request->semester;
+        // Validate if the registration belongs to the user and company
+        if ($student->id == $registration->student_id) {
+            // additional checks if needed
+        }
 
-
-        $student->course_id = $request->course;
-        $student->regno = $request->regno;
-        $student->admission_number = $request->admission_number;
-
-        $registration->save();
-        $student->save();
-
-        StudentCacheKeys::clearTertiaryStudentProfileCache(company()->id, $student->uuid);
-        IntakeRegistrationCacheKeys::clearCurrentPaginatedRegistrationsCache(10, 1, company()->id);
-
-        // log activity
-        log_activity([
-            'action'    => 'updated.student.academic.info',
-            'company_id' => company()?->id,
-            'subject' => $registration,
-            'message'   => auth()->user()->name." updated student personal info - <a href='" . route('tertiary.students.show', $student->id) . "'>Click here</a> to view student details.",
-            'visibility' => 'company_admin',
+        $data = $request->validate([
+            'regno'             => 'nullable|unique:students,regno,' . $studentId . ',id,company_id,' . $company->id,
+            'admission_number'  => 'nullable|unique:students,admission_number,' . $studentId . ',id,company_id,' . $company->id,
+            'course'            => 'nullable|integer',
+            'semester'          => 'nullable|integer',
+            'year'              => 'nullable|integer',
+            'new_or_continuing' => 'nullable|string',
+            'residence'         => 'nullable|string',
         ]);
 
 
-
+        $this->tertiaryStudentService
+            ->company($company->id)
+            ->updateAcademicInfo($student, $registration, $data, function($student, $registration){
+                log_activity([
+                    'action'    => 'updated.student.academic.info',
+                    'company_id' => company()?->id,
+                    'subject'   => $registration,
+                    'message'   => auth()->user()->name." updated student",
+                    'visibility'=> 'company_admin',
+                ]);
+            });
 
         return back()->withInput()->with('success', 'Academic info updated successfully ...');
     }
+
 
 
     /**
@@ -608,19 +625,67 @@ class TertiaryStudentController extends Controller
         return $students = $registrations->setCollection($students);
     }
 
-    public function export(Request $request)
+    /**
+     * Export current students information
+     */
+    public function export(Request $request, $intakeid = null)
     {
         // Example: get company, term, course, gender from request
         $company = company();
-        $term    = term();
+        $term    = $intakeid ? term($intakeid) : term();
         $course  = null;
         $gender  = null;
 
         // Pass them into StudentsExport
         return Excel::download(
-            new StudentsExport($company, $term, $course, $gender),
+            new TertiaryStudentsExport($company, $term, $course, $gender),
             'students.xlsx'
         );
     }
+
+
+    public function selectedStudentsExport(Request $request)
+    {
+        $request->validate([
+            'student_ids' => 'required|string',
+        ]);
+
+        $ids = explode(',', $request->student_ids);
+
+        if (empty($ids)) {
+            return back()->with('error', 'No students selected for export.');
+        }
+
+        return Excel::download(new SelectedTertiaryStudentExport($ids), 'selected_students.xlsx');
+    }
+
+    /**
+     * Update students photo
+     */
+    public function updatePhoto(Request $request, $id)
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $term = term();
+        $company = company();
+
+        $student = $this->tertiaryStudentRepo->company($company->id)->getStudentById($id);
+
+        $this->tertiaryStudentService->company(company()->id)
+            ->setTerm($term)
+            ->updatePhoto($student, $request->file('photo'), function ($student, $path) {
+                log_activity([
+                    'action'     => 'updated.student.photo',
+                    'company_id' => company()?->id,
+                    'message'    => auth()->user()->name." updated student photo for {$student->first_name} {$student->last_name}",
+                    'visibility' => 'company_admin',
+                ]);
+            });
+
+        return back()->with('success', 'Student photo updated successfully.');
+    }
+
 
 }

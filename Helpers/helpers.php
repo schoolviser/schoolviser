@@ -2,6 +2,7 @@
 
 use Modules\Schoolviser\Repositories\TermRepository;
 use Modules\Schoolviser\Repositories\ClazzRepository;
+use Modules\Schoolviser\Repositories\AcademicYearRepository;
 
 //Get the current term detials
 if(!function_exists('term')){
@@ -10,10 +11,20 @@ if(!function_exists('term')){
     }
 }
 
+
+//Get the current term detials
+if(!function_exists('academicYear')){
+    function academicYear($id = null){
+        return ($id)
+        ? app(AcademicYearRepository::class)->company(auth()->user()->default_company_id)->fromCache()->getYear($id) 
+        : app(AcademicYearRepository::class)->company(auth()->user()->default_company_id)->fromCache()->getCurrentYear();
+    }
+}
+
 //Get the current term detials
 if(!function_exists('clazzes')){
     function clazzes(){
-        return app(ClazzRepository::class)->company(company()->id)->getClazzes();
+        return app(ClazzRepository::class)->company(company()->id)->fromCache()->getClazzes();
     }
 }
 

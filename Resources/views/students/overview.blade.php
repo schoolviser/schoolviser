@@ -68,8 +68,6 @@
 
 @endsection
 
-
-
 @section('where-am-i')
 
 @endsection
@@ -100,7 +98,6 @@
  </div>
 
 </div>
-
 
 <div class="row mb-5">
  <div class="col-lg-6 rounded-2 py-4 d-none"><canvas id="studentsPerYearGroupChart" height="200px"></canvas></div>

@@ -13,26 +13,14 @@ return new class extends Migration
     {
        Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-
-            // Full subject name, e.g. "Mathematics"
+            $table->uuid()->unique()->nullable();
             $table->string('name');
-
-            // Short name for display, e.g. "Math"
             $table->string('short_name')->nullable();
-
-            // Short code for timetables, e.g. "MTH"
             $table->string('short_code')->nullable();
-
-            // Level of study: O-Level or A-Level
             $table->enum('level', ['o','a'])->default('o');
-
-            // Whether subject is compulsory
             $table->boolean('compulsory')->default(false);
-
-            // Flexible metadata (JSON or serialized configs)
             $table->text('meta')->nullable();
 
-            // Scope
             $table->unsignedBigInteger('company_id');
 
             $table->timestamps();

@@ -59,8 +59,7 @@ class TertiaryOverviewController extends Controller
         ->toArray();
 
 
-        $totalRegistrationsPerIntake = app(TermRepository::class)->company($company->id)->getTotalRegistrationsPerIntake();
-
+        $totalRegistrationsPerIntake = app(TermRepository::class)->company($company->id)->getTotalRegistrationsPerIntakeInAcademicYear($term->academic_year_id);
 
 
         return view('schoolviser::tertiary.students.overview', compact(

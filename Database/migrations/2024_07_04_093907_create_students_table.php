@@ -81,9 +81,6 @@ class CreateStudentsTable extends Migration
             $table->foreign('deleted_by')->references('id')->on('users')->onDelete('set null');
 
             // Composite unique constraints per company
-            $table->unique(['company_id', 'nin']);
-            $table->unique(['company_id', 'phone']);
-            $table->unique(['company_id', 'email']);
             $table->unique(['company_id', 'regno']);
             $table->unique(['company_id', 'access_number']);
 

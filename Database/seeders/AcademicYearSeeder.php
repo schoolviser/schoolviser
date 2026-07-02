@@ -25,7 +25,7 @@ class AcademicYearSeeder extends Seeder
 
         foreach ($companies as $companyId) {
             // Randomly decide how many academic years to create (between 2 and 5)
-            $count = 2;
+            $count = 1;
 
             for ($i = 0; $i < $count; $i++) {
                 $year = $currentYear - $i;

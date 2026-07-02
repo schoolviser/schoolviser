@@ -79,11 +79,6 @@ class Student extends Model
         return ucwords("{$this->surname} {$this->other_names}");
     }
 
-    public function getPhotoAttribute()
-    {
-        return asset($this->photo ?? config('defaults.avator'));
-    }
-
     /**
      * Get the URL for viewing the student.
      *
@@ -162,70 +157,7 @@ class Student extends Model
         });
     }
 
-    /**
-     * Scope for filtering currently enrolled students.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeCurrent($query)
-    {
-        return $query->whereHas('currentTermlyRegistration');
-    }
 
-    /**
-     * Relationship for the student's current termly registration.
-     */
-    public function currentTermlyRegistration()
-    {
-        return $this->hasOne(TermlyRegistration::class)->whereHas('term', function ($termQuery) {
-            $termQuery->current();
-        });
-    }
-
-    /**
-     * Relationship for the student's previous termly registration.
-     */
-    public function previousTermlyRegistration()
-    {
-        return $this->hasOne(TermlyRegistration::class)->whereHas('term', function ($termQuery) {
-            $termQuery->previous();
-        });
-    }
-
-    /**
-     * Relationship for all termly registrations.
-     */
-    public function termlyRegistrations()
-    {
-        return $this->hasMany(TermlyRegistration::class);
-    }
-
-    /**
-     * Relationship for all intake registrations.
-     */
-    public function intakeRegistrations()
-    {
-        return $this->hasMany(IntakeRegistration::class, 'student_id');
-    }
-
-    /**
-     * Relationship for the current intake registration.
-     */
-    public function currentIntakeRegistration()
-    {
-        return $this->hasOne(IntakeRegistration::class)->whereHas('term', function ($termQuery) {
-            $termQuery->current();
-        });
-    }
-
-    /**
-     * Relationship for the course the student belongs to.
-     */
-    public function course()
-    {
-        return $this->belongsTo(Course::class, 'course_id');
-    }
 
     /**
      * Synchronize fees for the student.
@@ -258,13 +190,7 @@ class Student extends Model
         $this->save();
     }
 
-    /**
-     * Relationship for the course group the student belongs to.
-     */
-    public function courseGroup()
-    {
-        return $this->belongsTo(CourseGroup::class);
-    }
+  
 
     /**
      * Relationship for the year group the student belongs to.
@@ -274,25 +200,8 @@ class Student extends Model
         return $this->belongsTo(YearGroup::class);
     }
 
-    /**
-     * Check if the student is currently enrolled.
-     *
-     * @return bool
-     */
-    public function isEnrolled()
-    {
-        return $this->currentTermlyRegistration()->exists();
-    }
+    
 
-    /**
-     * Fetch full details of the student including related models.
-     *
-     * @return \Illuminate\Database\Eloquent\Model|null
-     */
-    public function fullDetails()
-    {
-        return $this->load(['course', 'courseGroup', 'yearGroup', 'currentIntakeRegistration']);
-    }
 
      /**
      * Generate a unique access number scoped to a company.
@@ -358,36 +267,6 @@ class Student extends Model
         return $this->activeCohorts()->where('cohort_id', $cohort->id)->exists();
     }
 
-    /**
-     * Register this student into a tertiary intake.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function registerTertiaryStudent(array $data, $companyId)
-    {
-        // Check if already registered in this intake
-        $exists = $this->intakeRegistrations()
-            ->where('company_id', $companyId)
-            ->where('term_id', $data['term_id'])
-            ->where('semester', $data['semester'])
-            ->where('year', $data['year'])
-            ->exists();
-
-        if ($exists) {
-            throw ValidationException::withMessages([
-                'student' => 'This student is already enrolled in the selected intake.',
-            ]);
-        }
-
-        // Create registration
-        return $this->intakeRegistrations()->create([
-            'company_id'        => $companyId,
-            'term_id'           => $data['term_id'],
-            'academic_year_id'  => $data['academic_year_id'],
-            'semester'          => $data['semester'],
-            'year'              => $data['year'],
-            'new_or_continuing' => $data['new_or_continuing'],
-        ]);
-    }
+    
 }
 

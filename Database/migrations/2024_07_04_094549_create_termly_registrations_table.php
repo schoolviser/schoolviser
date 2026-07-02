@@ -38,7 +38,8 @@ class CreateTermlyRegistrationsTable extends Migration
 
             // Relationships
             $table->unsignedBigInteger('registered_by')->nullable();
-            $table->unsignedBigInteger('clazz_id'); // class placement
+            $table->unsignedBigInteger('clazz_id');
+            $table->unsignedBigInteger('stream_id');
             $table->unsignedBigInteger('hostel_id')->nullable();
             $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('term_id');
@@ -54,6 +55,7 @@ class CreateTermlyRegistrationsTable extends Migration
             $table->foreign('registered_by')->references('id')->on('users')->onDelete('set null');
             $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
             $table->foreign('clazz_id')->references('id')->on('clazzs');
+            $table->foreign('stream_id')->references('id')->on('streams');
             $table->foreign('hostel_id')->references('id')->on('hostels')->onDelete('set null');
             $table->foreign('term_id')->references('id')->on('terms');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

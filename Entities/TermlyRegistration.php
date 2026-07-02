@@ -48,9 +48,6 @@ class TermlyRegistration extends Model
             }
         });
     }
-
-
-
     
     public function scopeOf($query, $term)
     {
@@ -125,7 +122,7 @@ class TermlyRegistration extends Model
     //Get student termly individual fee
     public function individualFees()
     {
-         return $this->hasMany(IndividualFee::class, 'termly_registration_id');
+        return $this->hasMany(IndividualFee::class, 'termly_registration_id');
     }
 
      //Get student termly fees
@@ -142,6 +139,11 @@ class TermlyRegistration extends Model
     public function payments()
     {
         return $this->hasMany(FeePayment::class, 'termly_registration_id');
+    }
+
+    public function stream()
+    {
+        return $this->belongsTo(Stream::class, 'stream_id');
     }
 
 }

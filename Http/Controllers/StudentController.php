@@ -30,40 +30,37 @@ use Delgont\Core\Entities\Any;
 
 //Exports
 //use App\Exports\StudentsExport;
-//use Maatwebsite\Excel\Facades\Excel;
-
+use Maatwebsite\Excel\Facades\Excel;
 use Modules\Schoolviser\Entities\Term;
+
+use Modules\Schoolviser\Exports\SecondaryStudentTemplateExport;
+
+# Imports
+use Modules\Schoolviser\Imports\SecondaryStudentImport;
 
 use Modules\Schoolviser\Repositories\TermlyRegistrationRepository;
 use Modules\Schoolviser\Repositories\ClazzRepository;
 use Modules\Schoolviser\Repositories\AcademicYearRepository;
-use Modules\Schoolviser\Repositories\StudentRepository;
+use Modules\Schoolviser\Repositories\SecondaryStudentRepository;
 
-use Modules\Schoolviser\Services\StudentService;
+# Services
+use Modules\Schoolviser\Services\SecondaryStudentService;
 use Modules\Schoolviser\Services\TermlyRegistrationService;
 
 use Modules\Schoolviser\Cache\CacheKeys\TermlyRegistrationCacheKeys;
+use Modules\Schoolviser\Cache\CacheKeys\SecondaryStudentCacheKeys;
 
 
 class StudentController extends Controller
 {
-    protected TermlyRegistrationRepository $termlyRegistrationRepository;
-    protected StudentService $studentService;
-    protected StudentRepository $studentRepository;
-    protected TermlyRegistrationService $termlyRegistrationService;
-
 
     public function __construct(
-        TermlyRegistrationRepository $termlyRegistrationRepository, 
-        StudentRepository $studentRepository,
-        StudentService $studentService,
-        TermlyRegistrationService $termlyRegistrationService
+        protected TermlyRegistrationRepository $termlyRegistrationRepository, 
+        protected SecondaryStudentRepository $studentRepository,
+        protected SecondaryStudentService $studentService,
+        protected TermlyRegistrationService $termlyRegistrationService
         )
     {
-        $this->termlyRegistrationRepository = $termlyRegistrationRepository;
-        $this->studentRepository = $studentRepository;
-        $this->studentService = $studentService;
-        $this->termlyRegistrationService = $termlyRegistrationService;
 
         $this->middleware('current.term')->only(['index', 'store', 'updatePersonalInfo', 'updateAcademicInfo']);
     }
@@ -81,40 +78,7 @@ class StudentController extends Controller
         $page = request()->input('page') ?? 1;
 
         #Get the students that belong to the current term
-        $registrations = $this->termlyRegistrationRepository->company($company->id)->fromCache()->getPaginatedRegistrations($term->id, 15, $page);
-
-        // Transform students
-        $students = $registrations->getCollection()->transform(function ($item) {
-            return new Any([
-                'id'            => $item->student->id,
-                'uuid'            => $item->student->uuid,
-                'first_name'    => $item->student->first_name,
-                'last_name'     => $item->student->last_name,
-                'regno'         => $item->student->regno,
-                'access_number' => $item->student->access_number,
-                'gender'        => $item->student->gender,
-                'course'        => $item->student->course,
-                'photo'         => $item->student->photo,
-                //'yearGroup'     => $item->student->yearGroup,
-                'nin'           => $item->student->nin,
-                'nationality'   => $item->student->nationality,
-                'registration'  => new Any([
-                    'id'               => $item->id,
-                    'uuid'               => $item->uuid,
-                    'residence'        => $item->residence,
-                    'new_or_continuing'=> $item->new_or_continuing,
-                    'meta'             => $item->meta,
-                ]),
-                'clazz' => new Any([
-                    'id' => $item->clazz->id,
-                    'uuid' => $item->clazz->uuid,
-                    'name' => $item->clazz->name,
-                    'code' => $item->clazz->code,
-                ])
-            ]);
-        });
-
-        $students = $registrations->setCollection($students);
+        $students = $this->termlyRegistrationRepository->company($company->id)->fromCache()->getPaginatedRegistrations($term->id, 15, $page);
 
         log_activity([
             'action'     => 'viewed.students',
@@ -203,28 +167,48 @@ class StudentController extends Controller
     }
 
 
+    /**
+     * Update a student's personal information.
+     *
+     * This method validates the incoming request data, retrieves the target student
+     * from the repository (scoped to the current company), and delegates the update
+     * operation to the student service. After updating, it logs the activity and
+     * clears relevant termly registration cache keys to ensure fresh data.
+     *
+     * @param \Modules\Schoolviser\Http\Requests\UpdateStudentPersonalInfoRequest $request
+     *        The validated request containing updated student personal info fields.
+     * @param int|string $student_id
+     *        The unique identifier of the student to update.
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     *         Returns a JSON response when the request expects JSON, otherwise
+     *         redirects back with a success message.
+     *
+     * Side Effects:
+     * - Logs an activity entry for auditing.
+     * - Clears paginated registration cache for the current term.
+     */
     public function updatePersonalInfo(UpdateStudentPersonalInfoRequest $request, $student_id)
     {
-        $request->validated();
+        $data = $request->validated();
         
         $company = company();
         $term = term();
 
-        $oldStudent = $this->studentRepository->company($company->id)->fromCache()->getStudentProfile($student_id);
+        $student = $this->studentRepository->company($company->id)->fromCache()->getStudentMinimal($student_id);
 
-        $updated = $this->studentService->company($company->id)->updatePersonalInfo($oldStudent, $request);
-
-        log_activity([
-            'action'     => 'updated.student.personalinfo',
-            'company_id' => $company->id,
-            'new'        => $updated,
-            'old' => $oldStudent,
-            'subject'    => $oldStudent,
-            'message'    => auth()->user()->name . " updated students personal information with reference ".$oldStudent->uuid,
-            'visibility' => 'company_admin',
-        ]);
-
-        TermlyRegistrationCacheKeys::clearPaginatedRegistrationCache($company->id, $term->id, 15, 100);
+        $updated = $this->studentService
+        ->company($company->id)
+        ->after('updatePersonalInfo', function($student, $data) use ($company, $term){
+            log_activity([
+                'action'     => 'updated.student.personalinfo',
+                'company_id' => $company->id,
+                'subject'    => $student,
+                'message'    => auth()->user()->name . " updated students personal information with reference ".$student->uuid,
+                'visibility' => 'company_admin',
+            ]);
+            TermlyRegistrationCacheKeys::clearPaginatedRegistrationCache($company->id, $term->id, 15, 100);
+        })->updatePersonalInfo($student, $data);
 
         return ($request->expectsJson()) ? response()->json([
             'success' => true,
@@ -287,19 +271,32 @@ class StudentController extends Controller
 
 
 
-    public function updateAcademicInfo(UpdateTermlyRegistrationRequest $request, $termly_registration_id)
+    public function updateAcademicInfo(UpdateTermlyRegistrationRequest $request, $termly_registration_id, $student_id)
     {
         $request = $request->validated();
         
-        $companyId = company()->id;
+        $company = company();
 
-        $registration = $this->termlyRegistrationRepository->company($companyId)->getRegistration($termly_registration_id);
+        $registration = $this->termlyRegistrationRepository->company($company->id)->getRegistration($termly_registration_id);
+        $student = $this->studentRepository->company($company->id)->fromCache()->getStudentMinimal($student_id);
+
 
         if($registration->locked){
             abort(403, 'You can not update this registration because it is locked. Please contact the administrator if you want to make changes to this registration');
         }
 
-        $updated = $this->termlyRegistrationService->company($companyId)->updateRegistration($registration, $request);
+        $updated = $this->termlyRegistrationService
+        ->company($company->id)
+        ->after('updateAcademicInfo', function($termlyRegistration, $data) use($company, $student){
+            log_activity([
+                'action'     => 'updated.student.personalinfo',
+                'company_id' => $company->id,
+                'subject'    => $termlyRegistration,
+                'message'    => auth()->user()->name . " updated students personal information with reference ".$student->uuid,
+                'visibility' => 'company_admin',
+            ]);
+        })
+        ->updateRegistration($student, $registration, $request);
 
         return (request()->expectsJson()) ? response()->json([
             'success' => true,
@@ -308,19 +305,34 @@ class StudentController extends Controller
     }
 
 
+    /**
+     * Update students photo
+     */
     public function updatePhoto(Request $request, $id)
     {
         $request->validate([
-            'photo' => 'required|mimes:jpeg,png,jpg|max:2048'
+            'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        Student::whereId($id)->update([
-            'photo' => 'storage/'.request()->photo->store('students', 'public')
-        ]);
+        $term = term();
+        $company = company();
 
-        return ($request->expectsJson()) ? response()->json(['success' => true, 'message' => 'Photo updated successfully'], 200) : back()->withInput()->with('updated', 'Avator changed successfully');
+        $student = $this->studentRepository->company($company->id)->fromCache()->getStudentMinimal($id);
+
+
+        $this->studentService->company($company->id)
+            ->setTerm($term)
+            ->updatePhoto($student, $request->file('photo'), function ($student, $path) {
+                log_activity([
+                    'action'     => 'updated.student.photo',
+                    'company_id' => company()?->id,
+                    'message'    => auth()->user()->name." updated student photo for {$student->first_name} {$student->last_name}",
+                    'visibility' => 'company_admin',
+                ]);
+            });
+
+        return back()->with('success', 'Student photo updated successfully.');
     }
-
 
 
     /**
@@ -352,6 +364,24 @@ class StudentController extends Controller
         return Excel::download(new StudentsExport($year, $term), $year.'Term'.$term.'students.xlsx');
     }
 
+    public function registerStudent(\Modules\Schoolviser\Http\Requests\RegisterSecondaryStudentRequest $request, $studentuuid)
+    {
+        $company = company();
+        $student = $this->studentRepository->company($company->id)->getStudentMinimal($studentuuid);
+
+        // Merge student_id into validated request
+        $request->merge([
+            'student_id' => $student->id,
+        ]);
+
+        // Now you can use $request->validated() safely
+        $data = $request->validated();
+
+        $this->studentService->company($company->id)->registerStudent($student, $data);
+
+        return back()->with('success', 'Student registered sucessfully .....!');
+    }
+
 
      /**
      * Display a listing of unregistered students.
@@ -359,12 +389,40 @@ class StudentController extends Controller
      */
     public function unregistered()
     {
+        $page = request()->get('page', 1);
         $term = term();
-        $students = Student::whereDoesntHave('currentTermlyRegistration')->paginate();
-        $academic_years = AcademicYear::all();
+        $academic_years = [];
+        $company = company();
+        $clazzes = clazzes();
 
-        return view('student::unregistered_students', compact('students','academic_years'));
+        $students = $this->studentRepository->company($company->id)->fromCache()->getPaginatedTermUnregisteredStudents($term->id, 15, $page);
+
+        return view('schoolviser::students.unregistered_students', compact('students','term', 'clazzes'));
     }
+
+    public function searchUnregistered(Request $request)
+    {
+        $term = term();
+        $company = company();
+        $query = $request->input('query'); // from GET
+
+        $students = $this->studentRepository
+            ->company($company->id)
+            ->searchTermUnregisteredStudents($term->id, $query);
+
+        // If request expects partial view (AJAX with header or param)
+        if ($request->ajax() || $request->hasHeader('X-Partial-View')) {
+            return response()->json([
+                'html' => view('schoolviser::students.partials._unregistered_students_table', compact('students', 'term'))->render()
+            ]);
+        }
+
+        // Otherwise return full view
+        return view('schoolviser::students.partials._unregistered_students_table', compact('students', 'term'));
+    }
+
+
+
 
     public function lockRegistration($termly_registration_id)
     {
@@ -392,6 +450,50 @@ class StudentController extends Controller
             'success' => true,
             'message' => 'Registration unlocked successfully ......!'
         ]) : back()->with('success', 'Registration unlocked successfully ......!');
+    }
+    public function importRegistration()
+    {
+        $company = company();
+        $term = term();
+        Excel::import(new \Modules\Schoolviser\ImportsSecondaryStudentImport($term, $company->id), $request->file('file'));
+
+        $ignored = SecondaryStudentImport::ignoredStudents();
+        if (!empty($ignored)) {
+            // Save to log, DB, or show in UI
+            \Log::warning('Ignored students during import', $ignored);
+        }
+
+        $summary = SecondaryStudentImport::summary();
+
+        return back()->with('success', "Import complete: {$summary['imported']} students registered, {$summary['ignored']} ignored.")
+                    ->with('ignoredDetails', $summary['details']);
+
+    }
+
+    public function importSecondaryStudents(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        $company = company();
+        $term = Term::current()->firstOrFail();
+
+        Excel::import(new SecondaryStudentImport($term, $company->id), $request->file('file'));
+
+        $summary = SecondaryStudentImport::summary();
+
+        \Modules\Schoolviser\Cache\CacheKeys\TermlyRegistrationCacheKeys::clearPaginatedRegistrationCachedData($company->id, $term->id, 15, 300);
+
+        return back()
+            ->with('success', "Import complete: {$summary['imported']} students registered, {$summary['ignored']} ignored.")
+            ->with('ignoredDetails', $summary['details']);
+    }
+
+    public function downloadTemplate()
+    {
+        $company = company(); // tenant context helper
+        return Excel::download(new SecondaryStudentTemplateExport($company->id), 'secondary_students_template.xlsx');
     }
 
 

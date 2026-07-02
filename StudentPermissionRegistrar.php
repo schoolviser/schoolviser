@@ -13,17 +13,21 @@ class StudentPermissionRegistrar extends PermissionRegistrar
     const CAN_VIEW_STUDENTS_LISTING = 'can_view_students_listing';
     const CAN_VIEW_STUDENT_PROFILE = 'can_view_students_profile';
     const CAN_VIEW_INDIVIDUAL_STUDENT_INFO = 'can_view_individual_students_info';
-    const CAN_REGISTER_STUDENT = 'can_register_student';
     const CAN_DELETE_STUDENT_INFO = 'can_delete_student_info';
     const CAN_VIEW_DELETED_STUDENTS = 'can_view_deleted_students';
     const CAN_RESTORE_DELETED_STUDENTS = 'can_restore_deleted_students';
     const CAN_PERMANENTLY_DELETE_STUDENTS = 'can_permanently_delete_students';
     const CAN_UPDATE_STUDENTS_PERSONAL_INFO = 'can_update_students_personal_info';
+    
+    const CAN_UPDATE_STUDENTS_PHOTO = 'can_update_students_photo';
+    const CAN_IMPORT_STUDENTS_INFO = 'can_import_students_info';
+
+    // Student Registrations
+    const CAN_REGISTER_STUDENT = 'can_register_student';
+    const CAN_VIEW_STUDENT_REGISTRATIONS = 'can_view_student_registrations';
     const CAN_UPDATE_STUDENTS_REGISTRATION_INFO = 'can_update_students_registration_info';
     const CAN_LOCK_STUDENT_REGISTRATION = 'can_lock_student_registration';
     const CAN_UNLOCK_STUDENT_REGISTRATION = 'can_unlock_student_registration';
-    const CAN_UPDATE_STUDENTS_PHOTO = 'can_update_students_photo';
-    const CAN_IMPORT_STUDENTS_INFO = 'can_import_students_info';
 
 
     public function descriptions() : array

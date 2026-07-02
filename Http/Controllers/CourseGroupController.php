@@ -6,8 +6,24 @@ use Illuminate\Http\Request;
 use Modules\Schoolviser\Entities\CourseGroup;
 use Illuminate\Support\Facades\Validator;
 
+use Modules\Schoolviser\Repositories\CourseGroupRepository;
+
+# Services
+use Modules\Schoolviser\Services\CourseGroupService;
+
+# Requests
+use Modules\Schoolviser\Http\Requests\StoreCourseGroupRequest;
+use Modules\Schoolviser\Http\Requests\UpdateCourseGroupRequest;
+
 class CourseGroupController extends Controller
 {
+    public function __construct(
+        protected CourseGroupRepository $courseGroupRepository,
+        protected CourseGroupService $courseGroupService
+    )
+    {
+        
+    }
     /**
      * Display a paginated list of course groups.
      *
@@ -16,10 +32,11 @@ class CourseGroupController extends Controller
      */
     public function index(Request $request)
     {
+        $page = request()->get('page', 1);
+
         $company = company();
 
-        // Get paginated course groups with related course and student count
-        $courseGroups = CourseGroup::whereCompanyId($company->id)->with(['course', 'students'])->paginate(10);
+        $courseGroups = $this->courseGroupRepository->company($company->id)->getPaginatedCourseGroups(15, $page);
 
         $courses = \Modules\Schoolviser\Entities\Course::all();
         $terms = \Modules\Schoolviser\Entities\Term::all();
@@ -27,7 +44,7 @@ class CourseGroupController extends Controller
         return (request()->expectsJson()) ?  response()->json([
             'data' => $courseGroups,
             'message' => 'Course groups retrieved successfully.'
-        ], 200) : view('schoolviser::courses.course_groups', compact('courseGroups', 'courses','terms'));
+        ], 200) : view('schoolviser::courses.coursegroups.index', compact('courseGroups', 'courses','terms'));
     }
 
     /**
@@ -36,29 +53,18 @@ class CourseGroupController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreCourseGroupRequest $request)
     {
-        // Validate incoming request data
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'short_code' => 'nullable|string|max:10|unique:course_groups',
-            'description' => 'nullable|string',
-            'completes_on' => 'nullable|date',
-            'course_id' => 'nullable|exists:courses,id',
-            'term_id' => 'nullable|exists:terms,id',
-        ]);
+        $company = company();
 
         // Create the course group
-        $courseGroup = CourseGroup::create($request->all());
-
-        // Eager load the 'course' relationship
-        $courseGroup->load('course');
+        $courseGroup = $this->courseGroupService->company($company->id)->create($request->validated());
 
         // Return the course group with its course details
-        return response()->json([
+        return $request->expectsJson() ? response()->json([
             'data' => $courseGroup,
             'message' => 'Course group created successfully.',
-        ], 201);
+        ], 201) : back()->with('success', 'Course group created successfully.');
     }
 
 
@@ -93,36 +99,29 @@ class CourseGroupController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCourseGroupRequest $request, $uuid)
     {
-        // Find the course group by ID
-        $courseGroup = CourseGroup::find($id);
+        $company = company();
 
-        if (!$courseGroup) {
-            return response()->json([
-                'message' => 'Course group not found.'
-            ], 404);
-        }
+        $courseGroup = CourseGroup::whereCompanyId($company->id)
+            ->where('uuid', $uuid)
+            ->firstOrFail();
 
-        // Validate incoming request data
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'short_code' => "nullable|string|max:10|unique:course_groups,short_code,$id",
-            'description' => 'nullable|string',
-            'completes_on' => 'nullable|date',
-            'course_id' => 'nullable|exists:courses,id',
-            'term_id' => 'nullable|exists:terms,id',
-        ]);
+        // Pass the actual ID into the request so rules can use it
+        $request->merge(['course_group_id' => $courseGroup->id]);
 
+        $courseGroup = $this->courseGroupService
+            ->company($company->id)
+            ->update($courseGroup, $request->validated());
 
-        // Update the course group with the new data
-        $courseGroup->update($request->all());
-
-        return (request()->expectsJson()) ? response()->json([
-            'data' => $courseGroup,
-            'message' => 'Course group updated successfully.'
-        ], 200) : back()->with('updated', 'Course group updated successfully.');
+        return request()->expectsJson()
+            ? response()->json([
+                'data'    => $courseGroup,
+                'message' => 'Course group updated successfully.'
+            ], 200)
+            : back()->with('updated', 'Course group updated successfully.');
     }
+
 
     /**
      * Remove a course group from the database.

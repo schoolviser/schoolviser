@@ -37,21 +37,50 @@ class TertiaryStudentSeeder extends Seeder
             }
 
             // Create ~50 students per tertiary company
-            for ($i = 1; $i <= 50; $i++) {
+            for ($i = 1; $i <= 1000; $i++) {
+                // Randomly assign a course to the student
                 // Randomly assign a course to the student
                 $courseId = $faker->randomElement($courses->toArray());
 
+                // Find a matching course group for this company + course
+                $courseGroupId = DB::table('course_groups')
+                    ->where('company_id', $company->id)
+                    ->where('course_id', $courseId)
+                    ->inRandomOrder()
+                    ->value('id');
+
+                if (! $courseGroupId) {
+                    $this->command->warn("No course group found for course {$courseId} in company {$company->id}, skipping student.");
+                    return;
+                }
+
+                // Insert student record
                 $studentId = DB::table('students')->insertGetId([
-                    'uuid'         => Str::uuid(),
-                    'first_name'   => $faker->firstName,
-                    'last_name'    => $faker->lastName,
-                    'gender'       => $faker->randomElement(['male', 'female']),
-                    'date_of_birth'=> $faker->dateTimeBetween('-25 years', '-18 years')->format('Y-m-d'),
-                    'company_id'   => $company->id,
-                    'course_id'    => $courseId, // <-- assign course
-                    'created_at'   => now(),
-                    'updated_at'   => now(),
+                    'uuid'           => Str::uuid(),
+                    'first_name'     => $faker->firstName,
+                    'last_name'      => $faker->lastName,
+                    'gender'         => $faker->randomElement(['male', 'female']),
+                    'date_of_birth'  => $faker->dateTimeBetween('-25 years', '-18 years')->format('Y-m-d'),
+                    'company_id'     => $company->id,
+                    'course_id'      => $courseId,
+                    'course_group_id'=> $courseGroupId,
+                    'created_at'     => now(),
+                    'updated_at'     => now(),
                 ]);
+
+                // Insert initial course group history for audit trail
+                DB::table('student_course_group_histories')->insert([
+                    'student_id'         => $studentId,
+                    'old_course_group_id'=> null,
+                    'new_course_group_id'=> $courseGroupId,
+                    'reason'             => 'initial_assignment',
+                    'remarks'            => 'Seeded student assigned to course group',
+                    'changed_by'         => null,
+                    'changed_on'         => now(),
+                    'created_at'         => now(),
+                    'updated_at'         => now(),
+                ]);
+
 
                 // Get the earliest academic year for this company
                 $academicYear = DB::table('academic_years')

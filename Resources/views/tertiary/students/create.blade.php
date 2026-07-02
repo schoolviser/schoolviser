@@ -39,6 +39,7 @@
 <form class="" action="{{ route('tertiary.students.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
   @csrf
     <div class="row">
+
         <div class="col-lg-12">
             @if (session('created'))
                 <div
@@ -66,7 +67,7 @@
 
         <!-- Student Personal Info -->
 
-        <div class="col-lg-8">
+        <div class="col-lg-8 offset-lg-2">
             <div class="card rounded-3">
                 <div class="card-header">
                     <div class="card-title">
@@ -127,9 +128,9 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-8 offset-lg-2">
             <!-- Academic Information -->
-             <div class="card rounded-3">
+             <div class="card rounded-3 mt-5">
                 <div class="card-header">
                     <div class="card-title">
                         <h3>Academic Information</h3>
@@ -137,29 +138,33 @@
 
                 </div>
                 <div class="card-body row">
-                    <div class="col-lg-12 mb-3">
+
+                    <div class="col-lg-6 mb-3">
                         <label for="admissionNumber" class="">Admission Number</label>
                         <input type="text" name="admission_number" id="admissionNumber" class="form-control" value="{{ old('admission_number') }}" placeholder="Admission Number" />
                         <small class="text-muted text-danger">{{ $errors->first('admission_number') }}</small>
                     </div>
 
-                    <div class="col-lg-12 mb-4">
+                    <div class="col-lg-6 mb-4">
                         <label for="regNo" class="text-muted text-small text-danger">RegNo</label>
                         <input type="text" name="regno" class="form-control" value="{{ old('regno') }}" placeholder="RegNo" />
                         <small class="text-muted text-danger">{{ $errors->first('regno') }}</small>
                     </div>
 
-                    <div class="col-lg-12 mb-4">
-                        <label for="">Course</label>
-                        <select name="course" id="" class="form-control">
+                   <div class="col-lg-6 mb-4">
+                        <label for="course">Course</label>
+                        <select name="course" id="course" class="form-control">
                             @foreach ($courses as $course)
-                                <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                <option value="{{ $course->id }}" {{ old('course') == $course->id ? 'selected' : '' }}>
+                                    {{ $course->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
 
 
-                    <div class="col-lg-12 mb-4">
+
+                    <div class="col-lg-6 mb-4">
                         <label class="text-muted text-small">Intake</label>
 
                         @php
@@ -184,50 +189,57 @@
                         <small class="text-danger p-1">{{ $errors->first('term') }}</small>
                     </div>
 
-                    <div class="col-lg-12 mb-4">
-                        <label for="">Semester</label>
-                        <select name="semester" id="" class="form-control">
-                            <option value="1">Semester 1</option>
-                            <option value="2">Semester 2</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-12 mb-4">
-                        <label for="">Year</label>
-                        <select name="year" id="" class="form-control">
-                            <option value="1">Year 1</option>
-                            <option value="2">Year 2</option>
-                            <option value="3">Year 3</option>
-                            <option value="4">Year 4</option>
-                            <option value="5">Year 5</option>
-                        </select>
-                    </div>
-
-                    <div class="col-lg-12 mb-4">
-                        <label for="courseGroup">Course Group</label>
-                        <select name="course_group" id="" class="form-control">
-                            @foreach ($courseGroups as $courseGroup)
-                                <option value="{{ $courseGroup->id }}">{{ $courseGroup->name }}</option>
+                    <div class="col-lg-6 mb-4">
+                        <label for="semester">Semester</label>
+                        <select name="semester" id="semester" class="form-control">
+                            @foreach ([1 => 'Semester 1', 2 => 'Semester 2'] as $value => $label)
+                                <option value="{{ $value }}" {{ old('semester') == $value ? 'selected' : '' }}>
+                                    {{ $label }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
 
-                    <div class="col-lg-12 mb-4">
+
+                    <div class="col-lg-6 mb-4">
+                        <label for="year">Year</label>
+                        <select name="year" id="year" class="form-control">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}" {{ old('year') == $i ? 'selected' : '' }}>
+                                    Year {{ $i }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <div class="col-lg-6 mb-4">
+                        <label for="courseGroup">Course Group</label>
+                        <select name="course_group" id="" class="form-control">
+                            @foreach ($courseGroups as $courseGroup)
+                                <option value="{{ $courseGroup->id }}" {{ old('course_group') == $courseGroup->id ? 'selected' : ''  }}>{{ $courseGroup->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-lg-6 mb-4">
                         <label class="text-muted text-small">New Or Continuing</label>
-                        <select name="new_or_continuing" id="" class="form-control">
-                            <option value="new" selected>New</option>
-                            <option value="continuing">Continuing</option>
+                        <select name="new_or_continuing" class="form-control">
+                            @foreach (['new' => 'New', 'continuing' => 'Continuing'] as $value => $label)
+                                <option value="{{ $value }}" {{ old('new_or_continuing') == $value ? 'selected' : '' }}>
+                                    {{ $label }}
+                                </option>
+                            @endforeach
                         </select>
                         <small class="text-danger text-muted p-1">{{ $errors->first('new_or_continuing') }}</small>
                     </div>
 
-                    <div class="col-lg-12 mb-4">
+                    <div class="col-lg-6 mb-4">
                         <label class="text-muted text-small">Entry Date</label>
                         <input type="date" name="entry_date" value="{{ old('entry_date') }}" class="form-control" />
                         <small class="text-danger text-muted p-1">{{ $errors->first('entry_date') }}</small>
                     </div>
 
-                    <div class="form-group col-lg-12 mb-4">
+                    <div class="form-group col-lg-6 mb-4">
                         <label class="text-small text-muted">Residence</label>
                         <select name="residence" id="" class="form-control">
                             <option value="boarding" {{(old('residence') == 'boarding') ? 'selected' : ''}}>Boarding</option>
@@ -235,14 +247,14 @@
                         </select>
                     </div>
 
-                    <div class="form-group col-lg-12 mb-4">
+                    <div class="form-group col-lg-6 mb-4">
                         <label class="text-muted text-small">Hostel</label>
                         <select name="hostel_id" id="" class="form-control">
                             <option value="">Hostel here</option>
                         </select>
                     </div>
 
-                    <div class="col-lg-4 mb-4">
+                    <div class="col-lg-6 mb-4">
                         <label class="clazz text-muted text-small">Year Group</label>
                         @if (count($yearGroups))
                             <select class="form-control" name="year_group" id="clazz">

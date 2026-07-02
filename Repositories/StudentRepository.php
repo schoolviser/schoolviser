@@ -1,4 +1,13 @@
 <?php
+/**
+ * Delxero Engine (https://delgont.co.ug)
+ *
+ * @copyright Copyright (c) 2026. Delgont Technologies
+ *
+ * @license Proprietary License - Unauthorized modification or redistribution prohibited.
+ * Licensed users may only use this software to host applications and develop modules
+ * that extend Delxero Engine, subject to a valid license agreement.
+ */
 
 namespace Modules\Schoolviser\Repositories;
 
@@ -38,18 +47,7 @@ class StudentRepository extends BaseRepository
         });
     }
 
-    public function getTertiaryStudentProfile($studentId)
-    {
-        $this->ensureCompanyIsSet();
-
-        $cacheKey = CacheKeys::TERTIARY_STUDENT_PROFILE.$this->companyId.':'.$studentId;
-
-        return $this->cachedForever($cacheKey, function() use ($studentId){
-            return $this->model::whereCompanyId($this->companyId)->with(['course', 'currentIntakeRegistration', 'courseGroup','intakeRegistrations' => function($intakeRegistrationsQuery){
-                $intakeRegistrationsQuery->whereCompanyId($this->companyId)->with('term','academicYear');
-            }])->whereCompanyId($this->companyId)->where('uuid', $studentId)->orWhere('id', $studentId)->firstOrFail();
-        });
-    }
+   
 
     /**
      * Get

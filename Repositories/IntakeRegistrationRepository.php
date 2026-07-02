@@ -51,15 +51,31 @@ class IntakeRegistrationRepository extends BaseRepository
         return $this;
     }
 
-    public function getIntakePaginatedRegistrations($intakeIdOrUuid, $perPage = 15, $page = 1, $attributes = ['*'])
+    /**
+     * Get intake reistration
+     */
+    public function getIntakeRegistration($id)
     {
         $this->ensureCompanyIsSet();
 
-        $cacheKey = CacheKeys::INTAKE_REGISTRATIONS . $intakeIdOrUuid . ':' .CacheKeys::paginatedCacheSuffix($perPage, $page);
+        $cacheKey = CacheKeys::INTAKE_REGISTRATION . $this->companyId.':'.$id;
 
-        return $this->cached($cacheKey, function() use ($intakeIdOrUuid, $perPage, $page, $attributes){
-            return $this->model->whereHas('term', function($q) use ($intakeIdOrUuid){
-                $q->whereUuid($intakeIdOrUuid);
+        return $this->cachedForever($cacheKey, function() use ($id){
+            return $this->model::whereCompanyId($this->companyId)->where('uuid', $id)->firstOrFail();
+        });
+    }
+
+    public function getPaginatedIntakeRegistrations($intakeId, $perPage = 15, $page = 1, $attributes = ['*'])
+    {
+        $this->ensureCompanyIsSet();
+
+        $cacheKey = CacheKeys::PAGINATED_INTAKE_REGISTRATIONS 
+        . CacheKeys::appendCacheSuffix(true, $this->companyId,$intakeId) 
+        . CacheKeys::appendPaginationCacheSuffix($perPage, $page);
+
+        return $this->cached($cacheKey, function() use ($intakeId, $perPage, $page, $attributes){
+            return $this->model->whereHas('term', function($q) use ($intakeId){
+                $q->whereId($intakeId);
             })->orderBy('created_at', 'desc')->with(['student' => function($studentQuery){
                 $studentQuery->with(['course','yearGroup', 'courseGroup']);
             }])->paginate($perPage, $attributes, 'page', $page);
@@ -74,7 +90,7 @@ class IntakeRegistrationRepository extends BaseRepository
     {
         $this->ensureCompanyIsSet();
 
-        $cacheKey = CacheKeys::CURRENT_PAGINATED_REGISTRATIONS . $this->companyId . ':' . CacheKeys::paginatedCacheSuffix($perPage, $page);
+        $cacheKey = CacheKeys::CURRENT_PAGINATED_REGISTRATIONS . CacheKeys::appendCacheSuffix(true, $this->companyId) . CacheKeys::paginatedCacheSuffix($perPage, $page);
 
         return $this->cached($cacheKey, function() use ($perPage, $page) {
             return $this->model->current()->whereCompanyId($this->companyId)->orderBy('created_at', 'desc')->with(['student' => function($studentQuery){

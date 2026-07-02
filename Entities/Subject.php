@@ -19,4 +19,26 @@ class Subject extends Model
     {
         return $query->whereLevel('a');
     }
+
+    public function papers()
+    {
+        return $this->hasMany(SubjectPaper::class);
+    }
+
+    /**
+     * Get compulsory papers for this subject.
+     */
+    public function compulsoryPapers()
+    {
+        return $this->papers()->compulsory();
+    }
+
+    /**
+     * Get optional papers for this subject.
+     */
+    public function optionalPapers()
+    {
+        return $this->papers()->optional();
+    }
+
 }

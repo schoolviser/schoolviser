@@ -1,4 +1,13 @@
 <?php
+/**
+ * Delxero Engine (https://delgont.co.ug)
+ *
+ * @copyright Copyright (c) 2026. Delgont Technologies
+ *
+ * @license Proprietary License - Unauthorized modification or redistribution prohibited.
+ * Licensed users may only use this software to host applications and develop modules
+ * that extend Delxero Engine, subject to a valid license agreement.
+ */
 
 namespace Modules\Schoolviser\Cache\CacheKeys;
 

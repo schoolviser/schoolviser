@@ -59,6 +59,18 @@ class CourseController extends Controller
         ]) : view('schoolviser::courses.index', compact('courses', 'departments'));
     }
 
+    public function allCoursesMinimal()
+    {
+        $company = company();
+        // Call the repository function
+        $courses = $this->courseRepository->company($company->id)->getAllCoursesMinimal();
+
+        return response()->json([
+            'data' => $courses,
+            'message' => 'Courses retrieved successfully.',
+        ]);
+    }
+
 
     /**
      * Store a newly created resource in storage.

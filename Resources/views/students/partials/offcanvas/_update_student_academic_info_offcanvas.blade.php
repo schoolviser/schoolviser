@@ -2,7 +2,7 @@
     class="offcanvas offcanvas-start"
     data-bs-scroll="true"
     tabindex="-1"
-    id="{{ 'updateStudentAcademicInfoOffCanvas'.$registration->id }}"
+    id="{{ 'updateStudentAcademicInfoOffCanvas'.$student->id }}"
     aria-labelledby="Enable both scrolling & backdrop"
 >
     <div class="offcanvas-header">
@@ -22,7 +22,7 @@
         <div class="alert alert-danger d-none" role="alert"></div>
 
         <form id="updateStudentAcademicInfoForm{{ $registration->id }}"
-              action="{{ route('students.updateAcademicInfo', ['termly_registration_id' => $registration->id]) }}"
+              action="{{ route('students.updateAcademicInfo', ['termly_registration_id' => $registration->id, 'student_id' => $student->uuid]) }}"
               method="POST" class="row">
             @csrf
 

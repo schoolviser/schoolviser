@@ -39,10 +39,10 @@
       <div class="card">
   
           <div class="card-body p-0">
-              <img src="{{ asset('media/avatars/blank.png') }}" class="img-fluid rounde student-avator w-100" alt="image" />
+              <img src="{{ $student->photo ? asset('storage/'.$student->photo) : asset('media/avatars/blank.png') }}" class="img-fluid rounde student-avator w-100" alt="image" />
           </div>
           <div class="card-footer">
-              <form action="{{ route('students.update.photo', ['id' => $student->id]) }}" method="POST" enctype="multipart/form-data" class="m-2">
+              <form action="{{ route('students.update.photo', ['id' => $student->uuid]) }}" method="POST" enctype="multipart/form-data" class="m-2">
                   @csrf
                   <label for="choosePhoto" class="custom-file-upload text-small bg-light px-2 py-1 rounded-4 border border-primary">
                       Choose Photo
@@ -66,7 +66,7 @@
                     <h5 class="card-title">Personal Info</h5>
                     <div class="card-toolbar">
                         @companyRoleHasPermission('can_update_students_personal_info')
-                      <a href="" data-bs-toggle="offcanvas" data-bs-target="{{ '#updateStudentPersonalInfoOffCanvas'.$student->id }}" class="text-primary btn btn-sm btn-light"><i class="bi bi-pencil"></i> Edit Info</a>
+                      <a href="" data-bs-toggle="offcanvas" data-bs-target="{{ '#updateStudentPersonalInfoOffCanvas'.$student->uuid }}" class="text-primary btn btn-sm btn-light"><i class="bi bi-pencil"></i> Edit Info</a>
                         @endcompanyRoleHasPermission
                     </div>
                   </div>
@@ -95,6 +95,9 @@
 
                               <span class="d-block mb-2 ">
                                   <b>NIN: </b> <span class="nin-container">{{ $student->nin }}</span>
+                              </span>
+                              <span class="d-block mb-2 ">
+                                  <b>Phone: </b> <span class="phone-container">{{ $student->phone }}</span>
                               </span>
 
                               <span class="d-block mb-2">
@@ -172,16 +175,16 @@
                               <td>
                                    @if ($registration->locked)
                                         @companyRoleHasPermission('can_unlock_student_registration')
-                                            <form action="{{ route('students.unlock.registration', $registration->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('students.unlock.registration', $registration->uuid) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-light">
-                                                    <i class="bi bi-unlock"></i> UnLock Registration
+                                                    <i class="bi bi-unlock"></i> UnLock Registration 
                                                 </button>
                                             </form>
                                         @endcompanyRoleHasPermission
                                     @else
                                         @companyRoleHasPermission('can_lock_student_registration')
-                                            <form action="{{ route('students.lock.registration', $registration->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('students.lock.registration', $registration->uuid) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-light">
                                                     <i class="bi bi-lock"></i> Lock Registration
@@ -207,7 +210,6 @@
 
 @if ($student->currentTermlyRegistration)
 @includeIf('schoolviser::students.partials.offcanvas._update_student_academic_info_offcanvas', ['registration' => $student->currentTermlyRegistration])
- 
 @endif
 
 @endsection

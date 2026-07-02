@@ -63,6 +63,19 @@ class TermController extends Controller
             : view('schoolviser::terms.index', compact('terms', 'years'));
     }
 
+    public function currentYearTermsMinimal()
+    {
+        $year = academicYear();
+        $company = company();
+        $terms = $this->termRepository->company($company->id)->getYearTermsMinimal($year->id);
+
+        return response()->json([
+            'data' => $terms,
+            'message' => 'Courses retrieved successfully.',
+        ]);
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

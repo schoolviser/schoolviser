@@ -3,24 +3,17 @@
 namespace Modules\Schoolviser\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Modules\Schoolviser\Concerns\Termable;
-//use Modules\Fee\Entities\TermlyRegistrationFee;
-//use Modules\Fee\Entities\Fee;
-
 use Illuminate\Support\Str;
-
 
 class IntakeRegistration extends Model
 {
-    use SoftDeletes, Termable;
+    use Termable;
 
     protected $guarded = [];
 
-
-     protected static function boot()
+    protected static function boot()
     {
         parent::boot();
 
@@ -31,11 +24,9 @@ class IntakeRegistration extends Model
         });
     }
 
-
-
     public function student()
     {
-        return $this->belongsTo(Student::class, 'student_id');
+        return $this->belongsTo(TertiaryStudent::class, 'student_id', 'id');
     }
 
     public function academicYear()
@@ -43,9 +34,36 @@ class IntakeRegistration extends Model
         return $this->belongsTo(AcademicYear::class, 'academic_year_id');
     }
 
-    //Get the fees which the student is suppose to pay that term
     public function fees()
     {
-         return $this->belongsToMany(Fee::class, 'termly_registration_fees')->using(TermlyRegistrationFee::class)->withPivot(['discount','discount_reason','discount_format']);
+        return $this->belongsToMany(Fee::class, 'termly_registration_fees')
+                    ->using(TermlyRegistrationFee::class)
+                    ->withPivot(['discount','discount_reason','discount_format']);
+    }
+
+    /**
+     * Lock this registration to prevent changes.
+     */
+    public function lock(): void
+    {
+        $this->locked = true;
+        $this->save();
+    }
+
+    /**
+     * Unlock this registration to allow changes.
+     */
+    public function unlock(): void
+    {
+        $this->locked = false;
+        $this->save();
+    }
+
+    /**
+     * Check if registration is locked.
+     */
+    public function isLocked(): bool
+    {
+        return (bool) $this->locked;
     }
 }

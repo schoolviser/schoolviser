@@ -5,10 +5,13 @@ namespace Modules\Schoolviser\Repositories;
 use Delgont\Core\Repository\Eloquent\BaseRepository;
 use Illuminate\Support\Facades\Cache;
 
-use Modules\Schoolviser\Entities\TermlyRegistration;
 
 use Modules\Schoolviser\Cache\CacheKeys\TermlyRegistrationCacheKeys as CacheKeys;
 use App\Traits\Repositories\EnsureCompanyIsSet;
+
+# Models
+use Modules\Schoolviser\Entities\TermlyRegistration;
+use Modules\Schoolviser\Entities\Term;
 use Delgont\Core\Entities\Any;
 
 
@@ -85,22 +88,18 @@ class TermlyRegistrationRepository extends BaseRepository
      * Get the termly registrations with the student info
      */
 
-    public function getPaginatedRegistrations($term_id, $perpage, $page, $attributes = ['*'])
+    public function getPaginatedRegistrations($termOrTermId, $perpage, $page, $attributes = ['*'])
     {
         $this->ensureCompanyIsSet();
-
-        /*if($this->previous){
-            return $this->cached(TermlyRegistrationCacheKeys::PREVIOUS_REGISTRATIONS, function(){
-                return $this->model->previous()->with(['clazz','student'])->get();
-            });
-        }*/
         
-        $cacheKey = CacheKeys::PAGINATED_REGISTRATIONS.$this->companyId.':'.$term_id.':'.CacheKeys::paginatedCacheSuffix($perpage, $page);
+        $termId = ($termOrTermId instanceof Term) ? $termOrTermId->id : $termOrTermId;
 
-        return $this->cached($cacheKey, function() use($term_id, $perpage, $page){
-            return $this->model::whereCompanyId($this->companyId)->whereTermId($term_id)->orderBy('created_at', 'desc')->with(['clazz','student'])->paginate($perpage, ['*'], 'page', $page);
+        $cacheKey = CacheKeys::TERM_REGISTRATIONS_PAGINATED . CacheKeys::appendCacheSuffix(true, $this->companyId, $termId) . CacheKeys::appendPaginationCacheSuffix($perpage, $page);
+
+        $paginated = $this->cached($cacheKey, function() use($termId, $perpage, $page){
+            return $this->model::whereCompanyId($this->companyId)->whereTermId($termId)->orderBy('created_at', 'desc')->with(['clazz','student', 'stream'])->paginate($perpage, ['*'], 'page', $page);
         });
-        
+        return $this->transformPaginatedRegistrations($paginated, true);
     }
 
    
@@ -134,6 +133,45 @@ class TermlyRegistrationRepository extends BaseRepository
         return $this->cached(TermlyRegistrationCacheKeys::CURRENT_REGISTRATIONS, function(){
             return $this->model->current()->with(['clazz','student'])->get();
         });
+    }
+
+    protected function transformPaginatedRegistrations($paginated, $withClazz = true)
+    {
+        $collection = $paginated->getCollection()->transform(function ($item) use ($withClazz) {
+            return new Any([
+                'id'            => $item->student->id,
+                'uuid'          => $item->student->uuid,
+                'photo'         => $item->student->photo,
+                'first_name'    => $item->student->first_name,
+                'last_name'     => $item->student->last_name,
+                'regno'         => $item->student->regno,
+                'access_number' => $item->student->access_number,
+                'gender'        => $item->student->gender,
+                'course'        => $item->student->course,
+                'nin'           => $item->student->nin,
+                'nationality'   => $item->student->nationality,
+                'registration'  => new Any([
+                    'id'               => $item->id,
+                    'uuid'             => $item->uuid,
+                    'residence'        => $item->residence,
+                    'new_or_continuing'=> $item->new_or_continuing,
+                    'meta'             => $item->meta,
+                ]),
+                'clazz' => $withClazz ? new Any([
+                    'id'   => $item->clazz->id,
+                    'uuid' => $item->clazz->uuid,
+                    'name' => $item->clazz->name,
+                    'code' => $item->clazz->code,
+                ]) : null,
+                'stream' => new Any([
+                    'id' => $item->stream->id,
+                    'name' => $item->stream->name,
+                    'clazz_id' => $item->stream->clazz_id,
+                ])
+            ]);
+        });
+
+        return $paginated->setCollection($collection);
     }
 
     

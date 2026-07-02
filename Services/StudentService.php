@@ -1,7 +1,18 @@
 <?php
+/**
+ * Delxero Engine (https://delgont.co.ug)
+ *
+ * @copyright Copyright (c) 2026. Delgont Technologies
+ *
+ * @license Proprietary License - Unauthorized modification or redistribution prohibited.
+ * Licensed users may only use this software to host applications and develop modules
+ * that extend Delxero Engine, subject to a valid license agreement.
+ */
+
 namespace Modules\Schoolviser\Services;
 
-use App\Services\ModelBaseService;
+use Delgont\Core\Services\ModelService;
+
 use App\Traits\Repositories\EnsureCompanyIsSet;
 use Illuminate\Support\Facades\DB;
 use Modules\Schoolviser\Entities\Student;
@@ -10,7 +21,7 @@ use Modules\Schoolviser\Entities\TermlyRegistration;
 use Modules\Schoolviser\Cache\CacheKeys\StudentCacheKeys as CacheKeys;
 
 
-class StudentService extends ModelBaseService
+class StudentService extends ModelService
 {
     use EnsureCompanyIsSet;
 

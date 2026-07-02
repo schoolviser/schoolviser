@@ -12,6 +12,7 @@
 
 @section('module-page-actions')
 <a href="{{route('tertiary.students.create')}}" class="btn btn-sm btn-light">Add Student</a>
+<a href="{{route('tertiary.intake.registrations.index')}}" class="btn btn-sm btn-light">Registrations</a>
 <a href="{{route('tertiary.students.unregistered')}}" class="btn btn-sm btn-light">Un Registered Students</a>
 <a href="#" class="btn btn-sm btn-light" data-bs-toggle="offcanvas" data-bs-target="#searchStudentsOffcanvas" aria-controls="searchStudentsOffcanvas">
     <i class="bi bi-search"></i> Search Students
@@ -44,13 +45,34 @@
 
         <div class="col-xl-12">
             <div class="card">
+
+                <div class="card-header">
+                    <h2 class="card-title">
+                    </h2>
+                    <div class="card-toolbar d-none" id="selectedStudentsActionToolbar">
+                        <form id="bulkActionsForm" method="POST">
+                            @csrf
+                            <input type="hidden" name="student_ids" id="bulkStudentIds">
+
+                            <button type="submit" formaction="{{ route('tertiary.students.selectedStudentsExport') }}"
+                                    class="btn btn-sm btn-light-primary m-1">
+                                Export Selected
+                            </button>
+                            
+                        </form>
+                    </div>
+
+                </div>
                 
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle table-row-dashed table-row-gray-400 fs-6 gy-5" id="studentsTables">
                             <thead>
                             <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                                <th></th>
+                                <th>
+                                    <input type="checkbox" class="form-check-input" id="selectAllStudents" />
+                                </th>
+                                <th>*</th>
                                 <th>Personal Information</th>
                                 <th>Acdemic Information</th>
                                 <th class="text-center">Actions</th>
@@ -59,8 +81,11 @@
                             <tbody>
                             @foreach ($students as $student)
                             <tr class="">
+                                <td>
+                                    <input type="checkbox" class="student-checkbox form-check-input" value="{{ $student->id }}">
+                                </td>
                                 <td style="width: 5%;" class="py-lg-3">
-                                    <img src="{{ asset($student->photo ?? 'images/avator.png') }}" class="img-fluid" alt="">
+                                    <img src="{{ $student->photo ? asset('storage/'.$student->photo) : asset('media/avatars/blank.png') }}" class="img-fluid" alt="">
                                 </td>
 
                                 <td class="text-capitalize">
@@ -85,7 +110,7 @@
                                 </td>
 
                                 <td class="text-center">
-                                <a href="{{ route('tertiary.students.show', ['id' => $student->uuid ?? $student->id]) }}" class="btn btn-sm btn-primary dev"><i class="bi bi-eye"></i></a>
+                                <a href="{{ route('tertiary.students.show', ['id' => $student->uuid]) }}" class="btn btn-sm btn-primary dev"><i class="bi bi-eye"></i></a>
                                 <a href="{{ route('tertiary.students.delete', ['id' => $student->registration->id]) }}" class="btn btn-sm btn-danger" "><i class="bi bi-trash"></i></a>
 
                                 </td>
@@ -111,4 +136,40 @@
 
 @include('schoolviser::tertiary.students.partials.offcanvas._search_students_offcanvas')
 
+@endsection
+
+
+@section('scripts')
+<script>
+$(document).ready(function() {
+    function toggleToolbar() {
+        let anyChecked = $('.student-checkbox:checked').length > 0;
+        if (anyChecked) {
+            $('#selectedStudentsActionToolbar').removeClass('d-none');
+        } else {
+            $('#selectedStudentsActionToolbar').addClass('d-none');
+        }
+    }
+
+    // Select/Deselect all
+    $('#selectAllStudents').on('change', function() {
+        $('.student-checkbox').prop('checked', $(this).prop('checked'));
+        toggleToolbar();
+    });
+
+    // Individual checkbox change
+    $(document).on('change', '.student-checkbox', function() {
+        toggleToolbar();
+    });
+
+    // Before submitting bulk form, collect IDs
+    $('#bulkActionsForm').on('submit', function() {
+        let selected = [];
+        $('.student-checkbox:checked').each(function() {
+            selected.push($(this).val());
+        });
+        $('#bulkStudentIds').val(selected.join(','));
+    });
+});
+</script>
 @endsection

@@ -20,6 +20,12 @@ class TermRepository extends BaseRepository
         parent::__construct($model);
     }
 
+    public function getYearTermsMinimal($yearId)
+    {
+        $this->ensureCompanyIsSet();
+        return $this->model::whereCompanyId($this->companyId)->whereAcademicYearId($yearId)->get();
+    }
+
     public function getAllTerms()
     {
         $this->ensureCompanyIsSet();
@@ -96,6 +102,7 @@ class TermRepository extends BaseRepository
         });
     }
 
+
     public function getTotalRegistrationsPerIntake()
     {
          $this->ensureCompanyIsSet();
@@ -106,6 +113,25 @@ class TermRepository extends BaseRepository
             return $this->model::whereCompanyId($this->companyId)->withCount('intakeRegistrations')->get();
         });
     }
+
+    /**
+     * Get total registrations per intake for a specific academic year
+     */
+    public function getTotalRegistrationsPerIntakeInAcademicYear($year_id)
+    {
+        $this->ensureCompanyIsSet();
+
+        $cacheKey = CacheKeys::TOTAL_REGISTRATIONS_PER_TERM_IN_ACADEMIC_YEAR. $this->companyId . ':' . $year_id;
+
+        return $this->cached($cacheKey, function () use ($year_id) {
+            return $this->model::whereCompanyId($this->companyId)->whereAcademicYearId($year_id)
+                ->withCount(['intakeRegistrations' => function ($q) use ($year_id) {
+                    $q->where('academic_year_id', $year_id);
+                }])
+                ->get();
+        });
+    }
+
 
 
 }
